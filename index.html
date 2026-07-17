@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolten · Mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  html, body { font-family: 'Inter', system-ui, sans-serif; }
+  body { background: #fafaf9; }
+  .card { transition: all 180ms ease; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -8px rgba(0,0,0,0.08); border-color: #ce8a1d; }
+  .card:hover .arrow { transform: translateX(4px); color: #ce8a1d; }
+  .arrow { transition: all 180ms ease; }
+</style>
+</head>
+<body class="text-stone-900">
+
+<div class="max-w-5xl mx-auto px-6 py-12">
+
+  <!-- Header -->
+  <header class="mb-12">
+    <div class="flex items-center gap-3 mb-6">
+      <div class="w-10 h-10 rounded-lg bg-[#ce8a1d] flex items-center justify-center">
+        <i data-lucide="layout-dashboard" class="w-5 h-5 text-white"></i>
+      </div>
+      <div>
+        <div class="text-xs font-medium text-stone-500 uppercase tracking-wider">Bolten</div>
+        <div class="text-sm font-semibold text-stone-900">Mockups Internos</div>
+      </div>
+    </div>
+    <h1 class="text-3xl font-bold text-stone-900 mb-2">Protótipos de produto</h1>
+    <p class="text-stone-600 max-w-2xl">Coleção de mockups interativos das novas features em desenvolvimento na Bolten. Cada card abre um protótipo funcional em HTML.</p>
+  </header>
+
+  <!-- Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <a href="inbox.html" class="card block bg-white border border-stone-200 rounded-xl p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center">
+          <i data-lucide="inbox" class="w-4 h-4 text-stone-700"></i>
+        </div>
+        <i data-lucide="arrow-right" class="arrow w-4 h-4 text-stone-400"></i>
+      </div>
+      <h3 class="font-semibold text-stone-900 mb-1">Inbox WhatsApp + Instagram</h3>
+      <p class="text-sm text-stone-500">Central unificada de atendimento multicanal.</p>
+    </a>
+
+    <a href="etiquetas.html" class="card block bg-white border border-stone-200 rounded-xl p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center">
+          <i data-lucide="tag" class="w-4 h-4 text-stone-700"></i>
+        </div>
+        <i data-lucide="arrow-right" class="arrow w-4 h-4 text-stone-400"></i>
+      </div>
+      <h3 class="font-semibold text-stone-900 mb-1">Etiquetas de Contatos</h3>
+      <p class="text-sm text-stone-500">Organização e segmentação de contatos WhatsApp.</p>
+    </a>
+
+    <a href="whatsapp-envio-programado.html" class="card block bg-white border border-stone-200 rounded-xl p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center">
+          <i data-lucide="send" class="w-4 h-4 text-stone-700"></i>
+        </div>
+        <i data-lucide="arrow-right" class="arrow w-4 h-4 text-stone-400"></i>
+      </div>
+      <h3 class="font-semibold text-stone-900 mb-1">Envio Programado WhatsApp</h3>
+      <p class="text-sm text-stone-500">Agendamento de mensagens e campanhas.</p>
+    </a>
+
+    <a href="permissoes.html" class="card block bg-white border border-stone-200 rounded-xl p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center">
+          <i data-lucide="shield-check" class="w-4 h-4 text-stone-700"></i>
+        </div>
+        <i data-lucide="arrow-right" class="arrow w-4 h-4 text-stone-400"></i>
+      </div>
+      <h3 class="font-semibold text-stone-900 mb-1">Permissões de Acesso</h3>
+      <p class="text-sm text-stone-500">Controle granular de perfis e permissões.</p>
+    </a>
+
+    <a href="fale-com-parceiro.html" class="card block bg-white border border-stone-200 rounded-xl p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center">
+          <i data-lucide="handshake" class="w-4 h-4 text-stone-700"></i>
+        </div>
+        <i data-lucide="arrow-right" class="arrow w-4 h-4 text-stone-400"></i>
+      </div>
+      <h3 class="font-semibold text-stone-900 mb-1">Fale com o Parceiro + Links Úteis</h3>
+      <p class="text-sm text-stone-500">Canal direto e recursos para o parceiro.</p>
+    </a>
+
+    <a href="calendario-agente-followup.html" class="card block bg-white border border-stone-200 rounded-xl p-5">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center">
+          <i data-lucide="calendar-clock" class="w-4 h-4 text-stone-700"></i>
+        </div>
+        <i data-lucide="arrow-right" class="arrow w-4 h-4 text-stone-400"></i>
+      </div>
+      <h3 class="font-semibold text-stone-900 mb-1">Calendário + Agente de Follow-up</h3>
+      <p class="text-sm text-stone-500">Agenda integrada com automação de retomada.</p>
+    </a>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-16 pt-6 border-t border-stone-200 text-xs text-stone-500 flex items-center justify-between">
+    <span>© Bolten · Uso interno</span>
+    <span class="flex items-center gap-1.5">
+      <i data-lucide="git-branch" class="w-3.5 h-3.5"></i>
+      Hospedado no GitHub Pages
+    </span>
+  </footer>
+
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

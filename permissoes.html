@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolten – Acessos · Gestão de licenças</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+  :root{
+    --bg:#12161f;
+    --panel:#1a212c;
+    --panel-2:#161c26;
+    --thead:#3d4553;
+    --input:#232b38;
+    --brd:rgba(255,255,255,.10);
+    --brd-2:rgba(255,255,255,.07);
+    --text:#e8ecf2;
+    --muted:#98a2b3;
+    --muted-2:#6b7789;
+    --orange:#e5801e;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;font-size:14px}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:8px}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  select{font-family:inherit}
+  .fade-in{animation:fi .12s ease}
+  @keyframes fi{from{opacity:0;transform:scale(.98) translateY(-3px)}to{opacity:1;transform:none}}
+
+  /* pill branco (Sim/Ativo) e escuro (Não) — fiel ao print */
+  .pill{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:8px;font-size:12.5px;font-weight:600;border:1px solid transparent;transition:.12s}
+  .pill i{width:13px;height:13px}
+  .pill.white{background:#fff;color:#12161f}
+  .pill.dark{background:transparent;color:#e8ecf2;border-color:rgba(255,255,255,.35)}
+  .pill.off{background:transparent;color:#e07a7a;border-color:rgba(224,122,122,.4)}
+  .pill:hover{filter:brightness(.92)}
+
+  /* toggle */
+  .tgl{position:relative;width:34px;height:19px;border-radius:20px;background:#3a4250;transition:.15s;cursor:pointer;flex-shrink:0}
+  .tgl::after{content:'';position:absolute;top:2px;left:2px;width:15px;height:15px;border-radius:50%;background:#fff;transition:.15s}
+  .tgl.on{background:var(--orange)}
+  .tgl.on::after{left:17px}
+
+  /* sub-sidebar */
+  .subnav{width:226px;background:var(--bg);border-right:1px solid var(--brd-2);padding:18px 12px;flex-shrink:0}
+  .subnav .grp{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--muted-2);text-transform:uppercase;padding:0 10px 10px}
+  .subnav .it{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--text);cursor:pointer;margin-bottom:2px}
+  .subnav .it:hover{background:rgba(255,255,255,.04)}
+  .subnav .it.active{background:#1d2430;font-weight:700}
+  .subnav .it.active i{color:var(--orange)}
+  .subnav .it i{width:15px;height:15px;color:var(--muted)}
+  .subnav .badge{margin-left:auto;min-width:20px;height:18px;padding:0 6px;border-radius:5px;background:#2a3240;color:var(--text);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .subnav .it.active .badge{background:#39424f}
+
+  /* tabela */
+  .thead{background:var(--thead);display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:8px 8px 0 0}
+  .thead div{font-size:11px;font-weight:700;letter-spacing:.05em;color:#cdd5e0;text-transform:uppercase}
+  .trow{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--brd-2);background:var(--panel-2)}
+  .trow:last-child{border-bottom:0;border-radius:0 0 8px 8px}
+  .trow:hover{background:#1a2230}
+
+  .c-nome{width:165px;flex-shrink:0}
+  .c-mail{width:215px;flex-shrink:0}
+  .c-tel{width:120px;flex-shrink:0}
+  .c-gestor{width:85px;flex-shrink:0}
+  .c-lic{width:85px;flex-shrink:0}
+  .c-nivel{width:150px;flex-shrink:0}
+  .c-visao{flex:1;min-width:130px}
+
+  .sel{position:relative;width:100%}
+  .sel select{width:100%;appearance:none;background:var(--input);border:1px solid var(--brd);border-radius:8px;color:var(--text);font-size:12.5px;padding:7px 26px 7px 10px;outline:none;cursor:pointer}
+  .sel select:focus{border-color:var(--orange)}
+  .sel select:disabled{opacity:.55;cursor:default}
+  .sel i,.sel svg{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:13px;height:13px;color:var(--muted);pointer-events:none}
+
+  .eye-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;border:1px solid var(--brd);background:var(--panel);font-size:11.5px;font-weight:600;color:var(--text);white-space:nowrap}
+  .eye-btn:hover{border-color:var(--orange);color:var(--orange)}
+  .eye-btn i{width:13px;height:13px}
+  .eye-mini{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;border:1px solid var(--brd);background:var(--panel);color:var(--muted);flex-shrink:0}
+  .eye-mini:hover{border-color:var(--orange);color:var(--orange)}
+  .eye-mini i,.eye-mini svg{width:14px;height:14px}
+
+  .btn-white{background:#fff;color:#12161f;border-radius:9px;padding:9px 16px;font-size:13px;font-weight:700}
+  .btn-white:hover{filter:brightness(.93)}
+  .btn-ghost{display:inline-flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--brd);color:var(--text);border-radius:9px;padding:9px 14px;font-size:13px;font-weight:600}
+  .btn-ghost:hover{border-color:var(--orange)}
+  .btn-ghost i{width:14px;height:14px;color:var(--muted)}
+
+  .lockbadge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--orange);background:rgba(229,128,30,.12);border:1px solid rgba(229,128,30,.35);border-radius:20px;padding:4px 11px}
+  .lockbadge i{width:11px;height:11px}
+
+  /* chips de grupo */
+  .gchip{display:inline-flex;align-items:center;gap:4px;padding:2.5px 7px;border-radius:6px;font-size:10px;font-weight:600;border:1px solid}
+  .gchip i{width:10px;height:10px}
+  .gchip.on{background:#232b38;color:#cdd5e0;border-color:var(--brd)}
+  .gchip.offc{background:rgba(224,122,122,.08);color:#c96a6a;border-color:rgba(224,122,122,.25);text-decoration:line-through}
+
+  /* modais */
+  .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:40;display:none}
+  .backdrop.open{display:block}
+  .modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--panel);border:1px solid var(--brd);border-radius:16px;z-index:50;display:none;box-shadow:0 26px 70px rgba(0,0,0,.6);overflow:hidden;flex-direction:column;max-height:92vh}
+  .modal.open{display:flex}
+  .m-hd{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--brd-2);flex-shrink:0}
+  .m-ic{width:36px;height:36px;border-radius:10px;background:rgba(229,128,30,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .m-ic i{width:16px;height:16px;color:var(--orange)}
+  .m-title{font-size:15px;font-weight:800}
+  .m-sub{font-size:11.5px;color:var(--muted);margin-top:1px}
+  .m-x{margin-left:auto;color:var(--muted)}
+  .m-x:hover{color:var(--text)}
+  .m-ft{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid var(--brd-2);background:rgba(255,255,255,.02);flex-shrink:0}
+  .btn-cancel{padding:8px 14px;border-radius:9px;border:1px solid var(--brd);color:var(--text);font-size:12.5px;font-weight:600}
+  .lbl{font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase;margin-bottom:7px}
+  .inp{width:100%;background:var(--input);border:1px solid var(--brd);border-radius:9px;color:var(--text);font-size:13px;padding:9px 12px;outline:none}
+  .inp:focus{border-color:var(--orange)}
+
+  .grow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--brd-2)}
+  .grow:last-child{border-bottom:0}
+  .grow.offr{background:rgba(0,0,0,.18)}
+  .gic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(229,128,30,.12)}
+  .gic i{width:15px;height:15px;color:var(--orange)}
+  .grow.offr .gic{background:#232b38}
+  .grow.offr .gic i{color:var(--muted-2)}
+  .gname{font-size:13px;font-weight:700}
+  .gtools{font-size:11px;color:var(--muted)}
+  .grow.offr .gname{color:var(--muted-2)}
+  .gstate{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  .gstate.v{color:#4cc38a}.gstate.o{color:var(--muted-2)}
+
+  .prev-it{display:flex;align-items:center;gap:8px;padding:5px 9px;border-radius:7px;font-size:11.5px;color:var(--text)}
+  .prev-it.offp{color:#4b5566;text-decoration:line-through}
+  .prev-it i{width:12px;height:12px;color:var(--muted)}
+  .prev-it.offp i{color:#3c4554}
+
+  .rolecard{background:var(--panel-2);border:1px solid var(--brd-2);border-radius:12px;padding:14px}
+
+  /* matriz perfil × ferramentas */
+  .mx{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--brd-2);border-radius:12px;overflow:hidden}
+  .mx th{background:var(--thead);padding:10px 8px;text-align:center;vertical-align:top}
+  .mx th.pf{text-align:left;padding-left:14px;width:200px}
+  .mx th .gn{font-size:11px;font-weight:800;letter-spacing:.04em;color:#e8ecf2;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:5px}
+  .mx th .gn i,.mx th .gn svg{width:12px;height:12px;color:#cdd5e0}
+  .mx th .gt{font-size:9.5px;font-weight:500;color:#aab4c2;margin-top:3px;line-height:1.35;text-transform:none;letter-spacing:0}
+  .mx td{background:var(--panel-2);border-top:1px solid var(--brd-2);padding:10px 8px;text-align:center;vertical-align:middle}
+  .mx td.pf{text-align:left;padding-left:14px}
+  .mx tr:hover td{background:#1a2230}
+  .cell{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;cursor:pointer;border:1px solid transparent;transition:.12s}
+  .cell i,.cell svg{width:15px;height:15px}
+  .cell.v{background:rgba(76,195,138,.13);color:#4cc38a;border-color:rgba(76,195,138,.3)}
+  .cell.o{background:rgba(255,255,255,.04);color:#4b5566;border-color:var(--brd-2)}
+  .cell:hover{border-color:var(--orange)}
+  .cell.lk{cursor:default;opacity:.75}
+  .cell.lk:hover{border-color:rgba(76,195,138,.3)}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- ═══════ SUB-SIDEBAR (fiel ao print) ═══════ -->
+<aside class="subnav">
+  <div class="grp">Geral</div>
+  <div class="it"><i data-lucide="info"></i> Informações</div>
+  <div class="it"><i data-lucide="wrench"></i> Ferramentas <span class="badge">8</span></div>
+  <div class="it"><i data-lucide="circle-dollar-sign"></i> Cobrança</div>
+  <div class="it active"><i data-lucide="users"></i> Acessos <span class="badge">7</span></div>
+</aside>
+
+<!-- ═══════ MAIN ═══════ -->
+<main style="flex:1;min-width:0;overflow-y:auto">
+  <div style="max-width:1120px;margin:0 auto;padding:26px 28px">
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:4px;flex-wrap:wrap">
+      <h1 style="font-size:21px;font-weight:800;margin:0">Gestão de licenças</h1>
+      <span class="lockbadge"><i data-lucide="lock"></i> Acessível somente ao Parceiro</span>
+      <div style="margin-left:auto;display:flex;gap:10px">
+        <button class="btn-ghost" onclick="openRoles()"><i data-lucide="shield"></i> Níveis de acesso</button>
+        <button class="btn-white">+ Usuário</button>
+      </div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin:0 0 20px">Defina o nível de acesso de cada usuário — a visão é controlada pela matriz de perfis vs. ferramentas.</p>
+
+    <!-- tabela -->
+    <div style="border-radius:8px;overflow:visible;border:1px solid var(--brd-2)">
+      <div class="thead">
+        <div class="c-nome">Nome completo</div>
+        <div class="c-mail">E-mail</div>
+        <div class="c-tel">Telefone</div>
+        <div class="c-gestor">Gestor</div>
+        <div class="c-lic">Licença</div>
+        <div class="c-nivel">Nível de acesso</div>
+        <div class="c-visao">Visão</div>
+      </div>
+      <div id="tbody"></div>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════ MODAL: NÍVEIS DE ACESSO ═══════ -->
+<div class="backdrop" id="roles-bk" onclick="closeRoles()"></div>
+<div class="modal" id="roles-md" style="width:900px;max-width:96vw" onclick="event.stopPropagation()">
+  <div class="m-hd">
+    <div class="m-ic"><i data-lucide="shield"></i></div>
+    <div><div class="m-title">Níveis de acesso</div><div class="m-sub">Perfis vs. grupos de ferramentas — clique nas células para liberar ou ocultar.</div></div>
+    <button class="m-x" onclick="closeRoles()"><i data-lucide="x" style="width:16px;height:16px"></i></button>
+  </div>
+  <div style="flex:1;overflow-y:auto;padding:16px 20px" id="roles-grid"></div>
+</div>
+
+<!-- ═══════ MODAL: EDITOR DE VISÃO / NÍVEL ═══════ -->
+<div class="backdrop" id="ed-bk" onclick="closeEditor()"></div>
+<div class="modal" id="ed-md" style="width:730px;max-width:95vw" onclick="event.stopPropagation()"></div>
+
+<script>
+/* ═══════ DADOS ═══════ */
+const TOOL_GROUPS=[
+  {id:'atendimento',name:'Atendimento',icon:'message-circle',tools:['WhatsApp','Registro de contatos']},
+  {id:'vendas',name:'Vendas',icon:'filter',tools:['Funil de Vendas','Tarefas']},
+  {id:'marketing',name:'Marketing',icon:'send',tools:['Marketing','Campanhas']},
+  {id:'agenda',name:'Agenda',icon:'calendar',tools:['Calendário']},
+  {id:'ia',name:'Agente de IA',icon:'sparkles',tools:['Agente de IA']},
+  {id:'gestao',name:'Gestão',icon:'settings',tools:['Relatórios','Financeiro','Configurações']},
+];
+const allOn=()=>Object.fromEntries(TOOL_GROUPS.map(g=>[g.id,true]));
+
+let ROLES=[
+  {id:'admin',name:'Administrador',desc:'Acesso completo a todas as ferramentas.',system:true,groups:allOn()},
+  {id:'vendedor',name:'Vendedor',desc:'Atendimento, funil e agenda.',groups:{atendimento:true,vendas:true,marketing:false,agenda:true,ia:false,gestao:false}},
+  {id:'atendente',name:'Atendente',desc:'Somente atendimento e agenda.',groups:{atendimento:true,vendas:false,marketing:false,agenda:true,ia:false,gestao:false}},
+  {id:'mkt',name:'Gestor de marketing',desc:'Campanhas, marketing e relatórios.',groups:{atendimento:false,vendas:false,marketing:true,agenda:true,ia:true,gestao:true}},
+];
+
+/* usuários fiéis ao print */
+const USERS=[
+  {id:'u1',name:'',              mail:'renan.pinheiro@bolten.io',   tel:'',                gestor:true, lic:true, role:'admin'},
+  {id:'u2',name:'Henrique Ioneda',mail:'henriqueioneda@gmail.com',  tel:'',                gestor:false,lic:true, role:'atendente'},
+  {id:'u3',name:'',              mail:'rodrigo.ohashi@bolten.io',   tel:'',                gestor:false,lic:true, role:'vendedor'},
+  {id:'u4',name:'Renan Pinheiro',mail:'renan.luis.ismart@gmail.com',tel:'(12) 99776-0540', gestor:false,lic:true, role:'vendedor'},
+  {id:'u5',name:'Renan Kataoka', mail:'rkataoka.edu@gmail.com',     tel:'',                gestor:false,lic:true, role:'atendente'},
+  {id:'u6',name:'Carlos Guterman',mail:'carlos.guterman@bolten.io', tel:'(',               gestor:true, lic:true, role:'admin'},
+  {id:'u7',name:'Enzo Giannobile',mail:'enzo.giannobile@bolten.io', tel:'(11) 96358-7187', gestor:true, lic:true, role:'admin'},
+];
+
+let state={editor:null};
+const $=s=>document.querySelector(s);
+const icons=()=>window.lucide&&lucide.createIcons();
+const role=id=>ROLES.find(r=>r.id===id);
+const userGroups=u=>role(u.role).groups;
+
+/* ═══════ TABELA ═══════ */
+function visaoCell(u){
+  if(u.gestor)return`<span style="font-size:11px;color:var(--muted-2)">Visão total</span>`;
+  const g=userGroups(u);
+  const n=TOOL_GROUPS.filter(x=>g[x.id]).length;
+  return`<div style="display:flex;align-items:center;gap:8px">
+    <span style="font-size:11.5px;color:var(--muted)"><strong style="color:var(--text)">${n}</strong>/${TOOL_GROUPS.length} grupos</span>
+    <button class="eye-mini" title="Ver ferramentas visíveis" onclick="openUserView('${u.id}')"><i data-lucide="eye"></i></button>
+  </div>`;
+}
+function nivelCell(u){
+  if(u.gestor)return`<div class="sel"><select disabled><option>Administrador</option></select><i data-lucide="lock"></i></div>`;
+  const opts=ROLES.map(r=>`<option value="${r.id}" ${u.role===r.id?'selected':''}>${r.name}</option>`).join('');
+  return`<div class="sel"><select onchange="changeRole('${u.id}',this.value)">${opts}</select><i data-lucide="chevron-down"></i></div>`;
+}
+function renderTable(){
+  $('#tbody').innerHTML=USERS.map(u=>`
+    <div class="trow">
+      <div class="c-nome" style="font-size:13px;color:var(--text)">${u.name||''}</div>
+      <div class="c-mail" style="font-size:12.5px;color:#c6cedb;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${u.mail}</div>
+      <div class="c-tel" style="font-size:12.5px;color:#c6cedb">${u.tel}</div>
+      <div class="c-gestor">
+        <button class="pill ${u.gestor?'white':'dark'}" onclick="toggleGestor('${u.id}')"><i data-lucide="check-circle-2"></i>${u.gestor?'Sim':'Não'}</button>
+      </div>
+      <div class="c-lic">
+        <button class="pill ${u.lic?'white':'off'}" onclick="toggleLic('${u.id}')"><i data-lucide="${u.lic?'check-circle-2':'x-circle'}"></i>${u.lic?'Ativo':'Inativo'}</button>
+      </div>
+      <div class="c-nivel">${nivelCell(u)}</div>
+      <div class="c-visao">${visaoCell(u)}</div>
+    </div>`).join('');
+  icons();
+}
+function toggleGestor(uid){
+  const u=USERS.find(x=>x.id===uid);
+  u.gestor=!u.gestor;
+  if(u.gestor)u.role='admin';
+  renderTable();
+}
+function toggleLic(uid){const u=USERS.find(x=>x.id===uid);u.lic=!u.lic;renderTable();}
+function changeRole(uid,val){
+  const u=USERS.find(x=>x.id===uid);
+  u.role=val;renderTable();
+}
+
+/* ═══════ MODAL NÍVEIS ═══════ */
+function openRoles(){renderRoles();$('#roles-md').classList.add('open');$('#roles-bk').classList.add('open');}
+function closeRoles(){$('#roles-md').classList.remove('open');$('#roles-bk').classList.remove('open');}
+function gchip(g,on){return`<span class="gchip ${on?'on':'offc'}"><i data-lucide="${on?g.icon:'eye-off'}"></i>${g.name}</span>`;}
+function renderRoles(){
+  const head=`<tr>
+    <th class="pf"><div class="gn" style="justify-content:flex-start">Perfil</div></th>
+    ${TOOL_GROUPS.map(g=>`<th>
+      <div class="gn"><i data-lucide="${g.icon}"></i>${g.name}</div>
+      <div class="gt">${g.tools.join('<br>')}</div>
+    </th>`).join('')}
+    <th style="width:70px"></th>
+  </tr>`;
+  const rows=ROLES.map(r=>{
+    const n=USERS.filter(u=>u.role===r.id).length;
+    const cells=TOOL_GROUPS.map(g=>{
+      const on=r.groups[g.id];
+      const locked=r.system;
+      return`<td><span class="cell ${on?'v':'o'} ${locked?'lk':''}" ${locked?'title="Nível padrão: visão total"':`onclick="toggleRoleGroup('${r.id}','${g.id}')" title="${on?'Ocultar':'Liberar'} ${g.name}"`}>
+        <i data-lucide="${on?'check':'eye-off'}"></i></span></td>`;
+    }).join('');
+    return`<tr>
+      <td class="pf">
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="font-size:13px;font-weight:800">${r.name}</span>
+          ${r.system?'<span style="font-size:8.5px;font-weight:800;color:var(--muted-2);border:1px solid var(--brd);border-radius:4px;padding:1.5px 4px;text-transform:uppercase;letter-spacing:.05em">Padrão</span>':''}
+        </div>
+        <div style="font-size:10.5px;color:var(--muted-2);margin-top:2px">${n} usuário${n===1?'':'s'}</div>
+      </td>
+      ${cells}
+      <td>
+        <div style="display:flex;gap:5px;justify-content:center">
+          <button class="eye-mini" title="Renomear nível" onclick="openRoleEditor('${r.id}')"><i data-lucide="pencil"></i></button>
+          ${r.system?'':`<button class="eye-mini" title="Excluir nível" style="color:#e07a7a" onclick="deleteRole('${r.id}')"><i data-lucide="trash-2"></i></button>`}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  $('#roles-grid').innerHTML=`
+    <table class="mx"><thead>${head}</thead><tbody>${rows}</tbody></table>
+    <button onclick="openNewRole()" style="width:100%;margin-top:12px;border:2px dashed var(--brd);border-radius:12px;padding:13px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--muted)" onmouseover="this.style.borderColor='#e5801e';this.style.color='#e5801e'" onmouseout="this.style.borderColor='rgba(255,255,255,.10)';this.style.color='#98a2b3'">
+      <i data-lucide="plus-circle" style="width:18px;height:18px"></i>
+      <span style="font-size:12.5px;font-weight:700">Criar nível de acesso</span>
+    </button>`;
+  icons();
+}
+function toggleRoleGroup(rid,gid){
+  const r=role(rid);if(r.system)return;
+  r.groups[gid]=!r.groups[gid];
+  renderRoles();renderTable();
+}
+function deleteRole(rid){
+  USERS.forEach(u=>{if(u.role===rid)u.role='atendente';});
+  ROLES=ROLES.filter(r=>r.id!==rid);
+  renderRoles();renderTable();
+}
+
+/* ═══════ EDITOR ═══════ */
+function openUserView(uid){
+  const u=USERS.find(x=>x.id===uid);
+  const r=role(u.role);
+  const items=TOOL_GROUPS.flatMap(g=>g.tools.map(t=>({t,g:g.name,icon:g.icon,on:r.groups[g.id]})));
+  const nOn=items.filter(x=>x.on).length;
+  const list=items.map(x=>`
+    <div class="grow ${x.on?'':'offr'}" style="padding:9px 14px">
+      <div class="gic" style="width:28px;height:28px"><i data-lucide="${x.icon}" style="width:13px;height:13px"></i></div>
+      <div style="flex:1;min-width:0">
+        <div class="gname" style="font-size:12.5px">${x.t}</div>
+        <div class="gtools" style="font-size:10px">${x.g}</div>
+      </div>
+      <span class="gstate ${x.on?'v':'o'}">${x.on?'Visível':'Oculto'}</span>
+      <i data-lucide="${x.on?'eye':'eye-off'}" style="width:14px;height:14px;color:${x.on?'#4cc38a':'#4b5566'}"></i>
+    </div>`).join('');
+  $('#ed-md').innerHTML=`
+    <div class="m-hd">
+      <div class="m-ic"><i data-lucide="eye"></i></div>
+      <div>
+        <div class="m-title">Visão do usuário</div>
+        <div class="m-sub"><strong style="color:var(--text)">${u.name||u.mail}</strong> · Nível: ${r.name} — ${nOn} de ${items.length} ferramentas visíveis</div>
+      </div>
+      <button class="m-x" onclick="closeEditor()"><i data-lucide="x" style="width:16px;height:16px"></i></button>
+    </div>
+    <div style="flex:1;overflow-y:auto;padding:14px 20px">
+      <div style="border:1px solid var(--brd-2);border-radius:12px;overflow:hidden;background:var(--panel-2)">${list}</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted-2);margin-top:10px">
+        <i data-lucide="info" style="width:12px;height:12px"></i> Somente visualização. Para alterar, edite o nível de acesso na matriz de perfis.
+      </div>
+    </div>
+    <div class="m-ft"><button class="btn-cancel" onclick="closeEditor()">Fechar</button></div>`;
+  icons();
+  $('#ed-md').classList.add('open');$('#ed-bk').classList.add('open');
+}
+function openRoleEditor(rid){
+  const r=role(rid);
+  state.editor={type:'role',id:rid,name:r.name,groups:{...r.groups}};
+  renderEditor();$('#ed-md').classList.add('open');$('#ed-bk').classList.add('open');
+}
+function openNewRole(){
+  state.editor={type:'newrole',id:null,name:'',groups:allOn()};
+  renderEditor();$('#ed-md').classList.add('open');$('#ed-bk').classList.add('open');
+}
+function closeEditor(){state.editor=null;$('#ed-md').classList.remove('open');$('#ed-bk').classList.remove('open');}
+
+function renderEditor(){
+  const e=state.editor;if(!e)return;
+  const title=e.type==='role'?'Editar nível de acesso':'Criar nível de acesso';
+  const sub='Grupos ativos ficam visíveis para todos os usuários com este nível.';
+  const nOn=TOOL_GROUPS.filter(g=>e.groups[g.id]).length;
+
+  const rows=TOOL_GROUPS.map(g=>{
+    const on=e.groups[g.id];
+    return`<div class="grow ${on?'':'offr'}">
+      <div class="gic"><i data-lucide="${g.icon}"></i></div>
+      <div style="flex:1;min-width:0">
+        <div class="gname">${g.name}</div>
+        <div class="gtools">${g.tools.join(' · ')}</div>
+      </div>
+      <span class="gstate ${on?'v':'o'}">${on?'Visível':'Oculto'}</span>
+      <div class="tgl ${on?'on':''}" onclick="toggleGroup('${g.id}')"></div>
+    </div>`;
+  }).join('');
+
+  const preview=TOOL_GROUPS.flatMap(g=>g.tools.map(t=>({t,on:e.groups[g.id]}))).map(x=>`
+    <div class="prev-it ${x.on?'':'offp'}"><i data-lucide="${x.on?'eye':'eye-off'}"></i>${x.t}</div>`).join('');
+
+  $('#ed-md').innerHTML=`
+    <div class="m-hd">
+      <div class="m-ic"><i data-lucide="shield"></i></div>
+      <div><div class="m-title">${title}</div><div class="m-sub">${sub}</div></div>
+      <button class="m-x" onclick="closeEditor()"><i data-lucide="x" style="width:16px;height:16px"></i></button>
+    </div>
+    <div style="flex:1;overflow-y:auto">
+      <div style="display:flex;gap:18px;padding:18px 20px">
+        <div style="flex:1;min-width:0">
+          <div class="lbl">Nome do nível</div>
+          <input id="ed-name" class="inp" style="margin-bottom:16px" value="${e.name.replace(/"/g,'&quot;')}" placeholder="Ex.: Recepção, Financeiro…">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+            <div class="lbl" style="margin:0">Grupos de ferramentas</div>
+            <span style="font-size:11px;color:var(--muted-2)">${nOn} de ${TOOL_GROUPS.length} visíveis</span>
+          </div>
+          <div style="border:1px solid var(--brd-2);border-radius:12px;overflow:hidden;background:var(--panel-2)">${rows}</div>
+        </div>
+        <div style="width:185px;flex-shrink:0">
+          <div class="lbl">Prévia do menu</div>
+          <div style="border:1px solid var(--brd-2);border-radius:12px;background:var(--panel-2);padding:8px">
+            <div style="font-size:13px;font-weight:800;padding:4px 9px 8px">bolten<span style="color:var(--orange)">.</span></div>
+            ${preview}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="m-ft">
+      <button class="btn-cancel" onclick="closeEditor()">Cancelar</button>
+      <button class="btn-white" style="padding:8px 16px;font-size:12.5px" onclick="saveEditor()">Salvar nível</button>
+    </div>`;
+  icons();
+}
+function toggleGroup(gid){
+  const ni=$('#ed-name');if(ni)state.editor.name=ni.value;
+  state.editor.groups[gid]=!state.editor.groups[gid];renderEditor();
+}
+function saveEditor(){
+  const e=state.editor;
+  const name=($('#ed-name').value||'').trim();
+  if(!name){$('#ed-name').focus();return;}
+  if(e.type==='role'){const r=role(e.id);r.name=name;r.groups={...e.groups};}
+  else ROLES.push({id:'r'+Date.now(),name,desc:'Nível personalizado do projeto.',groups:{...e.groups}});
+  renderRoles();closeEditor();renderTable();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeEditor();closeRoles();}});
+
+renderTable();
+</script>
+</body>
+</html>

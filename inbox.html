@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolten – Inbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root{
+    --bg:#151b27;
+    --chat-bg:#182031;
+    --pill:#1e2735;
+    --pill-brd:rgba(255,255,255,.13);
+    --sel:#242e3e;
+    --hover:#1c2431;
+    --text:#eef1f6;
+    --muted:#8b97a9;
+    --muted-2:#6d7a8e;
+    --label:#6b7789;
+    --div:rgba(255,255,255,.07);
+    --orange:#e5801e;
+    --bubble-in:#2a3442;
+    --date:#7a8698;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);display:flex;height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;font-size:14px}
+  ::-webkit-scrollbar{width:7px;height:7px}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:8px}
+  ::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.15)}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  .clip{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* ══════ SIDEBAR ══════ */
+  .sidebar{width:272px;background:var(--bg);border-right:1px solid var(--div);display:flex;flex-direction:column;flex-shrink:0}
+
+  .acct{padding:12px 12px 0;position:relative}
+
+  /* entrada de conta (WhatsApp / Instagram) */
+  .acct-head{display:flex;align-items:center;gap:9px}
+  .entry{width:100%;display:flex;align-items:center;gap:9px;background:var(--pill);border:1px solid var(--pill-brd);border-radius:10px;padding:9px 11px;text-align:left;transition:.14s}
+  .entry:hover{background:var(--sel)}
+  .entry.active{border-color:var(--orange);background:rgba(229,128,30,.10)}
+  .entry .txt{font-size:13px;font-weight:500;color:var(--text);flex:1;min-width:0}
+  .entry .ph{width:16px;height:16px;color:var(--muted);flex-shrink:0}
+  .entry.active .ph{color:var(--orange)}
+  .entry.ig .ig-ic{width:22px;height:22px;border-radius:6px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .entry.ig.active{border-color:#d62976;background:rgba(214,41,118,.12)}
+  .entry .pin{font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;flex-shrink:0}
+  .entry .pin.on{background:rgba(37,182,122,.16);color:#2bb97d}
+  .entry .pin.off{background:rgba(255,255,255,.06);color:var(--muted);border:1px solid var(--pill-brd)}
+
+  .ig-entry{margin-top:8px}
+
+  .cog-btn{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid transparent}
+  .cog-btn:hover{background:var(--pill);border-color:var(--pill-brd)}
+  .cog-btn i{width:18px;height:18px;color:var(--muted)}
+  .cog-btn.open{background:var(--pill);border-color:var(--pill-brd)}
+  .cog-btn.open i{color:var(--text)}
+
+  .div{height:1px;background:var(--div);margin:12px 0 0}
+
+  /* ── POPUP DE CONFIGURAÇÕES (engrenagem) ── */
+  .sp-backdrop{position:fixed;inset:0;z-index:40;display:none}
+  .sp-backdrop.open{display:block}
+  .settings-popup{position:absolute;top:56px;left:12px;width:288px;background:#131a26;border:1px solid var(--pill-brd);border-radius:14px;padding:14px 16px;box-shadow:0 22px 55px rgba(0,0,0,.6);z-index:41;display:none;transform-origin:top left;animation:pop .12s ease}
+  .settings-popup.open{display:block}
+  @keyframes pop{from{opacity:0;transform:scale(.97) translateY(-4px)}to{opacity:1;transform:none}}
+  .sp-label{font-size:10.5px;font-weight:600;letter-spacing:.07em;color:var(--label);text-transform:uppercase;display:flex;align-items:center;gap:8px;padding:4px 0 10px}
+  .sp-label i{width:14px;height:14px}
+  .sp-row{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--text);padding-bottom:4px}
+  .sp-row .off{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:12.5px}
+  .sp-row .off i{width:14px;height:14px}
+  .sp-row .trash{margin-left:auto;width:16px;height:16px;color:var(--muted-2)}
+  .sp-row .trash:hover{color:var(--text)}
+  .sp-item{display:flex;align-items:center;gap:12px;padding:10px 0;font-size:14.5px;color:var(--text);cursor:pointer}
+  .sp-item i{width:21px;height:21px;color:var(--muted)}
+  .sp-item:hover{color:#fff}
+  .sp-item:hover i{color:var(--text)}
+  .sp-div{height:1px;background:var(--div);margin:8px 0}
+
+  /* lista de conversas */
+  .list{flex:1;overflow-y:auto;padding:6px 6px 10px}
+  .conv{display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:9px;cursor:pointer;transition:background .12s}
+  .conv:hover{background:var(--hover)}
+  .conv.active{background:var(--sel)}
+  .av{width:36px;height:36px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff}
+  .av.ring{padding:2px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5)}
+  .av.ring .in{width:100%;height:100%;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:12px}
+  .cbody{flex:1;min-width:0}
+  .crow{display:flex;align-items:center;gap:8px}
+  .cname{font-size:13px;font-weight:600;color:var(--text);flex:1;min-width:0}
+  .cdate{font-size:10.5px;color:var(--muted-2);white-space:nowrap}
+  .cprev{display:flex;align-items:center;gap:6px;margin-top:2px}
+  .cprev .p{font-size:12px;color:var(--muted);flex:1;min-width:0;display:flex;align-items:center;gap:5px}
+  .cprev .p i{width:12px;height:12px;flex-shrink:0}
+  .badge{min-width:17px;height:17px;padding:0 5px;border-radius:9px;background:var(--orange);color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+  .locked{padding:44px 22px;text-align:center;color:var(--muted-2)}
+  .locked i{width:26px;height:26px;margin-bottom:10px}
+  .locked p{font-size:12.5px;line-height:1.5;margin:0}
+
+  /* ══════ MAIN ══════ */
+  .main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
+  .head{display:flex;align-items:center;gap:12px;padding:11px 20px;background:var(--bg);border-bottom:1px solid var(--div);flex-shrink:0}
+  .head .av{width:38px;height:38px}
+  .hname{font-size:14px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px}
+  .hname i{width:13px;height:13px;color:var(--muted)}
+  .hsub{font-size:11.5px;color:var(--muted-2);margin-top:1px}
+  .src{font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px;letter-spacing:.03em;margin-left:2px}
+  .src.wa{background:rgba(37,182,122,.16);color:#2bb97d}
+  .src.ig{background:rgba(214,41,118,.16);color:#e0699f}
+  .funnel{margin-left:16px;display:flex;align-items:center;gap:8px;padding:8px 13px;border-radius:8px;background:var(--pill);border:1px solid var(--pill-brd);font-size:12.5px;font-weight:500;color:var(--text);position:relative}
+  .funnel:hover{background:var(--sel)}
+  .funnel i.fi{width:14px;height:14px;color:var(--muted)}
+  .kebab{margin-left:auto;width:18px;height:18px;color:var(--muted)}
+  .kebab:hover{color:var(--text)}
+  .fmenu{position:absolute;top:44px;left:0;background:var(--bg);border:1px solid var(--pill-brd);border-radius:10px;padding:5px;min-width:200px;box-shadow:0 14px 34px rgba(0,0,0,.5);z-index:30;display:none}
+  .fmenu.open{display:block}
+  .fmenu .ttl{font-size:9.5px;font-weight:700;color:var(--muted-2);text-transform:uppercase;letter-spacing:.06em;padding:6px 9px}
+  .fmenu .fi2{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:7px;font-size:12.5px;color:var(--muted);width:100%;text-align:left}
+  .fmenu .fi2:hover{background:var(--pill);color:var(--text)}
+  .fmenu .fi2 .d{width:8px;height:8px;border-radius:50%}
+
+  /* área do chat */
+  .scroll{flex:1;overflow-y:auto;padding:20px 9%;background:var(--chat-bg);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.03' stroke-width='1.5'%3E%3Ccircle cx='25' cy='28' r='9'/%3E%3Cpath d='M60 20h16v11h-16z'/%3E%3Cpath d='M100 25l10 6-10 6z'/%3E%3Ccircle cx='128' cy='45' r='7'/%3E%3Cpath d='M20 70q8-12 16 0'/%3E%3Cpath d='M55 66h18M55 72h12'/%3E%3Ccircle cx='95' cy='75' r='10'/%3E%3Cpath d='M92 75l3 3 5-6'/%3E%3Cpath d='M125 95c-6 0-6 8 0 8'/%3E%3Ccircle cx='30' cy='110' r='8'/%3E%3Cpath d='M60 108h20v14h-20z'/%3E%3Cpath d='M105 118l7-4v8z'/%3E%3Cpath d='M20 138h14M70 140h18M115 140h10'/%3E%3C/g%3E%3C/svg%3E");}
+  .m-wrap{display:flex;flex-direction:column;margin-bottom:12px}
+  .m-wrap.out{align-items:flex-end}
+  .m-wrap.in{align-items:flex-start}
+  .bubble{max-width:52%;padding:9px 13px;font-size:13.5px;line-height:1.45;border-radius:9px;white-space:pre-line;word-wrap:break-word}
+  .bubble.in{background:var(--bubble-in);color:var(--text);border-top-left-radius:2px}
+  .bubble.out{background:var(--orange);color:#fff;border-top-right-radius:2px}
+  .ts{font-size:10.5px;color:var(--date);margin-top:4px}
+  .m-wrap.out .ts{margin-right:2px}
+  .m-wrap.in .ts{margin-left:2px}
+
+  .fab{position:absolute;right:22px;bottom:22px;width:38px;height:38px;border-radius:50%;background:var(--bg);border:1px solid var(--pill-brd);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.4)}
+  .fab i{width:18px;height:18px;color:var(--muted)}
+
+  /* estado conectar instagram */
+  .cwrap{flex:1;display:flex;align-items:center;justify-content:center;padding:30px;background:var(--chat-bg)}
+  .ccard{max-width:420px;text-align:center}
+  .igbadge{width:76px;height:76px;border-radius:22px;margin:0 auto 20px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);display:flex;align-items:center;justify-content:center;box-shadow:0 14px 40px rgba(214,41,118,.35)}
+  .igbadge i{width:36px;height:36px;color:#fff}
+  .ccard h2{font-size:19px;font-weight:700;margin:0 0 8px}
+  .ccard .lead{color:var(--muted);font-size:13.5px;line-height:1.55;margin:0 0 22px}
+  .benefits{text-align:left;background:var(--bg);border:1px solid var(--div);border-radius:14px;padding:14px 16px;margin-bottom:22px}
+  .ben{display:flex;align-items:flex-start;gap:11px;padding:9px 0;font-size:13px;color:var(--text)}
+  .ben+.ben{border-top:1px solid var(--div)}
+  .ben .c{width:22px;height:22px;border-radius:7px;background:rgba(214,41,118,.14);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ben .c i{width:13px;height:13px;color:#e0699f}
+  .ben b{font-weight:600}
+  .ben small{display:block;color:var(--muted);font-size:11.5px;margin-top:2px;font-weight:400}
+  .btn-ig{display:inline-flex;align-items:center;gap:9px;padding:13px 26px;border-radius:12px;background:linear-gradient(45deg,#fa7e1e,#d62976,#962fbf);color:#fff;font-weight:700;font-size:14px;box-shadow:0 10px 26px rgba(214,41,118,.32);transition:.12s}
+  .btn-ig:hover{transform:translateY(-1px);filter:brightness(1.06)}
+  .btn-ig i{width:18px;height:18px}
+  .cfoot{margin-top:15px;font-size:11px;color:var(--muted-2);display:flex;align-items:center;justify-content:center;gap:6px}
+  .cfoot i{width:12px;height:12px}
+
+  /* barra de mensagens (Instagram) */
+  .composer{display:flex;align-items:center;gap:7px;padding:11px 18px;border-top:1px solid var(--div);background:var(--bg);flex-shrink:0}
+  .composer .cic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+  .composer .cic:hover{background:var(--pill);color:var(--text)}
+  .composer .cic i{width:19px;height:19px}
+  .composer .ci{flex:1;background:var(--pill);border:1px solid var(--pill-brd);border-radius:22px;padding:10px 16px;color:var(--text);font-size:13.5px;outline:none}
+  .composer .ci:focus{border-color:#d62976}
+  .composer .csend{width:40px;height:40px;border-radius:50%;background:linear-gradient(45deg,#fa7e1e,#d62976,#962fbf);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .composer .csend i{width:18px;height:18px;color:#fff}
+
+  /* anexos nas mensagens */
+  .att-photo{max-width:230px;border-radius:12px;display:block}
+  .att-file{display:flex;align-items:center;gap:10px;background:var(--bubble-in);border-radius:11px;padding:10px 12px;max-width:250px}
+  .att-file .fi{width:34px;height:34px;border-radius:8px;background:rgba(214,41,118,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .att-file .fi i{width:17px;height:17px;color:#e0699f}
+  .att-file .fn{font-size:12.5px;color:var(--text)}
+  .att-file .fs{font-size:11px;color:var(--muted)}
+
+  /* card de publicação (post) do Instagram */
+  .post-card{width:290px;background:#0e1420;border:1px solid var(--pill-brd);border-radius:14px;overflow:hidden}
+  .post-hd{display:flex;align-items:center;gap:8px;padding:9px 11px}
+  .post-hd .pav{width:26px;height:26px;border-radius:50%;padding:2px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);display:flex}
+  .post-hd .pav .in{width:100%;height:100%;border-radius:50%;background:#0e1420;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff}
+  .post-hd .pu{font-size:12.5px;font-weight:600;color:var(--text);flex:1}
+  .post-hd i{width:16px;height:16px;color:var(--muted)}
+  .post-img{position:relative;width:100%;aspect-ratio:1;background:linear-gradient(135deg,#f6d4bf,#e79f8c 45%,#c96a86 100%)}
+  .post-img .carousel{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.45);color:#fff;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:20px}
+  .post-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.3)}
+  .post-overlay i{width:34px;height:34px}
+  .post-overlay span{font-size:15px;font-weight:700;letter-spacing:.02em}
+  .post-act{display:flex;align-items:center;gap:15px;padding:10px 11px 6px;color:var(--text)}
+  .post-act i{width:20px;height:20px}
+  .post-act .bm{margin-left:auto}
+  .post-likes{padding:0 11px;font-size:12.5px;font-weight:600;color:var(--text)}
+  .post-cap{padding:3px 11px 12px;font-size:12.5px;color:var(--text);line-height:1.4}
+  .post-cap b{font-weight:600}
+
+  /* card de story */
+  .story-card{display:flex;align-items:center;gap:11px;background:var(--bubble-in);border-radius:12px;padding:9px;max-width:250px}
+  .story-thumb{width:46px;height:66px;border-radius:9px;flex-shrink:0;background:linear-gradient(160deg,#f6d4bf,#c96a86);position:relative;display:flex;align-items:center;justify-content:center}
+  .story-thumb .sr{position:absolute;bottom:-7px;right:-5px;font-size:16px}
+  .story-txt small{color:var(--muted);font-size:11px;display:block;margin-bottom:2px}
+
+  /* botão Agente de IA no cabeçalho */
+  .agent-btn{margin-left:8px;display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font-size:12.5px;font-weight:600;border:1px solid}
+  .agent-btn .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+  .agent-btn i{width:14px;height:14px}
+  .agent-btn.on{color:#7ee0b0;background:rgba(37,182,122,.12);border-color:rgba(37,182,122,.42)}
+  .agent-btn.on .dot{background:#2bb97d;box-shadow:0 0 0 3px rgba(43,185,125,.22)}
+  .agent-btn.off{color:var(--muted);background:var(--pill);border-color:var(--pill-brd)}
+  .agent-btn.off .dot{background:var(--muted-2)}
+
+  /* mensagem do bot */
+  .bot-tag{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:#c58bd0;margin-bottom:4px}
+  .m-wrap.out .bot-tag{align-self:flex-end}
+  .bot-tag i{width:12px;height:12px}
+  .bubble.out.bot{background:linear-gradient(135deg,#7a3fb5,#b23e86);color:#fff}
+
+  /* modal Nova DM */
+  .dm-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:50;display:none}
+  .dm-backdrop.open{display:block}
+  .dm-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:360px;background:#131a26;border:1px solid var(--pill-brd);border-radius:16px;padding:20px;z-index:51;display:none;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+  .dm-modal.open{display:block}
+  .dm-hd{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;margin-bottom:16px}
+  .dm-ic{width:30px;height:30px;border-radius:9px;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .dm-modal label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:600}
+  .dm-input{display:flex;align-items:center;gap:6px;background:var(--pill);border:1px solid var(--pill-brd);border-radius:10px;padding:11px 13px;margin:7px 0 16px}
+  .dm-input span{color:var(--muted)}
+  .dm-input input{flex:1;background:none;border:none;outline:none;color:var(--text);font-size:14px}
+  .dm-go{width:100%;padding:12px;border-radius:11px;background:linear-gradient(45deg,#fa7e1e,#d62976,#962fbf);color:#fff;font-weight:700;font-size:14px}
+  .dm-go:hover{filter:brightness(1.06)}
+
+  .hidden{display:none!important}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg);border:1px solid var(--pill-brd);padding:12px 18px;border-radius:12px;font-size:13px;display:flex;align-items:center;gap:9px;box-shadow:0 14px 40px rgba(0,0,0,.55);opacity:0;pointer-events:none;transition:.28s;z-index:99}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast i{width:16px;height:16px;color:#2bb97d}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="sidebar">
+
+  <div class="acct">
+    <!-- número WhatsApp + engrenagem -->
+    <div class="acct-head">
+      <button class="entry active" id="wa-entry" onclick="switchChannel('whatsapp')">
+        <i data-lucide="smartphone" class="ph"></i>
+        <span class="txt">+55 11 9••••-4099</span>
+      </button>
+      <button class="cog-btn" id="cog-btn" onclick="toggleSettings(event)">
+        <i data-lucide="settings"></i>
+      </button>
+    </div>
+
+    <!-- opção Instagram (abaixo do número) -->
+    <button class="entry ig ig-entry" id="ig-entry" onclick="switchChannel('instagram')">
+      <span class="ig-ic"><i data-lucide="instagram" style="width:13px;height:13px;color:#fff"></i></span>
+      <span class="txt" id="ig-entry-txt">Instagram</span>
+      <span class="pin off" id="ig-entry-status">Conectar</span>
+    </button>
+
+    <div class="div"></div>
+
+    <!-- POPUP da engrenagem (todas as opções laterais) -->
+    <div class="sp-backdrop" id="sp-backdrop" onclick="closeSettings()"></div>
+    <div class="settings-popup" id="settings-popup" onclick="event.stopPropagation()">
+      <div class="sp-label"><i data-lucide="refresh-cw"></i> Trocar de número</div>
+      <div class="sp-row">
+        +55 11 9••••-7291
+        <span class="off"><i data-lucide="plug-zap"></i> Desconectado</span>
+        <i data-lucide="trash-2" class="trash"></i>
+      </div>
+
+      <div class="sp-div"></div>
+      <div class="sp-label">Número</div>
+      <div class="sp-item"><i data-lucide="plus-circle"></i> Novo número</div>
+      <div class="sp-item"><i data-lucide="user-round"></i> Fila de atribuição</div>
+
+      <div class="sp-div"></div>
+      <div class="sp-label">Instagram</div>
+      <div class="sp-item" onclick="newDM()"><i data-lucide="square-pen"></i> Nova DM</div>
+
+      <div class="sp-div"></div>
+      <div class="sp-label">Mensagens</div>
+      <div class="sp-item"><i data-lucide="zap"></i> Respostas rápidas</div>
+
+      <div class="sp-div"></div>
+      <div class="sp-item"><i data-lucide="trash-2"></i> Remover...</div>
+    </div>
+  </div>
+
+  <div class="list" id="list"></div>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<main class="main" id="main"></main>
+
+<!-- Modal Nova DM -->
+<div class="dm-backdrop" id="dm-backdrop" onclick="closeDM()"></div>
+<div class="dm-modal" id="dm-modal">
+  <div class="dm-hd"><span class="dm-ic"><i data-lucide="instagram" style="width:16px;height:16px;color:#fff"></i></span> Nova mensagem no Direct</div>
+  <label>Para</label>
+  <div class="dm-input"><span>@</span><input id="dm-user" placeholder="usuario" onkeydown="if(event.key==='Enter')startDM()"></div>
+  <button class="dm-go" onclick="startDM()">Iniciar conversa</button>
+</div>
+
+<div class="toast" id="toast"><i data-lucide="check-circle-2"></i><span id="toast-msg"></span></div>
+
+<script>
+const AV=['#3b6ea5','#a55b3b','#5b3ba5','#3ba57e','#a53b6e','#a5923b','#3b8fa5','#6e3ba5'];
+const STAGES=[{n:'Nutrição',c:'#8b97a9'},{n:'Agendamento',c:'#e5801e'},{n:'Fechamento',c:'#2bb97d'},{n:'Pós-atendimento',c:'#3b8fa5'}];
+
+const LIST_MSG=`Trazer no dia:
+Documento com foto
+Carteirinha do convênio
+Exames anteriores
+Lista de medicamentos
+Foto da pele atual
+Protetor solar em uso
+Sabonete facial
+Ácido (se usar)
+Dúvidas anotadas`;
+
+const DATA={
+  whatsapp:[
+    {id:'juliana',name:'Juliana G•••••',phone:'+55 11 9••••-3120',date:'07/07/2026',prev:'Áudio',pi:'mic',unread:0,stage:'Nutrição',
+      msgs:[{f:'in',t:'Bom dia! Recebi o áudio, obrigada 😊',x:'ontem, 09:10'}]},
+    {id:'grazi',name:'Grazi M•••••',phone:'+55 11 9••••-6297',date:'07/07/2026',prev:'Kkk',unread:0,stage:'Agendamento',
+      msgs:[
+        {f:'out',t:'Bom dia! Aqui é da Clínica Marina, confirmando sua avaliação de amanhã 😊',x:'20 de junho, 14:39'},
+        {f:'in',t:LIST_MSG,x:'20 de junho, 14:49'},
+        {f:'in',t:'Posso remarcar?',x:'21 de junho, 00:03'},
+        {f:'in',t:'Oi',x:'22 de junho, 13:32'},
+        {f:'in',t:'Vocês atendem meu convênio?',x:'22 de junho, 13:32'},
+        {f:'out',t:'Atendemos sim!',x:'22 de junho, 15:05'},
+        {f:'out',t:'Consegue vir amanhã às 15h?',x:'22 de junho, 15:30'},
+        {f:'out',t:'Fico no aguardo 🙂',x:'22 de junho, 15:31'},
+      ]},
+    {id:'adriana',name:'Adriana •••••',phone:'+55 11 9••••-2231',date:'07/07/2026',prev:'Enviado',pi:'check-check',unread:1,stage:'Agendamento',
+      msgs:[{f:'out',t:'Olá! Sua consulta de retorno está confirmada para amanhã às 16h 📅',x:'hoje, 11:00'}]},
+    {id:'ana',name:'Ana Clara •••',phone:'+55 11 9••••-6672',date:'07/07/2026',prev:'Tô pensando ainda',unread:6,stage:'Nutrição',
+      msgs:[{f:'in',t:'Adorei o pacote de skincare!',x:'hoje, 10:05'},{f:'in',t:'Tô pensando ainda',x:'hoje, 10:12'}]},
+    {id:'angela',name:'Angela K•••••',phone:'+55 11 9••••-4187',date:'07/07/2026',prev:'Os dois planos incluem a avaliação?',unread:0,stage:'Nutrição',gray:true,init:'AK',
+      msgs:[{f:'in',t:'Os dois planos incluem a avaliação?',x:'hoje, 09:40'}]},
+    {id:'jesse',name:'Jessé N•••••',phone:'+55 11 9••••-1145',date:'07/07/2026',prev:'Vou levar as crianças',unread:2,stage:'Agendamento',
+      msgs:[{f:'in',t:'Vou levar as crianças, tudo bem?',x:'hoje, 08:20'}]},
+    {id:'jamile',name:'jamile •••🌸',phone:'+55 11 9••••-7754',date:'07/07/2026',prev:'Não dá nesse horário…',unread:3,stage:'Agendamento',
+      msgs:[{f:'in',t:'Não dá nesse horário…',x:'hoje, 13:00'}]},
+    {id:'debora',name:'Drª Débora •••',phone:'+55 11 9••••-2018',date:'07/07/2026',prev:'Prefiro o turno da tarde',unread:2,stage:'Pós-atendimento',
+      msgs:[{f:'in',t:'Prefiro o turno da tarde',x:'hoje, 12:10'}]},
+    {id:'recepcao',name:'Recepção •••',phone:'Interno',date:'07/07/2026',prev:'Pode deixar',unread:2,stage:'Nutrição',logo:true,
+      msgs:[{f:'in',t:'Pode deixar, já organizei a agenda 👍',x:'hoje, 07:50'}]},
+  ],
+  instagram:[
+    {id:'carla',name:'@carla_makeup',phone:'Segue você',date:'07/07/2026',prev:'vcs fazem microagulhamento?',unread:2,ring:true,stage:'Nutrição',
+      msgs:[
+        {f:'in',t:'oi! amo o conteúdo de vocês ✨',x:'hoje, 16:02'},
+        {f:'in',t:'vcs fazem microagulhamento?',x:'hoje, 16:02'},
+        {f:'out',t:'Oii, obrigada! 💛 Fazemos sim, protocolo de 3 sessões. Quer que eu te explique?',x:'hoje, 16:15'},
+        {f:'out',post:{user:'clinicamarina',likes:'128 curtidas',carousel:'1/3',label:'Antes • Depois',cap:'Resultado real do protocolo de limpeza de pele profunda ✨ Agende sua avaliação!'},x:'hoje, 16:16'},
+      ]},
+    {id:'lucas',name:'@lucas.pereira',phone:'Não te segue',date:'07/07/2026',prev:'Agente de IA respondeu',pi:'sparkles',unread:0,ring:true,stage:'Agendamento',agent:true,
+      msgs:[
+        {f:'in',t:'quanto tá o preenchimento labial?',x:'hoje, 12:30'},
+        {f:'out',bot:true,t:'Oi! 💜 O preenchimento labial está R$ 890 (1ml, com produto premium). Posso agendar uma avaliação gratuita pra você?',x:'hoje, 12:30'},
+        {f:'in',t:'pode ser sim!',x:'hoje, 12:34'},
+        {f:'out',bot:true,t:'Perfeito! Tenho quinta às 15h ou sexta às 10h. Qual prefere?',x:'hoje, 12:34'},
+      ]},
+    {id:'ju',name:'@ju.fitness',phone:'Segue você',date:'07/07/2026',prev:'amei o resultado!',unread:0,ring:true,stage:'Fechamento',
+      msgs:[{f:'in',t:'amei o resultado da minha amiga! 😍',x:'hoje, 09:44'},{f:'out',t:'Que amor! 🥰 Bora agendar a sua avaliação?',x:'hoje, 09:50'}]},
+    {id:'pedro',name:'@pedro.correa',phone:'Não te segue',date:'06/07/2026',prev:'qual o endereço?',unread:2,ring:true,stage:'Agendamento',
+      msgs:[{f:'in',t:'qual o endereço da clínica?',x:'ontem, 19:10'}]},
+    {id:'bella',name:'@bella.saldanha',phone:'Segue você',date:'06/07/2026',prev:'Reagiu ao seu story ❤️',pi:'heart',unread:0,ring:true,stage:'Nutrição',
+      msgs:[{f:'in',story:{label:'Respondeu ao seu story',react:'❤️'},x:'ontem, 20:15'},{f:'in',t:'esse resultado ficou incrível!',x:'ontem, 20:16'}]},
+  ]
+};
+
+let state={channel:'whatsapp',igConnected:false,activeWa:'grazi',activeIg:'carla',funnelOpen:false,settingsOpen:false};
+const $=s=>document.querySelector(s);
+const icons=()=>window.lucide&&lucide.createIcons();
+function initials(n){if(n.startsWith('@'))return n.replace('@','').slice(0,2).toUpperCase();const p=n.replace(/[^A-Za-zÀ-ÿ ]/g,'').trim().split(' ');return((p[0]?p[0][0]:'')+(p[1]?p[1][0]:'')).toUpperCase();}
+function avColor(id){let s=0;for(const c of id)s+=c.charCodeAt(0);return AV[s%AV.length];}
+function stageColor(n){const s=STAGES.find(x=>x.n===n);return s?s.c:'#8b97a9';}
+function toast(m){$('#toast-msg').textContent=m;$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),2500);}
+
+function avatarHtml(c){
+  if(c.ring)return`<div class="av ring"><div class="in">${initials(c.name)}</div></div>`;
+  if(c.logo)return`<div class="av" style="background:#0e1420"><i data-lucide="infinity" style="width:16px;height:16px;color:#9aa6b8"></i></div>`;
+  if(c.gray)return`<div class="av" style="background:#3a4452">${c.init||initials(c.name)}</div>`;
+  return`<div class="av" style="background:${avColor(c.id)}">${initials(c.name)}</div>`;
+}
+
+/* ── mensagens: bolha, post, story, anexo ── */
+function attachHtml(a){
+  if(a.kind==='photo')return`<img class="att-photo" src="${a.url}" alt="${a.name}">`;
+  return`<div class="att-file"><span class="fi"><i data-lucide="file"></i></span><div style="min-width:0"><div class="fn clip">${a.name}</div><div class="fs">${a.size}</div></div></div>`;
+}
+function postCardHtml(p){
+  return`<div class="post-card">
+    <div class="post-hd"><span class="pav"><span class="in">CM</span></span><span class="pu">@${p.user}</span><i data-lucide="more-horizontal"></i></div>
+    <div class="post-img"><span class="carousel">${p.carousel}</span><div class="post-overlay"><i data-lucide="sparkles"></i><span>${p.label}</span></div></div>
+    <div class="post-act"><i data-lucide="heart"></i><i data-lucide="message-circle"></i><i data-lucide="send"></i><i data-lucide="bookmark" class="bm"></i></div>
+    <div class="post-likes">${p.likes}</div>
+    <div class="post-cap"><b>@${p.user}</b> ${p.cap}</div>
+  </div>`;
+}
+function storyCardHtml(s){
+  return`<div class="story-card"><div class="story-thumb"><i data-lucide="play" style="width:16px;height:16px;color:#fff;margin-bottom:6px"></i><span class="sr">${s.react||''}</span></div><div class="story-txt"><small>${s.label}</small><div style="font-size:12.5px;color:var(--text)">Seu story · há 12h</div></div></div>`;
+}
+function renderMsg(m){
+  let inner;
+  if(m.post)inner=postCardHtml(m.post);
+  else if(m.story)inner=storyCardHtml(m.story);
+  else if(m.attach)inner=attachHtml(m.attach);
+  else inner=`<div class="bubble ${m.f}${m.bot?' bot':''}">${m.t}</div>`;
+  const tag=m.bot?`<div class="bot-tag"><i data-lucide="sparkles"></i> Respondido pelo Agente de IA</div>`:'';
+  return`<div class="m-wrap ${m.f}">${tag}${inner}<div class="ts">${m.x}</div></div>`;
+}
+
+/* ── barra de mensagens do Instagram ── */
+function nowStr(){return'hoje, '+new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+function sendIg(){
+  const inp=$('#ig-text');if(!inp)return;const v=inp.value.trim();if(!v)return;
+  const c=DATA.instagram.find(x=>x.id===state.activeIg);
+  c.msgs.push({f:'out',t:v,x:nowStr()});c.prev=v;c.pi=null;renderList();renderMain();
+}
+function addAttach(kind,input){
+  const f=input.files&&input.files[0];if(!f)return;
+  const c=DATA.instagram.find(x=>x.id===state.activeIg);
+  const att={kind,name:f.name,size:(f.size/1024).toFixed(0)+' KB'};
+  if(kind==='photo')att.url=URL.createObjectURL(f);
+  c.msgs.push({f:'out',attach:att,x:nowStr()});
+  c.prev=kind==='photo'?'Foto':'Arquivo';c.pi=kind==='photo'?'image':'paperclip';
+  input.value='';renderList();renderMain();
+}
+function insertEmoji(){const inp=$('#ig-text');if(inp){inp.value+='😊';inp.focus();}}
+
+/* ── Agente de IA (por conversa) ── */
+function toggleAgent(e,id){
+  e.stopPropagation();
+  const c=DATA.instagram.find(x=>x.id===id);c.agent=!c.agent;
+  renderMain();toast(c.agent?'Agente de IA ativado nesta conversa':'Agente de IA pausado nesta conversa');
+}
+
+/* ── Nova DM ── */
+function newDM(){closeSettings();openDM();}
+function openDM(){$('#dm-modal').classList.add('open');$('#dm-backdrop').classList.add('open');setTimeout(()=>{const i=$('#dm-user');if(i)i.focus();},50);}
+function closeDM(){$('#dm-modal').classList.remove('open');$('#dm-backdrop').classList.remove('open');}
+function startDM(){
+  const inp=$('#dm-user');let h=(inp.value||'').trim().replace(/^@+/,'');
+  if(!h){inp.focus();return;}
+  const id='dm_'+Date.now();
+  DATA.instagram.unshift({id,name:'@'+h,phone:'Nova conversa · Direct',date:'07/07/2026',prev:'Você iniciou a conversa',unread:0,ring:true,stage:'Nutrição',agent:true,
+    msgs:[{f:'out',t:'Olá! Aqui é da Clínica Marina 😊 Como podemos te ajudar?',x:nowStr()}]});
+  state.igConnected=true;
+  const s=$('#ig-entry-status');s.className='pin on';s.textContent='Conectado';$('#ig-entry-txt').textContent='@clinicamarina';
+  state.activeIg=id;state.channel='instagram';
+  closeDM();inp.value='';updateEntries();renderList();renderMain();
+  toast('Nova conversa iniciada com @'+h);
+}
+
+function renderList(){
+  const ch=state.channel,list=$('#list');
+  if(ch==='instagram'&&!state.igConnected){
+    list.innerHTML=`<div class="locked"><i data-lucide="lock"></i><p>Conecte o Instagram Direct<br>para ver as conversas aqui.</p></div>`;icons();return;
+  }
+  const items=DATA[ch],active=ch==='whatsapp'?state.activeWa:state.activeIg;
+  list.innerHTML=items.map(c=>{
+    const prevIc=c.pi?`<i data-lucide="${c.pi}"></i>`:'';
+    const badge=c.unread>0?`<span class="badge">${c.unread}</span>`:'';
+    return`<div class="conv ${c.id===active?'active':''}" onclick="selectConv('${c.id}')">
+      ${avatarHtml(c)}
+      <div class="cbody">
+        <div class="crow"><span class="cname clip">${c.name}</span><span class="cdate">${c.date}</span></div>
+        <div class="cprev"><span class="p clip">${prevIc}${c.prev}</span>${badge}</div>
+      </div>
+    </div>`;}).join('');
+  icons();
+}
+
+function renderMain(){
+  const ch=state.channel,main=$('#main');
+  if(ch==='instagram'&&!state.igConnected){renderConnect();return;}
+  const items=DATA[ch],id=ch==='whatsapp'?state.activeWa:state.activeIg;
+  const c=items.find(x=>x.id===id)||items[0];
+  const src=ch==='whatsapp'?'<span class="src wa">WHATSAPP</span>':'<span class="src ig">INSTAGRAM</span>';
+  const bubbles=c.msgs.map(renderMsg).join('');
+  const fmenu=STAGES.map(s=>`<button class="fi2" onclick="setStage('${c.id}','${s.n}')"><span class="d" style="background:${s.c}"></span>${s.n}</button>`).join('');
+  const composer=`
+    <div class="composer">
+      <button class="cic" onclick="insertEmoji()"><i data-lucide="smile"></i></button>
+      <button class="cic" title="Fotos" onclick="document.getElementById('ig-photo').click()"><i data-lucide="image"></i></button>
+      <button class="cic" title="Anexar arquivo" onclick="document.getElementById('ig-file').click()"><i data-lucide="paperclip"></i></button>
+      <input class="ci" id="ig-text" placeholder="Responder no Direct…" onkeydown="if(event.key==='Enter')sendIg()">
+      <button class="csend" onclick="sendIg()"><i data-lucide="send"></i></button>
+      <input type="file" id="ig-photo" accept="image/*" hidden onchange="addAttach('photo',this)">
+      <input type="file" id="ig-file" hidden onchange="addAttach('file',this)">
+    </div>`;
+  const bottom=ch==='instagram'?composer:'<div class="fab"><i data-lucide="chevron-down"></i></div>';
+  const agentBtn=ch==='instagram'?`<button class="agent-btn ${c.agent?'on':'off'}" onclick="toggleAgent(event,'${c.id}')"><span class="dot"></span><i data-lucide="sparkles"></i> Agente de IA ${c.agent?'ativo':'pausado'}</button>`:'';
+  main.innerHTML=`
+    <div class="head">
+      ${avatarHtml(c)}
+      <div>
+        <div class="hname">${c.name} <i data-lucide="arrow-up-right"></i>${src}</div>
+        <div class="hsub">${c.phone}</div>
+      </div>
+      <div class="funnel" onclick="toggleFunnel(event)">
+        <i data-lucide="kanban-square" class="fi"></i> Funil de Vendas
+        <i data-lucide="chevron-down" style="width:13px;height:13px;color:var(--muted)"></i>
+        <div class="fmenu ${state.funnelOpen?'open':''}" id="fmenu">
+          <div class="ttl">Etapa atual: ${c.stage}</div>${fmenu}
+        </div>
+      </div>
+      ${agentBtn}
+      <i data-lucide="more-vertical" class="kebab"></i>
+    </div>
+    <div class="scroll" id="scroll">${bubbles}</div>
+    ${bottom}`;
+  icons();
+  const sc=$('#scroll');if(sc)sc.scrollTop=sc.scrollHeight;
+}
+
+function renderConnect(){
+  $('#main').innerHTML=`
+    <div class="head">
+      <div class="av ring"><div class="in"><i data-lucide="instagram" style="width:16px;height:16px"></i></div></div>
+      <div><div class="hname">Instagram Direct <span class="src ig">NÃO CONECTADO</span></div>
+      <div class="hsub">@clinicamarina</div></div>
+    </div>
+    <div class="cwrap">
+      <div class="ccard">
+        <div class="igbadge"><i data-lucide="instagram"></i></div>
+        <h2>Conecte o Instagram Direct</h2>
+        <p class="lead">Em vez de conectar só o WhatsApp, traga as DMs do Instagram da Clínica Marina para o Bolten e atenda tudo na mesma tela.</p>
+        <div class="benefits">
+          <div class="ben"><span class="c"><i data-lucide="inbox"></i></span><div><b>Inbox completa na plataforma</b><small>Todas as conversas do Direct, do mais recente ao mais antigo.</small></div></div>
+          <div class="ben"><span class="c"><i data-lucide="git-merge"></i></span><div><b>WhatsApp + Instagram juntos</b><small>Alterne entre canais sem sair da tela de conversas.</small></div></div>
+          <div class="ben"><span class="c"><i data-lucide="sparkles"></i></span><div><b>Funil e Agente de IA no Direct</b><small>As mesmas automações que você já usa no WhatsApp.</small></div></div>
+        </div>
+        <button class="btn-ig" onclick="connectIg()"><i data-lucide="instagram"></i> Conectar Instagram</button>
+        <div class="cfoot"><i data-lucide="shield-check"></i> Conexão oficial via Meta · autorização feita no Instagram</div>
+      </div>
+    </div>`;
+  icons();
+}
+
+function updateEntries(){
+  $('#wa-entry').classList.toggle('active',state.channel==='whatsapp');
+  $('#ig-entry').classList.toggle('active',state.channel==='instagram');
+}
+
+function switchChannel(ch){
+  state.channel=ch;state.funnelOpen=false;closeSettings();
+  updateEntries();renderList();renderMain();
+}
+function selectConv(id){
+  state.funnelOpen=false;
+  if(state.channel==='whatsapp')state.activeWa=id;else state.activeIg=id;
+  const c=DATA[state.channel].find(x=>x.id===id);if(c)c.unread=0;
+  renderList();renderMain();
+}
+function connectIg(){
+  state.igConnected=true;
+  const s=$('#ig-entry-status');s.className='pin on';s.textContent='Conectado';
+  $('#ig-entry-txt').textContent='@clinicamarina';
+  toast('Instagram conectado! Direct sincronizado.');
+  renderList();renderMain();
+}
+
+/* engrenagem → popup */
+function toggleSettings(e){
+  e.stopPropagation();
+  state.settingsOpen=!state.settingsOpen;
+  $('#settings-popup').classList.toggle('open',state.settingsOpen);
+  $('#sp-backdrop').classList.toggle('open',state.settingsOpen);
+  $('#cog-btn').classList.toggle('open',state.settingsOpen);
+}
+function closeSettings(){
+  state.settingsOpen=false;
+  $('#settings-popup').classList.remove('open');
+  $('#sp-backdrop').classList.remove('open');
+  $('#cog-btn').classList.remove('open');
+}
+
+function toggleFunnel(e){e.stopPropagation();state.funnelOpen=!state.funnelOpen;const m=$('#fmenu');if(m)m.classList.toggle('open',state.funnelOpen);}
+function setStage(id,st){const c=DATA[state.channel].find(x=>x.id===id);if(c)c.stage=st;state.funnelOpen=false;renderMain();toast('Etapa movida para "'+st+'"');}
+document.addEventListener('click',()=>{
+  if(state.funnelOpen){state.funnelOpen=false;const m=$('#fmenu');if(m)m.classList.remove('open');}
+});
+DATA.instagram.forEach(c=>{if(c.agent===undefined)c.agent=true;});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSettings();closeDM();}});
+
+updateEntries();renderList();renderMain();icons();
+</script>
+</body>
+</html>

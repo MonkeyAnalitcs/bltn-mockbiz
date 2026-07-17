@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolten – Etiquetas: Registro de contatos & WhatsApp</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { inter: ['Inter', 'sans-serif'] },
+        colors: { personalized: { primary: '#44403c', secondary: '#44403c' } }
+      }
+    }
+  }
+</script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:8px}
+  .dark-scroll::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12)}
+  .wa-doodle{background-color:#182031;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.03' stroke-width='1.5'%3E%3Ccircle cx='25' cy='28' r='9'/%3E%3Cpath d='M60 20h16v11h-16z'/%3E%3Cpath d='M100 25l10 6-10 6z'/%3E%3Ccircle cx='128' cy='45' r='7'/%3E%3Cpath d='M20 70q8-12 16 0'/%3E%3Cpath d='M55 66h18M55 72h12'/%3E%3Ccircle cx='95' cy='75' r='10'/%3E%3Cpath d='M92 75l3 3 5-6'/%3E%3Cpath d='M125 95c-6 0-6 8 0 8'/%3E%3Ccircle cx='30' cy='110' r='8'/%3E%3Cpath d='M60 108h20v14h-20z'/%3E%3Cpath d='M105 118l7-4v8z'/%3E%3Cpath d='M20 138h14M70 140h18M115 140h10'/%3E%3C/g%3E%3C/svg%3E")}
+  .fade-in{animation:fi .12s ease}
+  @keyframes fi{from{opacity:0;transform:scale(.97) translateY(-3px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body class="font-inter antialiased bg-stone-100 text-gray-600 flex h-screen overflow-hidden">
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside class="w-[220px] bg-stone-100 border-r border-gray-200 flex flex-col shrink-0 h-full overflow-y-auto z-10 relative">
+  <div class="px-5 py-4 border-b border-gray-200 shrink-0">
+    <div class="text-[22px] font-bold tracking-tight text-gray-900">bolten<span class="text-personalized-primary">.</span></div>
+  </div>
+  <nav class="flex-1 py-3 px-2 flex flex-col gap-1">
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="bar-chart-2" class="w-4 h-4"></i></div>Marketing
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="send" class="w-4 h-4"></i></div>Campanhas
+    </div>
+    <div onclick="switchPage('funil')" data-page-btn="funil" class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="filter" class="w-4 h-4"></i></div>Funil de Vendas
+    </div>
+    <div onclick="switchPage('whatsapp')" data-page-btn="whatsapp" class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="message-circle" class="w-4 h-4"></i></div>WhatsApp
+    </div>
+    <div onclick="switchPage('registro')" data-page-btn="registro" class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all bg-stone-300/60 text-gray-800 font-bold">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-personalized-primary"><i data-lucide="users" class="w-4 h-4"></i></div>Registro de contatos
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="calendar" class="w-4 h-4"></i></div>Calendário
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="check-square" class="w-4 h-4"></i></div>Tarefas
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="sparkles" class="w-4 h-4"></i></div>Agente de IA
+    </div>
+    <div class="mt-2 group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="settings" class="w-4 h-4"></i></div>Configurações
+      <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-auto text-gray-400"></i>
+    </div>
+  </nav>
+  <div class="p-3 border-t border-gray-200 flex items-center gap-2.5 shrink-0">
+    <div class="w-7 h-7 bg-personalized-primary rounded-full flex items-center justify-center text-white text-[11px] font-bold shrink-0">RP</div>
+    <span class="text-[13px] font-medium text-gray-800 flex-1">Renan</span>
+    <i data-lucide="bell" class="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600"></i>
+  </div>
+</aside>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main class="flex-1 min-w-0 h-full overflow-hidden flex flex-col">
+
+  <!-- ░░░░░ PÁGINA: REGISTRO DE CONTATOS ░░░░░ -->
+  <div data-page="registro" class="flex-1 overflow-y-auto">
+    <div class="max-w-[1060px] mx-auto px-6 py-6">
+
+      <!-- Header -->
+      <div class="flex items-center gap-3 mb-1">
+        <h1 class="text-[19px] font-bold text-gray-900">Registro de contatos</h1>
+        <span class="text-[11.5px] text-gray-500 bg-white border border-gray-200 rounded-full px-2.5 py-0.5" id="reg-count">142 contatos</span>
+        <div class="ml-auto flex items-center gap-2">
+          <button onclick="openManageTags()" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-800 hover:bg-stone-50 transition-colors whitespace-nowrap shadow-sm">
+            <i data-lucide="tag" class="w-3.5 h-3.5 text-gray-500"></i> Etiquetas
+          </button>
+          <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-personalized-primary text-[13px] font-semibold text-white hover:opacity-90 transition-colors whitespace-nowrap shadow-sm">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Novo contato
+          </button>
+        </div>
+      </div>
+      <p class="text-[12.5px] text-gray-500 mb-4">Organize seus contatos com etiquetas — elas aparecem também na tela do WhatsApp.</p>
+
+      <!-- Busca + filtro por etiqueta -->
+      <div class="flex items-center gap-3 mb-3 flex-wrap">
+        <div class="relative w-[280px]">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input type="text" placeholder="Buscar por nome ou telefone…" class="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-[12.5px] text-gray-800 outline-none focus:border-personalized-primary focus:ring-1 focus:ring-personalized-primary/20 transition-colors bg-white">
+        </div>
+        <div class="flex items-center gap-1.5 flex-wrap" id="tag-filter-row">
+          <span class="text-[11.5px] text-gray-500 mr-0.5">Filtrar:</span>
+          <!-- chips de filtro renderizados via JS -->
+        </div>
+      </div>
+
+      <!-- Tabela -->
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-visible mb-24">
+        <div class="px-4 py-2.5 bg-stone-50 border-b border-gray-200 flex items-center gap-3 rounded-t-xl">
+          <label class="flex items-center cursor-pointer shrink-0">
+            <input type="checkbox" id="check-all" onchange="toggleAll(this)" class="w-3.5 h-3.5 rounded border-gray-300 text-personalized-primary focus:ring-personalized-primary/30">
+          </label>
+          <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-[220px]">Contato</div>
+          <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-28 hidden md:block">Última resposta</div>
+          <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide w-28 hidden lg:block">Criado em</div>
+          <div class="text-[11px] font-semibold text-gray-500 uppercase tracking-wide flex-1">Etiquetas</div>
+        </div>
+        <div class="divide-y divide-gray-100" id="contacts-tbody"><!-- linhas via JS --></div>
+        <div class="px-4 py-2.5 bg-stone-50 border-t border-gray-200 flex items-center justify-between text-[11.5px] text-gray-500 rounded-b-xl">
+          <div id="reg-footer">Exibindo <strong class="text-gray-800">8</strong> de <strong class="text-gray-800">142</strong> contatos</div>
+          <div class="flex items-center gap-1">
+            <button class="w-6 h-6 rounded border border-gray-200 bg-white flex items-center justify-center hover:bg-stone-50"><i data-lucide="chevron-left" class="w-3 h-3"></i></button>
+            <button class="w-6 h-6 rounded border border-gray-200 bg-white flex items-center justify-center hover:bg-stone-50"><i data-lucide="chevron-right" class="w-3 h-3"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barra de ação em massa -->
+    <div id="bulk-bar" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 bg-white border border-gray-200 rounded-xl shadow-lg px-4 py-3 flex items-center gap-4 z-30">
+      <div class="text-[12.5px] font-semibold text-gray-800" id="bulk-count">0 contatos selecionados</div>
+      <button onclick="openPickerBulk(event)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-personalized-primary text-[12.5px] font-semibold text-white hover:opacity-90">
+        <i data-lucide="tag" class="w-3.5 h-3.5"></i> Aplicar etiqueta
+      </button>
+      <button onclick="clearSelection()" class="text-[12px] text-gray-500 hover:text-gray-800">Limpar</button>
+    </div>
+  </div>
+
+  <!-- ░░░░░ PÁGINA: WHATSAPP (escura) ░░░░░ -->
+  <div data-page="whatsapp" class="hidden flex-1 min-h-0 flex" style="background:#151b27">
+
+    <!-- lista de conversas -->
+    <div class="w-[290px] border-r shrink-0 flex flex-col" style="border-color:rgba(255,255,255,.07)">
+      <div class="p-3">
+        <div class="flex items-center gap-2 rounded-[9px] px-3 py-2.5 border" style="background:#1e2735;border-color:rgba(255,255,255,.13)">
+          <i data-lucide="smartphone" class="w-4 h-4" style="color:#8b97a9"></i>
+          <span class="text-[13px] font-medium" style="color:#eef1f6">+55 11 9••••-4099</span>
+          <i data-lucide="settings" class="w-4 h-4 ml-auto cursor-pointer" style="color:#8b97a9"></i>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto dark-scroll px-1.5 pb-3" id="wa-list"><!-- via JS --></div>
+    </div>
+
+    <!-- conversa -->
+    <div class="flex-1 min-w-0 flex flex-col" id="wa-chat"><!-- via JS --></div>
+  </div>
+
+  <!-- ░░░░░ PÁGINA: FUNIL DE VENDAS ░░░░░ -->
+  <div data-page="funil" class="hidden flex-1 overflow-y-auto">
+    <div class="max-w-[1120px] mx-auto px-6 py-6">
+      <div class="flex items-center gap-3 mb-1">
+        <h1 class="text-[19px] font-bold text-gray-900">Funil de Vendas</h1>
+        <span class="text-[11.5px] text-gray-500 bg-white border border-gray-200 rounded-full px-2.5 py-0.5">8 negociações</span>
+        <div class="ml-auto flex items-center gap-2">
+          <button onclick="openManageTags()" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-800 hover:bg-stone-50 transition-colors whitespace-nowrap shadow-sm">
+            <i data-lucide="tag" class="w-3.5 h-3.5 text-gray-500"></i> Etiquetas
+          </button>
+          <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-personalized-primary text-[13px] font-semibold text-white hover:opacity-90 transition-colors whitespace-nowrap shadow-sm">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Nova negociação
+          </button>
+        </div>
+      </div>
+      <p class="text-[12.5px] text-gray-500 mb-5">Clique em um card para ver os detalhes e as etiquetas do contato.</p>
+      <div class="grid grid-cols-4 gap-4 items-start pb-10" id="funil-board"><!-- via JS --></div>
+    </div>
+  </div>
+</main>
+
+<!-- ═══════ MODAL: CARD DO FUNIL ═══════ -->
+<div id="card-backdrop" class="hidden fixed inset-0 bg-black/40 z-40" onclick="closeCard()"></div>
+<div id="card-modal" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1080px] max-w-[96vw] max-h-[94vh] rounded-xl shadow-2xl z-50 fade-in overflow-hidden flex flex-col" style="background:#0e131c;border:1px solid rgba(255,255,255,.09)" onclick="event.stopPropagation()"><!-- via JS --></div>
+
+<!-- ═══════ MENU DE CONTEXTO (botão direito no WhatsApp) ═══════ -->
+<div id="ctx-backdrop" class="hidden fixed inset-0 z-40" onclick="closeCtx()" oncontextmenu="event.preventDefault();closeCtx()"></div>
+<div id="ctx-menu" class="hidden fixed z-50 w-[210px] rounded-xl border shadow-2xl py-1.5 fade-in" style="background:#1e2735;border-color:rgba(255,255,255,.13)" onclick="event.stopPropagation()">
+  <div class="px-3 py-1.5 text-[10.5px] font-semibold uppercase tracking-wide truncate" style="color:#6d7a8e" id="ctx-name">Contato</div>
+  <button onclick="ctxEtiquetar(event)" class="w-full flex items-center gap-2.5 px-3 py-2 text-[12.5px] font-medium text-left transition-colors" style="color:#eef1f6" onmouseover="this.style.background='#242e3e'" onmouseout="this.style.background='transparent'">
+    <i data-lucide="tag" class="w-3.5 h-3.5" style="color:#e5801e"></i> Etiquetar
+  </button>
+  <button onclick="closeCtx()" class="w-full flex items-center gap-2.5 px-3 py-2 text-[12.5px] font-medium text-left transition-colors" style="color:#eef1f6" onmouseover="this.style.background='#242e3e'" onmouseout="this.style.background='transparent'">
+    <i data-lucide="mail" class="w-3.5 h-3.5" style="color:#8b97a9"></i> Marcar como não lida
+  </button>
+  <button onclick="closeCtx()" class="w-full flex items-center gap-2.5 px-3 py-2 text-[12.5px] font-medium text-left transition-colors" style="color:#eef1f6" onmouseover="this.style.background='#242e3e'" onmouseout="this.style.background='transparent'">
+    <i data-lucide="archive" class="w-3.5 h-3.5" style="color:#8b97a9"></i> Arquivar conversa
+  </button>
+  <div class="my-1 h-px" style="background:rgba(255,255,255,.08)"></div>
+  <button onclick="closeCtx()" class="w-full flex items-center gap-2.5 px-3 py-2 text-[12.5px] font-medium text-left transition-colors" style="color:#e07a7a" onmouseover="this.style.background='#242e3e'" onmouseout="this.style.background='transparent'">
+    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Apagar conversa
+  </button>
+</div>
+
+<!-- ═══════ POPOVER: seletor de etiquetas (compartilhado) ═══════ -->
+<div id="picker-backdrop" class="hidden fixed inset-0 z-[55]" onclick="closePicker()"></div>
+<div id="tag-picker" class="hidden fixed z-[60] w-[250px] bg-white border border-gray-200 rounded-xl shadow-xl fade-in" onclick="event.stopPropagation()">
+  <div class="px-3 pt-3 pb-2 text-[10.5px] font-semibold text-gray-500 uppercase tracking-wide" id="picker-title">Etiquetas do contato</div>
+  <div class="max-h-[190px] overflow-y-auto px-1.5" id="picker-list"><!-- via JS --></div>
+  <div class="border-t border-gray-100 p-2.5">
+    <div class="flex items-center gap-1.5 mb-2">
+      <input id="new-tag-name" placeholder="Criar etiqueta…" onkeydown="if(event.key==='Enter')createTag()" class="flex-1 px-2.5 py-1.5 border border-gray-200 rounded-lg text-[12px] text-gray-800 outline-none focus:border-personalized-primary bg-white">
+      <button onclick="createTag()" class="w-7 h-7 rounded-lg bg-personalized-primary text-white flex items-center justify-center hover:opacity-90 shrink-0"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
+    </div>
+    <div class="flex items-center gap-1.5" id="color-row"><!-- via JS --></div>
+  </div>
+</div>
+
+<!-- ═══════ MODAL: gerenciar etiquetas ═══════ -->
+<div id="manage-backdrop" class="hidden fixed inset-0 bg-black/40 z-40" onclick="closeManageTags()"></div>
+<div id="manage-modal" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] bg-white border border-gray-200 rounded-2xl shadow-2xl z-50 fade-in" onclick="event.stopPropagation()">
+  <div class="px-5 py-4 border-b border-gray-100 flex items-center gap-2.5">
+    <div class="w-8 h-8 rounded-lg bg-personalized-primary/10 flex items-center justify-center"><i data-lucide="tag" class="w-4 h-4 text-personalized-primary"></i></div>
+    <div>
+      <div class="text-[14.5px] font-bold text-gray-900">Gerenciar etiquetas</div>
+      <div class="text-[11.5px] text-gray-500">Usadas no registro de contatos e no WhatsApp</div>
+    </div>
+    <button onclick="closeManageTags()" class="ml-auto text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+  </div>
+  <div class="px-5 py-3 border-b border-gray-100 bg-stone-50/60">
+    <div class="text-[10.5px] font-semibold text-gray-500 uppercase tracking-wide mb-2">Nova etiqueta</div>
+    <div class="flex items-center gap-1.5 mb-2">
+      <input id="mg-new-name" placeholder="Nome da etiqueta…" onkeydown="if(event.key==='Enter')createTagManage()" class="flex-1 px-2.5 py-1.5 border border-gray-200 rounded-lg text-[12.5px] text-gray-800 outline-none focus:border-personalized-primary bg-white">
+      <button onclick="createTagManage()" class="px-3 py-1.5 rounded-lg bg-personalized-primary text-white text-[12px] font-semibold hover:opacity-90 shrink-0">Adicionar</button>
+    </div>
+    <div class="flex items-center gap-1.5" id="mg-color-row"></div>
+  </div>
+  <div class="px-5 py-3 max-h-[260px] overflow-y-auto" id="manage-list"><!-- via JS --></div>
+</div>
+
+<script>
+/* ═══════════ ESTADO COMPARTILHADO ═══════════ */
+const COLORS=[
+  {id:'amber', hex:'#ce8a1d'},
+  {id:'green', hex:'#16a34a'},
+  {id:'blue',  hex:'#2563eb'},
+  {id:'purple',hex:'#9333ea'},
+  {id:'red',   hex:'#dc2626'},
+  {id:'stone', hex:'#57534e'},
+];
+let TAGS=[
+  {id:'t1',name:'Novo lead',   color:'#2563eb'},
+  {id:'t2',name:'Consulta',    color:'#16a34a'},
+  {id:'t3',name:'VIP',         color:'#ce8a1d'},
+  {id:'t4',name:'Pós-venda',   color:'#9333ea'},
+  {id:'t5',name:'Sem resposta',color:'#dc2626'},
+];
+const CONTACTS=[
+  {id:'c1',stage:'novos',name:'Camila M•••••', phone:'+55 11 9••••-4761',last:'há 12 dias',created:'15/mai/2026',tags:['t1'],
+    msgs:[{f:'in',t:'Adorei o pacote de skincare!',x:'hoje, 10:05'},{f:'out',t:'Que ótimo, Camila! Quer que eu reserve um horário de avaliação?',x:'hoje, 10:10'}]},
+  {id:'c2',stage:'conversa',name:'João Pedro A•••', phone:'+55 11 9••••-3380',last:'há 5 dias', created:'08/jun/2026',tags:['t2'],
+    msgs:[{f:'in',t:'Vocês atendem meu convênio?',x:'ontem, 13:32'},{f:'out',t:'Atendemos sim! Consegue vir amanhã às 15h?',x:'ontem, 15:05'}]},
+  {id:'c3',stage:'agendamento',name:'Patrícia S•••••', phone:'+55 11 9••••-4187',last:'há 2 horas',created:'02/jul/2026',tags:['t2','t3'],
+    msgs:[{f:'in',t:'Queria saber os valores da limpeza de pele profunda',x:'hoje, 14:02'},{f:'out',t:'Está R$ 180 a sessão, e o pacote com 4 sessões sai R$ 600 😊',x:'hoje, 14:10'},{f:'in',t:'Pode ser quinta de manhã?',x:'hoje, 14:20'}]},
+  {id:'c4',stage:'agendamento',name:'Grazi M•••••', phone:'+55 11 9••••-6297',last:'há 3 dias', created:'20/jun/2026',tags:['t2'],
+    msgs:[{f:'out',t:'Bom dia! Aqui é da Clínica Marina, confirmando sua avaliação de amanhã 😊',x:'20 de junho, 14:39'},{f:'in',t:'Posso remarcar?',x:'21 de junho, 00:03'},{f:'out',t:'Consegue vir amanhã às 15h?',x:'22 de junho, 15:30'}]},
+  {id:'c5',stage:'fechamento',name:'Bruno A•••••', phone:'+55 11 9••••-1145',last:'há 1 dia',  created:'28/jun/2026',tags:['t4'],
+    msgs:[{f:'out',t:'Olá Bruno! Sua consulta de retorno está confirmada para amanhã às 16h 📅',x:'hoje, 11:00'}]},
+  {id:'c6',stage:'conversa',name:'Larissa P•••••', phone:'+55 11 9••••-7754',last:'há 9 dias', created:'11/jun/2026',tags:['t5'],
+    msgs:[{f:'out',t:'Oi Larissa! Consegui um horário dia 20 às 14h, serve?',x:'05 de julho, 13:10'},{f:'in',t:'Não consigo dia 20',x:'05 de julho, 13:40'}]},
+  {id:'c7',stage:'fechamento',name:'Drª Débora •••', phone:'+55 11 9••••-2018',last:'há 4 horas',created:'25/jun/2026',tags:['t3','t4'],
+    msgs:[{f:'in',t:'Prefiro o turno da tarde',x:'hoje, 12:10'},{f:'out',t:'Perfeito! Deixo reservado às 15h30 então 🙂',x:'hoje, 12:15'}]},
+  {id:'c8',stage:'novos',name:'Fernanda L•••••',phone:'+55 11 9••••-8830',last:'há 6 dias', created:'01/jun/2026',tags:[],
+    msgs:[{f:'in',t:'Bom dia! Queria tirar uma dúvida sobre o preenchimento',x:'hoje, 08:40'},{f:'out',t:'Bom dia! Pode perguntar 😊',x:'hoje, 08:45'}]},
+];
+let state={page:'registro',activeWa:'c3',selected:new Set(),filter:new Set(),
+  picker:{open:false,mode:null,contactId:null},newTagColor:COLORS[0].hex,manageOpen:false,
+  ctx:{open:false},manageEdit:null,mgNewColor:'#ce8a1d',mgEditColor:'#ce8a1d'};
+
+const $=s=>document.querySelector(s);
+const icons=()=>window.lucide&&lucide.createIcons();
+const tag=id=>TAGS.find(t=>t.id===id);
+const initials=n=>{const p=n.replace(/[^A-Za-zÀ-ÿ ]/g,'').trim().split(' ');return((p[0]?p[0][0]:'')+(p[1]?p[1][0]:'')).toUpperCase();}
+
+/* chips */
+function chipLight(t,removable,cid){
+  const x=removable?`<button onclick="event.stopPropagation();removeTag('${cid}','${t.id}')" class="ml-0.5 opacity-50 hover:opacity-100"><i data-lucide="x" class="w-2.5 h-2.5"></i></button>`:'';
+  return`<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold border" style="background:${t.color}14;color:${t.color};border-color:${t.color}33">
+    <span class="w-1.5 h-1.5 rounded-full" style="background:${t.color}"></span>${t.name}${x}</span>`;
+}
+function chipDark(t,removable,cid){
+  const x=removable?`<button onclick="event.stopPropagation();removeTag('${cid}','${t.id}')" class="ml-0.5 opacity-60 hover:opacity-100"><i data-lucide="x" class="w-2.5 h-2.5"></i></button>`:'';
+  return`<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-semibold border" style="background:${t.color}26;color:${t.color};border-color:${t.color}55;filter:brightness(1.35)">
+    <span class="w-1.5 h-1.5 rounded-full" style="background:${t.color}"></span>${t.name}${x}</span>`;
+}
+
+/* ═══════════ REGISTRO DE CONTATOS ═══════════ */
+function renderFilterRow(){
+  $('#tag-filter-row').innerHTML='<span class="text-[11.5px] text-gray-500 mr-0.5">Filtrar:</span>'+TAGS.map(t=>{
+    const on=state.filter.has(t.id);
+    return`<button onclick="toggleFilter('${t.id}')" class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10.5px] font-semibold border transition-all ${on?'shadow-sm':''}"
+      style="${on?`background:${t.color};color:#fff;border-color:${t.color}`:`background:${t.color}10;color:${t.color};border-color:${t.color}30`}">
+      <span class="w-1.5 h-1.5 rounded-full" style="background:${on?'#fff':t.color}"></span>${t.name}</button>`;
+  }).join('')+(state.filter.size?`<button onclick="state.filter.clear();renderRegistro()" class="text-[11px] text-gray-400 hover:text-gray-700 ml-1 underline">limpar</button>`:'');
+}
+function visibleContacts(){
+  if(!state.filter.size)return CONTACTS;
+  return CONTACTS.filter(c=>c.tags.some(t=>state.filter.has(t)));
+}
+function renderTable(){
+  const rows=visibleContacts().map(c=>{
+    const sel=state.selected.has(c.id);
+    const chips=c.tags.map(id=>chipLight(tag(id),true,c.id)).join('');
+    return`<div class="px-4 py-2.5 flex items-center gap-3 ${sel?'bg-personalized-primary/5':'hover:bg-stone-50'} transition-colors">
+      <label class="flex items-center cursor-pointer shrink-0">
+        <input type="checkbox" ${sel?'checked':''} onchange="toggleSel('${c.id}',this)" class="w-3.5 h-3.5 rounded border-gray-300 text-personalized-primary focus:ring-personalized-primary/30">
+      </label>
+      <div class="w-[220px] flex items-center gap-3 min-w-0 shrink-0">
+        <div class="w-8 h-8 rounded-full ${sel?'bg-personalized-primary/15 text-personalized-primary':'bg-stone-200 text-gray-700'} flex items-center justify-center text-[11px] font-bold shrink-0">${initials(c.name)}</div>
+        <div class="min-w-0">
+          <div class="text-[12.5px] font-semibold text-gray-800 truncate">${c.name}</div>
+          <div class="text-[10.5px] text-gray-500 truncate">${c.phone}</div>
+        </div>
+      </div>
+      <div class="w-28 text-[11.5px] text-gray-600 hidden md:block shrink-0">${c.last}</div>
+      <div class="w-28 text-[11.5px] text-gray-600 hidden lg:block shrink-0">${c.created}</div>
+      <div class="flex-1 min-w-0 flex items-center gap-1 flex-wrap">
+        ${chips}
+        <button onclick="openPickerContact(event,'${c.id}')" class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-dashed border-gray-300 text-[10px] font-medium text-gray-400 hover:text-personalized-primary hover:border-personalized-primary transition-colors">
+          <i data-lucide="plus" class="w-2.5 h-2.5"></i>${c.tags.length?'':' Adicionar etiqueta'}</button>
+      </div>
+    </div>`;
+  }).join('');
+  $('#contacts-tbody').innerHTML=rows||'<div class="px-4 py-8 text-center text-[12px] text-gray-400">Nenhum contato com essas etiquetas.</div>';
+  const v=visibleContacts().length;
+  $('#reg-footer').innerHTML=`Exibindo <strong class="text-gray-800">${v}</strong> de <strong class="text-gray-800">142</strong> contatos${state.filter.size?' filtrados':''}`;
+}
+function renderBulk(){
+  const n=state.selected.size;
+  $('#bulk-bar').classList.toggle('hidden',n===0||state.page!=='registro');
+  $('#bulk-count').textContent=n+(n===1?' contato selecionado':' contatos selecionados');
+}
+function renderRegistro(){renderFilterRow();renderTable();renderBulk();icons();}
+
+function toggleFilter(id){state.filter.has(id)?state.filter.delete(id):state.filter.add(id);renderRegistro();}
+function toggleSel(id,el){el.checked?state.selected.add(id):state.selected.delete(id);renderRegistro();}
+function toggleAll(el){state.selected.clear();if(el.checked)visibleContacts().forEach(c=>state.selected.add(c.id));renderRegistro();}
+function clearSelection(){state.selected.clear();$('#check-all').checked=false;renderRegistro();}
+
+/* ═══════════ WHATSAPP (escuro) ═══════════ */
+function renderWaList(){
+  $('#wa-list').innerHTML=CONTACTS.map(c=>{
+    const act=c.id===state.activeWa;
+    const chips=c.tags.slice(0,2).map(id=>chipDark(tag(id),false)).join('');
+    const more=c.tags.length>2?`<span class="text-[9.5px] font-semibold" style="color:#8b97a9">+${c.tags.length-2}</span>`:'';
+    const lastMsg=c.msgs[c.msgs.length-1];
+    return`<div onclick="selectWa('${c.id}')" oncontextmenu="openCtx(event,'${c.id}')" class="flex items-start gap-2.5 px-2.5 py-2.5 rounded-[9px] cursor-pointer transition-colors" style="background:${act?'#242e3e':'transparent'}" onmouseover="if('${act}'!=='true')this.style.background='#1c2431'" onmouseout="this.style.background='${act?'#242e3e':'transparent'}'">
+      <div class="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold text-white shrink-0" style="background:${avColor(c.id)}">${initials(c.name)}</div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2">
+          <span class="text-[13px] font-semibold truncate flex-1" style="color:#eef1f6">${c.name}</span>
+          <span class="text-[10.5px]" style="color:#6d7a8e">07/07/2026</span>
+        </div>
+        <div class="text-[12px] truncate" style="color:#8b97a9">${lastMsg.t}</div>
+        ${c.tags.length?`<div class="flex items-center gap-1 mt-1 flex-wrap">${chips}${more}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+}
+const AV=['#3b6ea5','#a55b3b','#5b3ba5','#3ba57e','#a53b6e','#a5923b','#3b8fa5','#6e3ba5'];
+function avColor(id){let s=0;for(const ch of id)s+=ch.charCodeAt(0);return AV[s%AV.length];}
+
+function renderWaChat(){
+  const c=CONTACTS.find(x=>x.id===state.activeWa);
+  const chips=c.tags.map(id=>chipDark(tag(id),true,c.id)).join('');
+  const bubbles=c.msgs.map(m=>`
+    <div class="flex flex-col mb-3 ${m.f==='out'?'items-end':'items-start'}">
+      <div class="max-w-[52%] px-3.5 py-2 text-[13.5px] leading-snug rounded-[9px]" style="${m.f==='out'?'background:#e5801e;color:#fff;border-top-right-radius:2px':'background:#2a3442;color:#eef1f6;border-top-left-radius:2px'}">${m.t}</div>
+      <div class="text-[10.5px] mt-1" style="color:#7a8698">${m.x}</div>
+    </div>`).join('');
+  $('#wa-chat').innerHTML=`
+    <div class="flex items-center gap-3 px-5 py-2.5 border-b shrink-0" style="background:#151b27;border-color:rgba(255,255,255,.07)">
+      <div class="w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold text-white shrink-0" style="background:${avColor(c.id)}">${initials(c.name)}</div>
+      <div class="min-w-0">
+        <div class="text-[14px] font-semibold flex items-center gap-1.5" style="color:#eef1f6">${c.name} <i data-lucide="arrow-up-right" class="w-3.5 h-3.5" style="color:#8b97a9"></i></div>
+        <div class="text-[11.5px]" style="color:#6d7a8e">${c.phone}</div>
+      </div>
+      <div class="flex items-center gap-2 px-3 py-2 rounded-lg border text-[12.5px] font-medium ml-4 cursor-pointer" style="background:#1e2735;border-color:rgba(255,255,255,.13);color:#eef1f6">
+        <i data-lucide="kanban-square" class="w-3.5 h-3.5" style="color:#8b97a9"></i> Funil de Vendas
+        <i data-lucide="chevron-down" class="w-3 h-3" style="color:#8b97a9"></i>
+      </div>
+      <!-- etiquetas na conversa -->
+      <div class="flex items-center gap-1.5 flex-wrap ml-2 min-w-0" id="wa-tagrow">
+        ${chips}
+        <button onclick="openPickerContact(event,'${c.id}')" class="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-dashed text-[10.5px] font-semibold transition-colors" style="border-color:rgba(255,255,255,.22);color:#8b97a9" onmouseover="this.style.color='#e5801e';this.style.borderColor='#e5801e'" onmouseout="this.style.color='#8b97a9';this.style.borderColor='rgba(255,255,255,.22)'">
+          <i data-lucide="tag" class="w-3 h-3"></i> Etiqueta
+        </button>
+      </div>
+      <i data-lucide="more-vertical" class="w-4.5 h-4.5 ml-auto shrink-0" style="color:#8b97a9;width:18px;height:18px"></i>
+    </div>
+    <div class="flex-1 overflow-y-auto dark-scroll wa-doodle px-[9%] py-5" id="wa-scroll">${bubbles}</div>
+    <div class="flex items-center gap-2 px-5 py-3 border-t shrink-0" style="background:#151b27;border-color:rgba(255,255,255,.07)">
+      <i data-lucide="smile" class="w-5 h-5 cursor-pointer" style="color:#8b97a9"></i>
+      <i data-lucide="paperclip" class="w-5 h-5 cursor-pointer" style="color:#8b97a9"></i>
+      <input placeholder="Digite uma mensagem…" class="flex-1 rounded-full px-4 py-2.5 text-[13.5px] outline-none border" style="background:#1e2735;border-color:rgba(255,255,255,.13);color:#eef1f6">
+      <button class="w-10 h-10 rounded-full flex items-center justify-center shrink-0" style="background:#e5801e"><i data-lucide="send" class="w-4 h-4 text-white"></i></button>
+    </div>`;
+  const sc=$('#wa-scroll');if(sc)sc.scrollTop=sc.scrollHeight;
+}
+function renderWa(){renderWaList();renderWaChat();icons();}
+function selectWa(id){state.activeWa=id;renderWa();}
+
+/* ═══════════ FUNIL DE VENDAS ═══════════ */
+const FUNIL_STAGES=[
+  {id:'novos',       name:'Novos leads',   color:'#2563eb'},
+  {id:'conversa',    name:'Em conversa',   color:'#ce8a1d'},
+  {id:'agendamento', name:'Agendamento',   color:'#9333ea'},
+  {id:'fechamento',  name:'Fechamento',    color:'#16a34a'},
+];
+function renderFunil(){
+  $('#funil-board').innerHTML=FUNIL_STAGES.map(st=>{
+    const cards=CONTACTS.filter(c=>c.stage===st.id).map(c=>{
+      const chips=c.tags.map(id=>chipLight(tag(id),false)).join('');
+      const lastMsg=c.msgs[c.msgs.length-1];
+      return`<div onclick="openCard('${c.id}')" class="bg-white border border-gray-200 rounded-xl shadow-sm p-3 cursor-pointer hover:shadow-md hover:border-gray-300 transition-all">
+        <div class="flex items-center gap-2.5 mb-2">
+          <div class="w-7 h-7 rounded-full bg-stone-200 flex items-center justify-center text-[10px] font-bold text-gray-700 shrink-0">${initials(c.name)}</div>
+          <div class="min-w-0">
+            <div class="text-[12.5px] font-semibold text-gray-800 truncate">${c.name}</div>
+            <div class="text-[10px] text-gray-400 truncate">${c.phone}</div>
+          </div>
+        </div>
+        <div class="text-[11px] text-gray-500 truncate mb-2 flex items-center gap-1"><i data-lucide="message-circle" class="w-3 h-3 shrink-0 text-gray-400"></i>${lastMsg.t}</div>
+        ${c.tags.length?`<div class="flex items-center gap-1 flex-wrap">${chips}</div>`:''}
+      </div>`;
+    }).join('');
+    const n=CONTACTS.filter(c=>c.stage===st.id).length;
+    return`<div class="bg-stone-50 border border-gray-200 rounded-xl p-2.5">
+      <div class="flex items-center gap-2 px-1 pb-2.5">
+        <span class="w-2 h-2 rounded-full" style="background:${st.color}"></span>
+        <span class="text-[12px] font-bold text-gray-800 flex-1">${st.name}</span>
+        <span class="text-[10.5px] font-semibold text-gray-400 bg-white border border-gray-200 rounded-full px-1.5">${n}</span>
+      </div>
+      <div class="flex flex-col gap-2">${cards||'<div class="text-center text-[11px] text-gray-400 py-4">Sem negociações</div>'}</div>
+    </div>`;
+  }).join('');
+  icons();
+}
+let cardOpen=null;
+function openCard(cid){cardOpen=cid;renderCardModal();$('#card-modal').classList.remove('hidden');$('#card-backdrop').classList.remove('hidden');}
+function closeCard(){cardOpen=null;$('#card-modal').classList.add('hidden');$('#card-backdrop').classList.add('hidden');}
+function renderCardModal(){
+  if(!cardOpen)return;
+  const c=CONTACTS.find(x=>x.id===cardOpen);
+  const chips=c.tags.map(id=>chipDark(tag(id),true,c.id)).join('');
+  const inp='w-full px-3 py-2.5 rounded-lg text-[13px] outline-none border';
+  const inpSt='background:#1e2735;border-color:rgba(255,255,255,.10);color:#eef1f6';
+  const lbl='text-[12px] mb-1.5';
+  const lblSt='color:#8b97a9';
+  const sel=`<i data-lucide="chevron-down" class="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" style="color:#6d7a8e"></i>`;
+  $('#card-modal').innerHTML=`
+    <!-- barra superior -->
+    <div class="flex items-center gap-4 px-5 py-3 border-b shrink-0" style="background:#0b0f16;border-color:rgba(255,255,255,.08)">
+      <button class="text-[13.5px] font-semibold pb-0.5 border-b-2" style="color:#e5801e;border-color:#e5801e">Geral</button>
+      <button class="text-[13.5px] font-medium" style="color:#8b97a9">Linha do tempo</button>
+      <div class="ml-auto flex items-center gap-3">
+        <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[12.5px] font-medium" style="background:#161d29;border-color:rgba(255,255,255,.12);color:#eef1f6">
+          <i data-lucide="wand-2" class="w-3.5 h-3.5" style="color:#8b97a9"></i> Preencher
+        </button>
+        <span class="text-[12.5px]" style="color:#8b97a9">Valor total: <strong style="color:#eef1f6">R$0,00</strong></span>
+        <div class="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style="background:#3a4452">EG</div>
+        <button class="px-3 py-1.5 rounded-lg border text-[12.5px] font-medium" style="background:#161d29;border-color:rgba(255,255,255,.12);color:#eef1f6">Arquivar</button>
+        <button onclick="closeCard()" style="color:#8b97a9" class="hover:opacity-70"><i data-lucide="x" class="w-4.5 h-4.5" style="width:18px;height:18px"></i></button>
+      </div>
+    </div>
+
+    <!-- corpo -->
+    <div class="flex-1 overflow-y-auto dark-scroll">
+      <div class="flex gap-6 px-6 py-4">
+
+        <!-- coluna principal -->
+        <div class="flex-1 min-w-0">
+          <div class="text-right text-[11.5px] mb-3" style="color:#6d7a8e">ID: 6fddd96a-4eeb-4456-813e-85809458b5f9</div>
+
+          <!-- Informações gerais -->
+          <div class="rounded-xl px-5 py-4 mb-4" style="background:#151b26">
+            <div class="flex items-center justify-between mb-4">
+              <div class="text-[13.5px] font-bold" style="color:#eef1f6">Informações gerais</div>
+              <i data-lucide="chevron-up" class="w-4 h-4" style="color:#8b97a9"></i>
+            </div>
+            <div class="${lbl}" style="${lblSt}">Status</div>
+            <div class="relative inline-block mb-4 w-[130px]">
+              <div class="${inp} pr-8" style="${inpSt}">Ganho</div>${sel}
+            </div>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <div class="${lbl}" style="${lblSt}">Contato</div>
+                <div class="relative"><div class="${inp} pr-8 truncate" style="${inpSt}">${c.name} · ${c.phone}</div>${sel}</div>
+              </div>
+              <div>
+                <div class="${lbl}" style="${lblSt}">Prioridade</div>
+                <div class="relative"><div class="${inp} pr-8" style="${inpSt}">Média</div>${sel}</div>
+              </div>
+            </div>
+            <div class="${lbl}" style="${lblSt}">Observação</div>
+            <textarea class="${inp} mb-4 resize-y" rows="2" style="${inpSt}">Ligar para o Paulo Antonio e responder antes de sexta-feira</textarea>
+            <div class="${lbl}" style="${lblSt}">Perfil</div>
+            <div class="relative w-1/2 mb-5"><div class="${inp} pr-8" style="${inpSt}">Total Pass</div>${sel}</div>
+            <div class="flex justify-center">
+              <button class="px-4 py-2 rounded-lg bg-white text-[13px] font-semibold text-gray-900 hover:bg-gray-100">Atualizar Registro</button>
+            </div>
+          </div>
+
+          <!-- Tarefas -->
+          <div class="rounded-xl px-5 py-4 mb-4" style="background:#151b26">
+            <div class="flex items-center justify-between mb-4">
+              <div class="text-[13.5px] font-bold" style="color:#eef1f6">Tarefas</div>
+              <i data-lucide="chevron-up" class="w-4 h-4" style="color:#8b97a9"></i>
+            </div>
+            <div class="grid gap-3 items-end" style="grid-template-columns:1.6fr 1fr 1fr 1fr auto">
+              <div><div class="${lbl}" style="${lblSt}">Título</div>
+                <input placeholder="Título" class="${inp}" style="${inpSt}"></div>
+              <div><div class="${lbl}" style="${lblSt}">Agendado para</div>
+                <div class="relative"><div class="${inp} pr-8" style="${inpSt};color:#8b97a9">dd/mm/aaaa</div><i data-lucide="calendar" class="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2" style="color:#6d7a8e"></i></div></div>
+              <div><div class="${lbl}" style="${lblSt}">Atribuído a</div>
+                <div class="relative"><div class="${inp} pr-8" style="${inpSt}">&nbsp;</div>${sel}</div></div>
+              <div><div class="${lbl}" style="${lblSt}">Status</div>
+                <div class="relative"><div class="${inp} pr-8" style="${inpSt}">Pendente</div>${sel}</div></div>
+              <button class="pb-2.5" style="color:#8b97a9"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <div class="flex items-center justify-center gap-4 mt-5">
+              <button class="text-[13px] font-medium" style="color:#eef1f6">+ Tarefa</button>
+              <button class="px-4 py-2 rounded-lg bg-white text-[13px] font-semibold text-gray-900 hover:bg-gray-100">Salvar</button>
+            </div>
+          </div>
+
+          <!-- Anexos -->
+          <div class="rounded-xl px-5 py-4" style="background:#151b26">
+            <div class="flex items-center justify-between mb-4">
+              <div class="text-[13.5px] font-bold" style="color:#eef1f6">Anexos</div>
+              <i data-lucide="chevron-up" class="w-4 h-4" style="color:#8b97a9"></i>
+            </div>
+            <div class="flex items-center gap-3 rounded-lg px-3 py-2.5 w-[380px] max-w-full" style="background:#1e2735">
+              <div class="w-9 h-9 rounded overflow-hidden shrink-0 flex items-center justify-center" style="background:linear-gradient(135deg,#274b2b,#d9a441 60%,#8a2e1f)"><i data-lucide="image" class="w-4 h-4 text-white/80"></i></div>
+              <div class="text-[12px] leading-snug flex-1 min-w-0" style="color:#c6cedb">ChatGPT Image 4 de abr. de 2025,<br>11_02_07.png</div>
+              <button style="color:#8b97a9"><i data-lucide="x" class="w-3.5 h-3.5"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- coluna direita -->
+        <div class="w-[230px] shrink-0 pt-9">
+          <!-- ETIQUETAS (adição, abaixo do número de ID) -->
+          <div class="text-[13px] mb-2" style="color:#8b97a9">Etiquetas</div>
+          <div class="flex items-center gap-1.5 flex-wrap mb-5" id="card-tagrow">
+            ${chips}
+            <button onclick="openPickerContact(event,'${c.id}')" class="inline-flex items-center gap-1 px-2 py-1 rounded-md border border-dashed text-[10.5px] font-semibold transition-colors" style="border-color:rgba(255,255,255,.22);color:#8b97a9" onmouseover="this.style.color='#e5801e';this.style.borderColor='#e5801e'" onmouseout="this.style.color='#8b97a9';this.style.borderColor='rgba(255,255,255,.22)'">
+              <i data-lucide="plus" class="w-3 h-3"></i> Etiqueta
+            </button>
+          </div>
+
+          <div class="text-[13px] mb-2" style="color:#8b97a9">Responsável</div>
+          <div class="relative mb-5"><div class="${inp} pr-8" style="${inpSt}">Enzo Giannobile</div>${sel}</div>
+
+          <div class="text-[13px] mb-2" style="color:#8b97a9">Ações</div>
+          <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-[12.5px] font-medium" style="background:#161d29;border-color:rgba(255,255,255,.12);color:#eef1f6">
+            <i data-lucide="paperclip" class="w-3.5 h-3.5" style="color:#8b97a9"></i> Anexar
+          </button>
+        </div>
+      </div>
+    </div>`;
+  icons();
+}
+
+/* ═══════════ MENU DE CONTEXTO (WhatsApp) ═══════════ */
+function openCtx(e,cid){
+  e.preventDefault();e.stopPropagation();
+  closePicker();
+  state.ctx={open:true,contactId:cid,x:e.clientX,y:e.clientY};
+  const c=CONTACTS.find(x=>x.id===cid);
+  $('#ctx-name').textContent=c.name;
+  const m=$('#ctx-menu');m.classList.remove('hidden');$('#ctx-backdrop').classList.remove('hidden');
+  const W=210,H=m.offsetHeight||190;
+  m.style.left=Math.min(e.clientX,window.innerWidth-W-10)+'px';
+  m.style.top=Math.min(e.clientY,window.innerHeight-H-10)+'px';
+  icons();
+}
+function closeCtx(){state.ctx={open:false};$('#ctx-menu').classList.add('hidden');$('#ctx-backdrop').classList.add('hidden');}
+function ctxEtiquetar(e){
+  e.stopPropagation();
+  const cid=state.ctx.contactId,x=state.ctx.x,y=state.ctx.y;
+  closeCtx();
+  state.picker={open:true,mode:'contact',contactId:cid};
+  $('#picker-title').textContent='Etiquetas do contato';
+  positionPickerAt(x,y);
+  renderPicker();
+}
+
+/* ═══════════ PICKER DE ETIQUETAS ═══════════ */
+function openPickerContact(e,cid){
+  e.stopPropagation();
+  state.picker={open:true,mode:'contact',contactId:cid};
+  positionPicker(e.currentTarget);
+  $('#picker-title').textContent='Etiquetas do contato';
+  renderPicker();
+}
+function openPickerBulk(e){
+  e.stopPropagation();
+  state.picker={open:true,mode:'bulk',contactId:null};
+  positionPicker(e.currentTarget);
+  $('#picker-title').textContent='Aplicar aos '+state.selected.size+' selecionados';
+  renderPicker();
+}
+function positionPicker(btn){
+  const r=btn.getBoundingClientRect();
+  positionPickerAt(r.left,r.bottom+6);
+}
+function positionPickerAt(x,y){
+  const p=$('#tag-picker');
+  p.classList.remove('hidden');$('#picker-backdrop').classList.remove('hidden');
+  const W=250,H=300;
+  x=Math.min(x,window.innerWidth-W-12);
+  if(y+H>window.innerHeight)y=Math.max(10,y-H-12);
+  p.style.left=x+'px';p.style.top=y+'px';
+}
+function renderPicker(){
+  const cur=state.picker.mode==='contact'?CONTACTS.find(c=>c.id===state.picker.contactId).tags:null;
+  $('#picker-list').innerHTML=TAGS.map(t=>{
+    const on=cur?cur.includes(t.id):false;
+    return`<button onclick="pickTag('${t.id}')" class="w-full flex items-center gap-2.5 px-2 py-1.5 rounded-lg hover:bg-stone-50 text-left">
+      <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${t.color}"></span>
+      <span class="text-[12.5px] text-gray-800 flex-1">${t.name}</span>
+      ${on?'<i data-lucide="check" class="w-3.5 h-3.5 text-personalized-primary"></i>':''}
+    </button>`;
+  }).join('');
+  $('#color-row').innerHTML=COLORS.map(c=>`
+    <button onclick="state.newTagColor='${c.hex}';renderPicker()" class="w-5 h-5 rounded-full border-2 transition-transform ${state.newTagColor===c.hex?'scale-110':''}" style="background:${c.hex};border-color:${state.newTagColor===c.hex?'#1f2937':'transparent'}"></button>`).join('');
+  icons();
+}
+function pickTag(tid){
+  if(state.picker.mode==='contact'){
+    const c=CONTACTS.find(x=>x.id===state.picker.contactId);
+    c.tags.includes(tid)?c.tags=c.tags.filter(t=>t!==tid):c.tags.push(tid);
+  }else{
+    state.selected.forEach(cid=>{const c=CONTACTS.find(x=>x.id===cid);if(!c.tags.includes(tid))c.tags.push(tid);});
+  }
+  refreshAll();renderPicker();
+}
+function removeTag(cid,tid){
+  const c=CONTACTS.find(x=>x.id===cid);c.tags=c.tags.filter(t=>t!==tid);refreshAll();
+}
+function createTag(){
+  const inp=$('#new-tag-name'),name=(inp.value||'').trim();
+  if(!name)return inp.focus();
+  const t={id:'t'+Date.now(),name,color:state.newTagColor};
+  TAGS.push(t);inp.value='';
+  if(state.picker.open)pickTag(t.id); else refreshAll();
+}
+function closePicker(){state.picker.open=false;$('#tag-picker').classList.add('hidden');$('#picker-backdrop').classList.add('hidden');}
+
+/* ═══════════ GERENCIAR ETIQUETAS ═══════════ */
+function openManageTags(){state.manageEdit=null;state.mgNewColor=COLORS[0].hex;$('#manage-modal').classList.remove('hidden');$('#manage-backdrop').classList.remove('hidden');renderManage();}
+function closeManageTags(){state.manageEdit=null;$('#manage-modal').classList.add('hidden');$('#manage-backdrop').classList.add('hidden');}
+function colorDots(sel,fn){
+  return COLORS.map(c=>`<button onclick="${fn}('${c.hex}')" class="w-5 h-5 rounded-full border-2 transition-transform ${sel===c.hex?'scale-110':''}" style="background:${c.hex};border-color:${sel===c.hex?'#1f2937':'transparent'}"></button>`).join('');
+}
+function renderManage(){
+  $('#mg-color-row').innerHTML=colorDots(state.mgNewColor,'setMgNewColor');
+  $('#manage-list').innerHTML=TAGS.map(t=>{
+    const n=CONTACTS.filter(c=>c.tags.includes(t.id)).length;
+    if(state.manageEdit===t.id){
+      return`<div class="py-2.5 border-b border-gray-50 last:border-0 bg-stone-50/80 -mx-2 px-2 rounded-lg">
+        <div class="flex items-center gap-1.5 mb-2">
+          <input id="mg-edit-name" value="${t.name.replace(/"/g,'&quot;')}" onkeydown="if(event.key==='Enter')saveTagEdit('${t.id}')" class="flex-1 px-2.5 py-1.5 border border-gray-200 rounded-lg text-[12.5px] text-gray-800 outline-none focus:border-personalized-primary bg-white">
+          <button onclick="saveTagEdit('${t.id}')" class="px-2.5 py-1.5 rounded-lg bg-personalized-primary text-white text-[11.5px] font-semibold hover:opacity-90">Salvar</button>
+          <button onclick="state.manageEdit=null;renderManage()" class="px-2 py-1.5 text-[11.5px] text-gray-500 hover:text-gray-800">Cancelar</button>
+        </div>
+        <div class="flex items-center gap-1.5">${colorDots(state.mgEditColor,'setMgEditColor')}</div>
+      </div>`;
+    }
+    return`<div class="flex items-center gap-2.5 py-2 border-b border-gray-50 last:border-0 group">
+      <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background:${t.color}"></span>
+      <span class="text-[13px] text-gray-800 flex-1">${t.name}</span>
+      <span class="text-[11px] text-gray-400">${n} contato${n===1?'':'s'}</span>
+      <button onclick="startTagEdit('${t.id}')" title="Editar" class="text-gray-300 hover:text-personalized-primary"><i data-lucide="pencil" class="w-3.5 h-3.5"></i></button>
+      <button onclick="deleteTag('${t.id}')" title="Excluir" class="text-gray-300 hover:text-red-500"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+    </div>`;
+  }).join('')||'<div class="py-6 text-center text-[12px] text-gray-400">Nenhuma etiqueta criada.</div>';
+  icons();
+  const ei=$('#mg-edit-name');if(ei){ei.focus();ei.setSelectionRange(ei.value.length,ei.value.length);}
+}
+function setMgNewColor(hex){state.mgNewColor=hex;renderManage();}
+function setMgEditColor(hex){state.mgEditColor=hex;renderManage();}
+function createTagManage(){
+  const inp=$('#mg-new-name'),name=(inp.value||'').trim();
+  if(!name)return inp.focus();
+  TAGS.push({id:'t'+Date.now(),name,color:state.mgNewColor});
+  inp.value='';renderManage();refreshAll();
+}
+function startTagEdit(tid){const t=tag(tid);state.manageEdit=tid;state.mgEditColor=t.color;renderManage();}
+function saveTagEdit(tid){
+  const t=tag(tid),inp=$('#mg-edit-name'),name=(inp.value||'').trim();
+  if(!name)return inp.focus();
+  t.name=name;t.color=state.mgEditColor;state.manageEdit=null;
+  renderManage();refreshAll();
+}
+function deleteTag(tid){
+  TAGS=TAGS.filter(t=>t.id!==tid);
+  CONTACTS.forEach(c=>c.tags=c.tags.filter(t=>t!==tid));
+  state.filter.delete(tid);
+  renderManage();refreshAll();
+}
+
+/* ═══════════ NAVEGAÇÃO ═══════════ */
+function switchPage(p){
+  state.page=p;closePicker();closeCtx();closeCard();
+  document.querySelectorAll('[data-page]').forEach(el=>el.classList.toggle('hidden',el.dataset.page!==p));
+  document.querySelectorAll('[data-page-btn]').forEach(el=>{
+    const on=el.dataset.pageBtn===p;
+    el.classList.toggle('bg-stone-300/60',on);el.classList.toggle('font-bold',on);
+    el.classList.toggle('text-gray-800',on);el.classList.toggle('text-gray-500',!on);
+  });
+  renderBulk();refreshAll();
+}
+function refreshAll(){
+  if(state.page==='registro')renderRegistro();
+  else if(state.page==='funil'){renderFunil();if(cardOpen)renderCardModal();}
+  else renderWa();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePicker();closeManageTags();closeCtx();closeCard();}});
+
+renderRegistro();renderWa();renderFunil();icons();
+</script>
+</body>
+</html>

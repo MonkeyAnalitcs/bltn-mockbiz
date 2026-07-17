@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolten – Fale com o Parceiro & Links úteis</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { inter: ['Inter', 'sans-serif'] },
+        colors: { personalized: { primary: '#44403c', secondary: '#44403c' } }
+      }
+    }
+  }
+</script>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  @keyframes wppPopIn {
+    0%   { transform: scale(0.85); opacity: 0; }
+    60%  { transform: scale(1.03); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+  .wpp-pop { animation: wppPopIn 0.28s cubic-bezier(0.34, 1.4, 0.64, 1); }
+  @media (prefers-reduced-motion: reduce) { .wpp-pop { animation: none; } }
+</style>
+</head>
+<body class="font-inter antialiased bg-stone-100 text-gray-600 flex h-screen overflow-hidden">
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside class="w-[220px] bg-stone-100 border-r border-gray-200 flex flex-col shrink-0 h-full overflow-y-auto z-10 relative">
+
+  <div class="px-5 py-4 border-b border-gray-200 shrink-0">
+    <svg viewBox="0 0 300 93.57" xmlns="http://www.w3.org/2000/svg" class="w-[86px] h-auto fill-gray-900 block">
+      <path d="m58.01,31.94c-4.7-3.73-10.26-5.63-16.51-5.63-4.42,0-9.17.97-14.13,2.89-1.64.63-3.33,1.38-5.03,2.23l-.88.44,7.05-24.6-13.16-3.1-.16.56C7.89,30.21,3.89,44.19,3.62,45.16c-.69,2.55.5,5.22,2.97,6.64,1.17.67,2.37,1.01,3.56,1.01,2.66,0,4.89-1.65,6.51-2.85,10.34-7.66,18.42-11.39,24.7-11.39,2.95,0,5.53.86,7.66,2.55,1.5,1.19,6.06,4.81,2.92,13.69-4.08,11.57-17.83,22.42-26.22,23.19-.31.03-.61.04-.89.04-2.19,0-3.19-.9-4.02-2.24-.57-.93-.69-2.01-.36-3.23,1.32-4.76,9.36-10.49,14.44-13.18l.29-.16-6.63-10.68-.26.13c-8.62,4.45-18.7,12.34-21.17,21.16-1.15,4.11-.54,8.12,1.8,11.9,3.4,5.49,9.08,8.52,15.98,8.52.72,0,1.46-.03,2.2-.1,14.66-1.35,32.33-16.14,37.8-31.66,3.75-10.63,1.3-20.07-6.89-26.57Z"/>
+      <path d="m289.33,33.57c-4.18-3.66-9.12-5.52-14.69-5.52-1.28,0-7.83.32-13.87,6.4l-.51-4.52-8.55-1.98-.23.97c-.09.34-9.18,34.49-14.75,57.22l-.08.32,12.21,2.86.08-.31c2.34-9.5,5.52-22,9.48-37.17,1.74-6.68,7.7-11.34,14.48-11.34.48,0,.96.02,1.43.07l.18.02c2.6.27,4.71.79,6.55,2.41.99.87,3.61,3.17,3.04,8.22-.07.58-.19,1.21-.39,1.98-3.6,13.82-6.52,25.3-8.68,34.12l-.08.32,12.21,2.86.08-.31c2.11-8.59,4.94-19.7,8.4-33.03h.02s.09-.33.09-.33c2.49-9.17.21-17.42-6.43-23.24Z"/>
+      <path d="m129.17,49.77c.05-6.77-2.72-12.53-7.99-16.67-3.68-3.04-8.27-4.65-13.28-4.65-.76,0-1.53.04-2.31.11-14.58,1.31-31.73,15.85-36.7,31.12-3.24,9.94-1.11,18.84,5.98,25.06.29.25.58.5.88.74l.27.12h0c3.76,2.91,8.16,4.38,13.07,4.38h0c2.75,0,5.64-.47,8.58-1.41,15.3-4.87,29.95-21.92,31.37-36.48.08-.77.12-1.55.12-2.31Zm-12.87,1.07c-.94,9.73-11.88,22.13-22.5,25.51-1.66.53-3.22.8-4.64.8-4.11,0-6-2.19-6.8-3.12-.55-.63-1-1.29-1.34-1.93-1.04-2.3-1.02-5.14.06-8.46,3.45-10.6,15.92-21.45,25.66-22.32.4-.04.79-.05,1.16-.05.95,0,1.84.12,2.66.36l.18.06c.32.11.6.23.84.36.96.53,1.79,1.13,2.45,1.76.59.64,1.12,1.4,1.59,2.27.13.23.24.5.34.8.27.86.4,1.77.4,2.79,0,.37-.02.76-.06,1.16Z"/>
+      <path d="m146.98,75.98l-.14-.3-2.53.7-3.39.94s-.1-.06-.12-.08c-.12-.12-.26-.34-.17-.69,4.98-21.45,16.98-66.55,17.11-67.01l.23-1-12.32-2.86-.23.98c-.12.45-12.13,45.56-17.11,67.02-1.08,4.66.32,9.41,3.75,12.69,2.42,2.32,5.57,3.6,8.86,3.6,1.16,0,2.32-.16,3.46-.47l3.14-.87,5.68-1.52-6.16-10.95-.05-.17Z"/>
+      <path d="m229.2,68.46c-6.57,5.84-13.64,9.18-19.39,9.18-1.86,0-3.47-.36-4.8-1.06-3.31-1.77-4.42-5.47-4.54-5.89-1.64-5.9,2.5-14.79,10.28-22.13,5.66-5.34,11.3-7.77,14.15-7.77.44,0,.82.05,1.14.16.87.3,1.71,1.13,1.91,1.9.83,3.25-5.6,11.9-22.03,20.13l-.3.15,6.06,10.78.27-.14c20.31-10.29,30.76-22.99,27.97-33.97-1.23-4.84-5.02-8.88-9.88-10.54-1.59-.54-3.32-.82-5.14-.82-6.98,0-15.01,3.95-22.62,11.13-8.91,8.4-17.2,21.86-13.71,34.42.6,2.15,3.13,9.48,10.63,13.48,3.12,1.66,6.66,2.51,10.52,2.51,8.13,0,17.27-3.79,25.72-10.68l.21-.17-6.15-10.94-.3.26Z"/>
+      <path d="m169.64,77.32s-.1-.06-.12-.08c-.12-.12-.26-.34-.17-.69,1.91-8.21,4.97-20.35,9.1-36.1l13.75.54,3.67-11.84h-14.44c2.63-9.88,4.6-17.12,4.62-17.2l.23-.99-12.3-2.85-.23.98c-.02.09-2.38,8.74-5.38,20.07h-11.44l-2.82,10.35,11.42.45c-3.83,14.62-6.68,25.98-8.49,33.75-1.08,4.65.32,9.39,3.74,12.66,2.42,2.31,5.56,3.59,8.84,3.59,1.16,0,2.32-.16,3.45-.47l16.5-4.59-6.37-11.33-13.57,3.77Z"/>
+    </svg>
+  </div>
+
+  <nav class="flex-1 py-3 px-2 flex flex-col gap-1">
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="bar-chart-2" class="w-4 h-4"></i></div>Marketing
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="send" class="w-4 h-4"></i></div>Campanhas
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="refresh-cw" class="w-4 h-4"></i></div>Conversões
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="filter" class="w-4 h-4"></i></div>Funil de Vendas
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="message-circle" class="w-4 h-4"></i></div>WhatsApp
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="users" class="w-4 h-4"></i></div>Registro de contatos
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="calendar" class="w-4 h-4"></i></div>Calendário
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="check-square" class="w-4 h-4"></i></div>Tarefas
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="sparkles" class="w-4 h-4"></i></div>Agente de IA
+    </div>
+
+    <!-- Divisor: novas features -->
+    <div class="mt-2 mb-1 px-3 text-[10.5px] font-semibold uppercase tracking-wider text-gray-400">Suporte</div>
+
+    <div onclick="switchPage('parceiro')" data-page-btn="parceiro" class="active group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all bg-stone-300/60 text-gray-800 font-bold">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-personalized-primary"><i data-lucide="headset" class="w-4 h-4"></i></div>Fale com o Parceiro
+    </div>
+    <div onclick="switchPage('links')" data-page-btn="links" class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="link-2" class="w-4 h-4"></i></div>Links úteis
+    </div>
+
+    <div class="mt-2 group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600"><i data-lucide="settings" class="w-4 h-4"></i></div>Configurações
+      <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-auto text-gray-400"></i>
+    </div>
+  </nav>
+
+  <div class="p-3 border-t border-gray-200 flex items-center gap-2.5 shrink-0">
+    <div id="user-avatar" class="w-7 h-7 bg-personalized-primary rounded-full flex items-center justify-center text-white text-[11px] font-bold shrink-0">RP</div>
+    <span id="user-name" class="text-[13px] font-medium text-gray-800 flex-1">Renan</span>
+    <i data-lucide="bell" class="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600"></i>
+  </div>
+</aside>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<div class="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 h-full overflow-hidden">
+
+  <main class="p-4 sm:p-6 lg:p-8 grow bg-white border border-gray-200 rounded-xl h-full max-h-full overflow-y-auto relative">
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       PAGE: FALE COM O PARCEIRO — VISÃO ADMIN (SIMPLIFICADA)
+  ════════════════════════════════════════════════════════════════════ -->
+  <div id="page-parceiro-admin">
+
+    <div class="flex items-center gap-2.5 mb-1">
+      <h1 class="text-xl font-bold text-gray-800">Fale com o Parceiro</h1>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gray-900 text-white text-[10.5px] font-semibold uppercase tracking-wide"><i data-lucide="shield" class="w-3 h-3"></i>Admin</span>
+    </div>
+    <p class="text-[13px] text-gray-500 mb-6">Ative os canais que os usuários da sua base usarão para falar com você. As alterações são salvas automaticamente.</p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,560px)_1fr] gap-8 lg:gap-14 items-start">
+
+      <!-- Coluna esquerda: um único card de configuração -->
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm divide-y divide-gray-100">
+
+        <!-- Ativação -->
+        <div class="p-5 flex items-center justify-between gap-4">
+          <div>
+            <h2 class="text-[14px] font-bold text-gray-800">Exibir na barra lateral dos usuários</h2>
+            <p class="text-[12.5px] text-gray-500 mt-0.5">Nome e e-mail vêm do seu cadastro — nada para preencher.</p>
+          </div>
+          <button id="tg-parceiro" onclick="toggleSwitch('tg-parceiro'); pState.ativo = !pState.ativo; renderParceiroPreview(); autoSave();" class="relative w-10 h-[22px] rounded-full bg-emerald-500 transition-colors shrink-0" data-on="true">
+            <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-transform translate-x-[18px]"></span>
+          </button>
+        </div>
+
+        <!-- Dados da conta (somente leitura) -->
+        <div class="p-5">
+          <div class="flex items-center gap-3 bg-stone-50 border border-gray-100 rounded-lg px-4 py-3">
+            <div class="w-9 h-9 rounded-lg bg-personalized-primary flex items-center justify-center text-white text-[12px] font-bold shrink-0">AV</div>
+            <div class="flex-1 min-w-0">
+              <div class="text-[13px] font-semibold text-gray-800 truncate">Agência Vertex</div>
+              <div class="text-[11.5px] text-gray-500 truncate">suporte@agenciavertex.com.br</div>
+            </div>
+            <span class="text-[10.5px] text-gray-400 font-medium whitespace-nowrap">Do seu cadastro</span>
+          </div>
+        </div>
+
+        <!-- Canais: uma linha por canal -->
+        <div class="p-5 flex flex-col gap-3">
+          <div class="text-[12px] font-semibold text-gray-500 uppercase tracking-wide">Canais</div>
+
+          <!-- WhatsApp -->
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0"><i data-lucide="message-circle" class="w-4 h-4 text-emerald-600"></i></div>
+            <span class="text-[13px] font-medium text-gray-800 w-[88px] shrink-0">WhatsApp</span>
+            <input oninput="pState.wpp.numero = this.value; renderParceiroPreview(); autoSave();" type="text" value="+55 11 98765-4321" class="flex-1 min-w-0 px-3 py-1.5 border border-gray-200 rounded-lg text-[12.5px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-personalized-primary/20">
+            <button id="tg-wpp" onclick="toggleSwitch('tg-wpp'); pState.wpp.on = !pState.wpp.on; renderParceiroPreview(); autoSave();" class="relative w-10 h-[22px] rounded-full bg-emerald-500 transition-colors shrink-0" data-on="true">
+              <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-transform translate-x-[18px]"></span>
+            </button>
+          </div>
+
+          <!-- E-mail (usa o do cadastro) -->
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0"><i data-lucide="mail" class="w-4 h-4 text-blue-600"></i></div>
+            <span class="text-[13px] font-medium text-gray-800 w-[88px] shrink-0">E-mail</span>
+            <span class="flex-1 min-w-0 text-[12.5px] text-gray-400 truncate">suporte@agenciavertex.com.br</span>
+            <button id="tg-mail" onclick="toggleSwitch('tg-mail'); pState.mail.on = !pState.mail.on; renderParceiroPreview(); autoSave();" class="relative w-10 h-[22px] rounded-full bg-emerald-500 transition-colors shrink-0" data-on="true">
+              <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-transform translate-x-[18px]"></span>
+            </button>
+          </div>
+
+          <!-- Telefone -->
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center shrink-0"><i data-lucide="phone" class="w-4 h-4 text-amber-600"></i></div>
+            <span class="text-[13px] font-medium text-gray-800 w-[88px] shrink-0">Telefone</span>
+            <input oninput="pState.fone.numero = this.value; renderParceiroPreview(); autoSave();" type="text" value="+55 11 4002-8922" class="flex-1 min-w-0 px-3 py-1.5 border border-gray-200 rounded-lg text-[12.5px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-personalized-primary/20">
+            <button id="tg-fone" onclick="toggleSwitch('tg-fone'); pState.fone.on = !pState.fone.on; renderParceiroPreview(); autoSave();" class="relative w-10 h-[22px] rounded-full bg-gray-300 transition-colors shrink-0" data-on="false">
+              <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-transform"></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Coluna direita: preview (afastada, com divisória) -->
+      <div class="lg:sticky lg:top-0 flex flex-col gap-3 lg:border-l lg:border-gray-100 lg:pl-10 max-w-[400px] lg:justify-self-end w-full">
+        <div class="flex items-center gap-2 text-[12px] font-semibold text-gray-500 uppercase tracking-wide"><i data-lucide="eye" class="w-3.5 h-3.5"></i>Prévia do usuário</div>
+        <div id="preview-parceiro" class="bg-stone-50 border border-dashed border-gray-300 rounded-xl p-4"></div>
+        <div id="autosave-hint" class="text-[11.5px] text-gray-400 flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i>Alterações salvas automaticamente</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       PAGE: FALE COM O PARCEIRO — VISÃO USUÁRIO
+  ════════════════════════════════════════════════════════════════════ -->
+  <div id="page-parceiro-user" class="hidden">
+    <div class="flex items-center gap-2.5 mb-1">
+      <h1 class="text-xl font-bold text-gray-800">Fale com o Parceiro</h1>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-stone-200 text-gray-700 text-[10.5px] font-semibold uppercase tracking-wide"><i data-lucide="user" class="w-3 h-3"></i>Usuário</span>
+    </div>
+    <p class="text-[13px] text-gray-500 mb-6">Precisa de ajuda? Fale diretamente com a equipe responsável pela sua conta.</p>
+
+    <div class="max-w-[560px] mx-auto" id="user-parceiro-card"></div>
+
+    <div class="max-w-[560px] mx-auto mt-4">
+      <button onclick="switchPage('links')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-[12.5px] font-medium text-gray-500 hover:text-gray-800 hover:bg-stone-50 transition-colors">
+        <i data-lucide="link-2" class="w-3.5 h-3.5"></i> Sua dúvida pode estar nos Links úteis
+      </button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       PAGE: LINKS ÚTEIS — VISÃO ADMIN
+  ════════════════════════════════════════════════════════════════════ -->
+  <div id="page-links-admin" class="hidden">
+
+    <div class="flex items-center justify-between mb-1">
+      <div class="flex items-center gap-2.5">
+        <h1 class="text-xl font-bold text-gray-800">Links úteis</h1>
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-gray-900 text-white text-[10.5px] font-semibold uppercase tracking-wide"><i data-lucide="shield" class="w-3 h-3"></i>Admin</span>
+      </div>
+      <button onclick="openLinkModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-[13px] font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap shadow-sm">
+        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Adicionar link
+      </button>
+    </div>
+    <p class="text-[13px] text-gray-500 mb-6">Monte a lista de materiais de apoio que os usuários da sua base verão. Arraste para reordenar, oculte ou edite cada item.</p>
+
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
+
+      <!-- Lista editável -->
+      <div class="flex flex-col gap-2" id="admin-links-list"></div>
+
+      <!-- Preview -->
+      <div class="lg:sticky lg:top-0 flex flex-col gap-3">
+        <div class="flex items-center gap-2 text-[12px] font-semibold text-gray-500 uppercase tracking-wide"><i data-lucide="eye" class="w-3.5 h-3.5"></i>Prévia do usuário</div>
+        <div id="preview-links" class="bg-stone-50 border border-dashed border-gray-300 rounded-xl p-4 flex flex-col gap-2"></div>
+        <p class="text-[11.5px] text-gray-400 leading-relaxed">Somente links marcados como visíveis aparecem para o usuário, na ordem definida aqui.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       PAGE: LINKS ÚTEIS — VISÃO USUÁRIO
+  ════════════════════════════════════════════════════════════════════ -->
+  <div id="page-links-user" class="hidden">
+    <div class="flex items-center gap-2.5 mb-1">
+      <h1 class="text-xl font-bold text-gray-800">Links úteis</h1>
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-stone-200 text-gray-700 text-[10.5px] font-semibold uppercase tracking-wide"><i data-lucide="user" class="w-3 h-3"></i>Usuário</span>
+    </div>
+    <p class="text-[13px] text-gray-500 mb-6">Materiais de apoio selecionados pela sua equipe de suporte.</p>
+
+    <div id="user-links-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+  </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════ TOGGLE DE VISÃO (DEMO) ═══════════════════ -->
+<div class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-gray-900 rounded-full shadow-lg px-1.5 py-1.5 flex items-center gap-1">
+  <span class="text-[11px] text-gray-400 font-medium pl-2.5 pr-1 hidden sm:inline">Visualizar como:</span>
+  <button id="role-admin" onclick="setRole('admin')" class="px-3.5 py-1.5 rounded-full text-[12px] font-semibold bg-white text-gray-900 transition-colors flex items-center gap-1.5">
+    <i data-lucide="shield" class="w-3.5 h-3.5"></i>Admin
+  </button>
+  <button id="role-user" onclick="setRole('user')" class="px-3.5 py-1.5 rounded-full text-[12px] font-semibold text-gray-300 hover:text-white transition-colors flex items-center gap-1.5">
+    <i data-lucide="user" class="w-3.5 h-3.5"></i>Usuário
+  </button>
+</div>
+
+<!-- ═══════════════════ MODAL: ADICIONAR/EDITAR LINK ═══════════════════ -->
+<div id="modal-link" class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center p-4">
+  <div class="bg-white rounded-xl shadow-xl w-full max-w-[480px] overflow-hidden">
+    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+      <h3 id="modal-link-title" class="text-[15px] font-bold text-gray-800">Adicionar link</h3>
+      <button onclick="closeLinkModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>
+    <div class="p-5 flex flex-col gap-4">
+      <input type="hidden" id="ml-idx" value="">
+      <div>
+        <label class="block text-[12px] font-semibold text-gray-700 mb-1.5">Título</label>
+        <input id="ml-titulo" type="text" placeholder="Ex.: Central de ajuda" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-[13px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-personalized-primary/20">
+      </div>
+      <div>
+        <label class="block text-[12px] font-semibold text-gray-700 mb-1.5">URL</label>
+        <input id="ml-url" type="text" placeholder="https://seusite.com.br/pagina" oninput="validateUrlHint(this.value)" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-[13px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-personalized-primary/20">
+        <p id="ml-url-hint" class="text-[11px] text-gray-400 mt-1 flex items-center gap-1"><i data-lucide="info" class="w-3 h-3 shrink-0"></i>Use o endereço completo, começando com <span class="font-semibold">https://</span></p>
+      </div>
+      <div>
+        <label class="block text-[12px] font-semibold text-gray-700 mb-1.5">Descrição curta</label>
+        <input id="ml-desc" type="text" placeholder="Ex.: Tutoriais passo a passo da plataforma" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-[13px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-personalized-primary/20">
+      </div>
+      <div>
+        <label class="block text-[12px] font-semibold text-gray-700 mb-1.5">Categoria</label>
+        <select id="ml-cat" class="w-full px-3 py-2 border border-gray-200 rounded-lg text-[13px] text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-personalized-primary/20">
+          <option value="Tutoriais">Tutoriais</option>
+          <option value="Documentação">Documentação</option>
+          <option value="Vídeos">Vídeos</option>
+          <option value="Financeiro">Financeiro</option>
+          <option value="Outros">Outros</option>
+        </select>
+        <p class="text-[11px] text-gray-400 mt-1">O ícone é definido automaticamente pela categoria.</p>
+      </div>
+    </div>
+    <div class="px-5 py-4 border-t border-gray-100 bg-stone-50/60 flex justify-end gap-2">
+      <button onclick="closeLinkModal()" class="px-3.5 py-1.5 rounded-lg border border-gray-200 bg-white text-[13px] font-medium text-gray-700 hover:bg-stone-50 transition-colors">Cancelar</button>
+      <button onclick="saveLinkModal()" class="px-3.5 py-1.5 rounded-lg bg-gray-900 text-white text-[13px] font-semibold hover:bg-gray-800 transition-colors">Salvar link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ POP: WHATSAPP ═══════════════════ -->
+<div id="modal-wpp" class="hidden fixed inset-0 bg-black/40 z-50 items-center justify-center p-4" onclick="if(event.target===this)closeWppPop()">
+  <div id="modal-wpp-box" class="bg-white rounded-2xl shadow-xl w-full max-w-[380px] overflow-hidden wpp-pop">
+    <div class="px-5 py-4 flex items-center gap-3" style="background:#075e54">
+      <div class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center text-white text-[12px] font-bold" id="wpp-initials">AV</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-[13.5px] font-bold text-white truncate" id="wpp-nome">Agência Vertex</div>
+        <div class="text-[11px] text-emerald-100" id="wpp-num">+55 11 98765-4321</div>
+      </div>
+      <button onclick="closeWppPop()" class="text-white/70 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>
+    <div class="p-5" style="background:#e5ddd5">
+      <div class="text-[10.5px] text-gray-500 text-center mb-3">Sua mensagem já está pronta:</div>
+      <div class="bg-[#dcf8c6] rounded-lg rounded-br-none px-3.5 py-2.5 max-w-[85%] ml-auto shadow-sm">
+        <p class="text-[13px] text-gray-800 leading-snug" id="wpp-msg">Olá! Preciso de ajuda com a plataforma.</p>
+        <div class="text-[9.5px] text-gray-400 text-right mt-1">agora</div>
+      </div>
+    </div>
+    <div class="p-4 bg-white flex gap-2">
+      <button onclick="closeWppPop()" class="flex-1 px-3.5 py-2 rounded-lg border border-gray-200 text-[13px] font-medium text-gray-700 hover:bg-stone-50 transition-colors">Cancelar</button>
+      <button onclick="closeWppPop(); showToast('Conversa aberta no WhatsApp');" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg bg-emerald-500 text-white text-[13px] font-semibold hover:bg-emerald-600 transition-colors">
+        <i data-lucide="send" class="w-3.5 h-3.5"></i> Enviar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ TOAST ═══════════════════ -->
+<div id="toast" class="hidden fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white text-[12.5px] font-medium px-4 py-2.5 rounded-lg shadow-lg flex items-center gap-2">
+  <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i><span id="toast-msg">Salvo</span>
+</div>
+
+<script>
+/* ═══════════════════ ESTADO ═══════════════════ */
+let currentRole = 'admin';
+let currentPage = 'parceiro';
+
+// Nome e e-mail vêm da conta de cadastro do parceiro (somente leitura aqui)
+const pState = {
+  ativo: true,
+  nome: 'Agência Vertex',                    // ← conta de cadastro
+  mail: { on: true, end: 'suporte@agenciavertex.com.br' }, // ← conta de cadastro
+  wpp:  { on: true,  numero: '+55 11 98765-4321', pre: 'Olá! Preciso de ajuda com a plataforma.' },
+  fone: { on: false, numero: '+55 11 4002-8922' }
+};
+
+let linksData = [
+  { titulo: 'Central de ajuda',            url: 'https://ajuda.agenciavertex.com.br', desc: 'Tutoriais passo a passo de todas as funções da plataforma.', cat: 'Tutoriais',     icone: 'book-open',      visivel: true },
+  { titulo: 'Curso: primeiros passos',     url: 'https://youtube.com/playlist',       desc: 'Playlist com 8 vídeos curtos para começar do zero.',          cat: 'Vídeos',        icone: 'play-circle',    visivel: true },
+  { titulo: 'Guia do Agente de IA',        url: 'https://docs.agenciavertex.com.br',  desc: 'Boas práticas de prompt e exemplos prontos por segmento.',    cat: 'Documentação',  icone: 'graduation-cap', visivel: true },
+  { titulo: '2ª via de fatura',            url: 'https://faturas.agenciavertex.com',  desc: 'Acesse boletos, notas fiscais e histórico de pagamentos.',    cat: 'Financeiro',    icone: 'credit-card',    visivel: true },
+  { titulo: 'Status da plataforma',        url: 'https://status.bolten.com.br',       desc: 'Verifique se há instabilidades ou manutenções programadas.',  cat: 'Outros',        icone: 'globe',          visivel: false }
+];
+
+const CAT_ICONS = {
+  'Tutoriais': 'book-open',
+  'Vídeos': 'play-circle',
+  'Documentação': 'graduation-cap',
+  'Financeiro': 'credit-card',
+  'Outros': 'globe'
+};
+
+const CAT_COLORS = {
+  'Tutoriais':    'bg-blue-50 text-blue-700',
+  'Vídeos':       'bg-purple-50 text-purple-700',
+  'Documentação': 'bg-emerald-50 text-emerald-700',
+  'Financeiro':   'bg-amber-50 text-amber-700',
+  'Outros':       'bg-stone-100 text-gray-600'
+};
+
+/* ═══════════════════ NAVEGAÇÃO POR PAPEL ═══════════════════ */
+function resolvePageId(page) {
+  return 'page-' + page + '-' + (currentRole === 'admin' ? 'admin' : 'user');
+}
+
+function switchPage(page) {
+  currentPage = page;
+  document.querySelectorAll('[id^="page-"]').forEach(el => el.classList.add('hidden'));
+  const target = document.getElementById(resolvePageId(page));
+  if (target) target.classList.remove('hidden');
+
+  document.querySelectorAll('[data-page-btn]').forEach(el => {
+    el.classList.remove('active','bg-stone-300/60','text-gray-800','font-bold');
+    el.classList.add('text-gray-500','hover:text-gray-800','hover:bg-stone-200/50','font-medium');
+    const icon = el.querySelector('[data-lucide]');
+    if (icon) {
+      icon.parentElement.classList.remove('text-personalized-primary');
+      icon.parentElement.classList.add('text-gray-400','group-hover:text-gray-600');
+    }
+  });
+  const activeBtn = document.querySelector(`[data-page-btn="${page}"]`);
+  if (activeBtn) {
+    activeBtn.classList.add('active','bg-stone-300/60','text-gray-800','font-bold');
+    activeBtn.classList.remove('text-gray-500','hover:text-gray-800','hover:bg-stone-200/50','font-medium');
+    const iconWrap = activeBtn.querySelector('div');
+    if (iconWrap) {
+      iconWrap.classList.add('text-personalized-primary');
+      iconWrap.classList.remove('text-gray-400','group-hover:text-gray-600');
+    }
+  }
+  renderAll();
+}
+
+function setRole(role) {
+  currentRole = role;
+  const bAdmin = document.getElementById('role-admin');
+  const bUser  = document.getElementById('role-user');
+  if (role === 'admin') {
+    bAdmin.classList.add('bg-white','text-gray-900');
+    bAdmin.classList.remove('text-gray-300');
+    bUser.classList.remove('bg-white','text-gray-900');
+    bUser.classList.add('text-gray-300');
+    document.getElementById('user-avatar').textContent = 'RP';
+    document.getElementById('user-name').textContent = 'Renan';
+  } else {
+    bUser.classList.add('bg-white','text-gray-900');
+    bUser.classList.remove('text-gray-300');
+    bAdmin.classList.remove('bg-white','text-gray-900');
+    bAdmin.classList.add('text-gray-300');
+    document.getElementById('user-avatar').textContent = 'CS';
+    document.getElementById('user-name').textContent = 'Clínica Sorriso';
+  }
+  switchPage(currentPage);
+}
+
+/* ═══════════════════ RENDER: FALE COM O PARCEIRO ═══════════════════ */
+function parceiroCardHTML(compact) {
+  const initials = (pState.nome || 'P').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+  const btns = [];
+  if (pState.wpp.on) btns.push(`
+    <button onclick="openWppPop()" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-emerald-500 text-white text-[13px] font-semibold hover:bg-emerald-600 active:scale-[0.98] transition-all shadow-sm">
+      <i data-lucide="message-circle" class="w-4 h-4"></i> Chamar no WhatsApp
+    </button>`);
+  if (pState.mail.on) btns.push(`
+    <button onclick="showToast('Abrindo e-mail para ${pState.mail.end}')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-gray-200 bg-white text-[13px] font-semibold text-gray-700 hover:bg-stone-50 transition-colors">
+      <i data-lucide="mail" class="w-4 h-4 text-gray-500"></i> Enviar e-mail
+    </button>`);
+  if (pState.fone.on) btns.push(`
+    <button onclick="showToast('Ligando para ${pState.fone.numero}')" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-gray-200 bg-white text-[13px] font-semibold text-gray-700 hover:bg-stone-50 transition-colors">
+      <i data-lucide="phone" class="w-4 h-4 text-gray-500"></i> Ligar (${pState.fone.numero})
+    </button>`);
+
+  if (!pState.ativo) {
+    return `<div class="bg-white border border-gray-200 rounded-xl p-6 text-center">
+      <i data-lucide="eye-off" class="w-6 h-6 text-gray-300 mx-auto mb-2"></i>
+      <p class="text-[12.5px] text-gray-400">O canal está desativado e não aparece para o usuário.</p>
+    </div>`;
+  }
+
+  return `
+  <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+    <div class="p-5 flex items-center gap-3.5 border-b border-gray-100">
+      <div class="w-12 h-12 rounded-xl bg-personalized-primary flex items-center justify-center text-white text-[15px] font-bold shrink-0">${initials}</div>
+      <div class="flex-1 min-w-0">
+        <h3 class="text-[15px] font-bold text-gray-800 truncate">${pState.nome}</h3>
+        <p class="text-[12px] text-gray-500 truncate">${pState.mail.end}</p>
+      </div>
+    </div>
+    <div class="p-5 flex flex-col gap-2.5">${btns.join('') || '<p class="text-[12px] text-gray-400 text-center">Nenhum canal ativo.</p>'}</div>
+  </div>`;
+}
+
+function renderParceiroPreview() {
+  const el = document.getElementById('preview-parceiro');
+  if (el) el.innerHTML = parceiroCardHTML(true);
+  const userEl = document.getElementById('user-parceiro-card');
+  if (userEl) userEl.innerHTML = parceiroCardHTML(false);
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+/* ═══════════════════ RENDER: LINKS ÚTEIS ═══════════════════ */
+function renderAdminLinks() {
+  const list = document.getElementById('admin-links-list');
+  if (!list) return;
+  if (!linksData.length) {
+    list.innerHTML = `<div class="border border-dashed border-gray-300 rounded-xl p-8 text-center">
+      <i data-lucide="link-2" class="w-6 h-6 text-gray-300 mx-auto mb-2"></i>
+      <p class="text-[13px] text-gray-500 font-medium">Nenhum link cadastrado</p>
+      <p class="text-[12px] text-gray-400 mt-1">Clique em "Adicionar link" para montar a lista dos seus usuários.</p>
+    </div>`;
+  } else {
+    list.innerHTML = linksData.map((l, i) => `
+      <div class="bg-white border border-gray-200 rounded-xl px-4 py-3.5 flex items-center gap-3 hover:shadow-sm transition-shadow ${l.visivel ? '' : 'opacity-55'}">
+        <div class="text-gray-300 cursor-grab shrink-0" title="Arraste para reordenar"><i data-lucide="grip-vertical" class="w-4 h-4"></i></div>
+        <div class="w-9 h-9 rounded-lg bg-stone-100 flex items-center justify-center shrink-0"><i data-lucide="${l.icone}" class="w-4 h-4 text-gray-600"></i></div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2">
+            <span class="text-[13px] font-semibold text-gray-800 truncate">${l.titulo}</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold ${CAT_COLORS[l.cat] || CAT_COLORS['Outros']}">${l.cat}</span>
+          </div>
+          <div class="text-[11.5px] text-gray-500 truncate">${l.url}</div>
+        </div>
+        <button onclick="toggleLinkVis(${i})" title="${l.visivel ? 'Ocultar do usuário' : 'Mostrar ao usuário'}" class="relative w-10 h-[22px] rounded-full ${l.visivel ? 'bg-emerald-500' : 'bg-gray-300'} transition-colors shrink-0">
+          <span class="absolute top-[2px] left-[2px] w-[18px] h-[18px] rounded-full bg-white shadow transition-transform ${l.visivel ? 'translate-x-[18px]' : ''}"></span>
+        </button>
+        <button onclick="openLinkModal(${i})" class="text-gray-400 hover:text-gray-700 shrink-0"><i data-lucide="pencil" class="w-4 h-4"></i></button>
+        <button onclick="deleteLink(${i})" class="text-gray-400 hover:text-red-500 shrink-0"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+      </div>`).join('');
+  }
+
+  // Preview lateral (visão usuário resumida)
+  const prev = document.getElementById('preview-links');
+  if (prev) {
+    const visiveis = linksData.filter(l => l.visivel);
+    prev.innerHTML = visiveis.length
+      ? visiveis.map(l => `
+        <div class="bg-white border border-gray-200 rounded-lg px-3 py-2.5 flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-md bg-stone-100 flex items-center justify-center shrink-0"><i data-lucide="${l.icone}" class="w-3.5 h-3.5 text-gray-600"></i></div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[12px] font-semibold text-gray-800 truncate">${l.titulo}</div>
+            <div class="text-[10.5px] text-gray-400 truncate">${l.desc}</div>
+          </div>
+          <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-300 shrink-0"></i>
+        </div>`).join('')
+      : '<p class="text-[12px] text-gray-400 text-center py-4">Nenhum link visível para o usuário.</p>';
+  }
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function renderUserLinks() {
+  const grid = document.getElementById('user-links-grid');
+  if (!grid) return;
+  const visiveis = linksData.filter(l => l.visivel);
+  grid.innerHTML = visiveis.length
+    ? visiveis.map(l => `
+      <div onclick="showToast('Abrindo: ${l.url}')" class="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-md hover:border-personalized-primary/40 transition-all cursor-pointer flex flex-col gap-3 group">
+        <div class="flex items-start justify-between">
+          <div class="w-10 h-10 rounded-lg bg-stone-100 flex items-center justify-center group-hover:bg-personalized-primary/10 transition-colors"><i data-lucide="${l.icone}" class="w-5 h-5 text-gray-700"></i></div>
+          <span class="px-2 py-0.5 rounded text-[10.5px] font-semibold ${CAT_COLORS[l.cat] || CAT_COLORS['Outros']}">${l.cat}</span>
+        </div>
+        <div>
+          <h3 class="text-[14px] font-bold text-gray-800 flex items-center gap-1.5">${l.titulo}<i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-300 group-hover:text-gray-500 transition-colors"></i></h3>
+          <p class="text-[12.5px] text-gray-500 mt-1 leading-relaxed">${l.desc}</p>
+        </div>
+      </div>`).join('')
+    : `<div class="col-span-full border border-dashed border-gray-300 rounded-xl p-10 text-center">
+        <i data-lucide="link-2" class="w-6 h-6 text-gray-300 mx-auto mb-2"></i>
+        <p class="text-[13px] text-gray-500 font-medium">Nenhum link disponível no momento</p>
+       </div>`;
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function renderAll() {
+  renderParceiroPreview();
+  renderAdminLinks();
+  renderUserLinks();
+}
+
+/* ═══════════════════ AÇÕES: LINKS ═══════════════════ */
+function toggleLinkVis(i) { linksData[i].visivel = !linksData[i].visivel; renderAll(); }
+function deleteLink(i) { linksData.splice(i, 1); renderAll(); showToast('Link removido'); }
+
+function openLinkModal(idx) {
+  const m = document.getElementById('modal-link');
+  document.getElementById('modal-link-title').textContent = (idx === undefined) ? 'Adicionar link' : 'Editar link';
+  document.getElementById('ml-idx').value = (idx === undefined) ? '' : idx;
+  const l = (idx === undefined) ? { titulo:'', url:'', desc:'', cat:'Tutoriais' } : linksData[idx];
+  document.getElementById('ml-titulo').value = l.titulo;
+  document.getElementById('ml-url').value = l.url;
+  document.getElementById('ml-desc').value = l.desc;
+  document.getElementById('ml-cat').value = l.cat;
+  m.classList.remove('hidden'); m.classList.add('flex');
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+function closeLinkModal() {
+  const m = document.getElementById('modal-link');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+function saveLinkModal() {
+  const idxRaw = document.getElementById('ml-idx').value;
+  const cat = document.getElementById('ml-cat').value;
+  const novo = {
+    titulo: document.getElementById('ml-titulo').value || 'Sem título',
+    url: document.getElementById('ml-url').value || 'https://',
+    desc: document.getElementById('ml-desc').value || '',
+    cat: cat,
+    icone: CAT_ICONS[cat] || 'link-2',
+    visivel: true
+  };
+  if (idxRaw === '') linksData.push(novo);
+  else { novo.visivel = linksData[+idxRaw].visivel; linksData[+idxRaw] = novo; }
+  closeLinkModal();
+  renderAll();
+  showToast(idxRaw === '' ? 'Link adicionado' : 'Link atualizado');
+}
+
+/* ═══════════════════ UTIL ═══════════════════ */
+function toggleSwitch(id) {
+  const btn = document.getElementById(id);
+  const knob = btn.querySelector('span');
+  const on = btn.getAttribute('data-on') === 'true';
+  btn.setAttribute('data-on', String(!on));
+  if (on) {
+    btn.classList.remove('bg-emerald-500'); btn.classList.add('bg-gray-300');
+    knob.classList.remove('translate-x-[18px]');
+  } else {
+    btn.classList.add('bg-emerald-500'); btn.classList.remove('bg-gray-300');
+    knob.classList.add('translate-x-[18px]');
+  }
+}
+
+let saveTimer = null;
+function autoSave() {
+  const hint = document.getElementById('autosave-hint');
+  if (!hint) return;
+  hint.innerHTML = '<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin text-gray-400"></i>Salvando…';
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    hint.innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500"></i>Alterações salvas automaticamente';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }, 700);
+}
+
+function openWppPop() {
+  const m = document.getElementById('modal-wpp');
+  document.getElementById('wpp-nome').textContent = pState.nome;
+  document.getElementById('wpp-num').textContent = pState.wpp.numero;
+  document.getElementById('wpp-msg').textContent = pState.wpp.pre;
+  document.getElementById('wpp-initials').textContent = (pState.nome || 'P').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+  m.classList.remove('hidden'); m.classList.add('flex');
+  const box = document.getElementById('modal-wpp-box');
+  box.classList.remove('wpp-pop'); void box.offsetWidth; box.classList.add('wpp-pop');
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+function closeWppPop() {
+  const m = document.getElementById('modal-wpp');
+  m.classList.add('hidden'); m.classList.remove('flex');
+}
+
+function validateUrlHint(v) {
+  const hint = document.getElementById('ml-url-hint');
+  if (!hint) return;
+  if (!v) {
+    hint.className = 'text-[11px] text-gray-400 mt-1 flex items-center gap-1';
+    hint.innerHTML = '<i data-lucide="info" class="w-3 h-3 shrink-0"></i>Use o endereço completo, começando com <span class="font-semibold">https://</span>';
+  } else if (/^https:\/\/.+\..+/.test(v)) {
+    hint.className = 'text-[11px] text-emerald-600 mt-1 flex items-center gap-1';
+    hint.innerHTML = '<i data-lucide="check" class="w-3 h-3 shrink-0"></i>Formato válido';
+  } else {
+    hint.className = 'text-[11px] text-amber-600 mt-1 flex items-center gap-1';
+    hint.innerHTML = '<i data-lucide="alert-triangle" class="w-3 h-3 shrink-0"></i>Formato inválido — comece com <span class="font-semibold">https://</span> (ex.: https://seusite.com.br)';
+  }
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.classList.remove('hidden'); t.classList.add('flex');
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.classList.add('hidden'); t.classList.remove('flex'); }, 2200);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+  renderAll();
+});
+</script>
+
+</body>
+</html>
