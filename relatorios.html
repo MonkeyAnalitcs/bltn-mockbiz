@@ -1,0 +1,2458 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolten – Relatórios e Insights</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script>
+  // Suppress Tailwind CDN dev warning
+  const _cw = console.warn;
+  console.warn = function(...a) {
+    if (a[0] && String(a[0]).includes('cdn.tailwindcss')) return;
+    _cw.apply(console, a);
+  };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { inter: ['Inter', 'sans-serif'] },
+        colors: {
+          personalized: { primary: '#ce8a1d', secondary: '#ce8a1d' }
+        }
+      }
+    }
+  }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://unpkg.com/lucide@0.383.0/dist/umd/lucide.min.js"></script>
+</head>
+<body class="font-inter antialiased bg-stone-100 text-gray-600 flex h-screen overflow-hidden">
+
+<aside class="w-[220px] bg-stone-100 border-r border-gray-200 flex flex-col shrink-0 h-full overflow-y-auto z-10 relative">
+
+  <div class="px-5 py-4 border-b border-gray-200 shrink-0">
+    <svg viewBox="0 0 300 93.57" xmlns="http://www.w3.org/2000/svg" class="w-[86px] h-auto fill-gray-900 block">
+      <path d="m58.01,31.94c-4.7-3.73-10.26-5.63-16.51-5.63-4.42,0-9.17.97-14.13,2.89-1.64.63-3.33,1.38-5.03,2.23l-.88.44,7.05-24.6-13.16-3.1-.16.56C7.89,30.21,3.89,44.19,3.62,45.16c-.69,2.55.5,5.22,2.97,6.64,1.17.67,2.37,1.01,3.56,1.01,2.66,0,4.89-1.65,6.51-2.85,10.34-7.66,18.42-11.39,24.7-11.39,2.95,0,5.53.86,7.66,2.55,1.5,1.19,6.06,4.81,2.92,13.69-4.08,11.57-17.83,22.42-26.22,23.19-.31.03-.61.04-.89.04-2.19,0-3.19-.9-4.02-2.24-.57-.93-.69-2.01-.36-3.23,1.32-4.76,9.36-10.49,14.44-13.18l.29-.16-6.63-10.68-.26.13c-8.62,4.45-18.7,12.34-21.17,21.16-1.15,4.11-.54,8.12,1.8,11.9,3.4,5.49,9.08,8.52,15.98,8.52.72,0,1.46-.03,2.2-.1,14.66-1.35,32.33-16.14,37.8-31.66,3.75-10.63,1.3-20.07-6.89-26.57Z"/>
+      <path d="m289.33,33.57c-4.18-3.66-9.12-5.52-14.69-5.52-1.28,0-7.83.32-13.87,6.4l-.51-4.52-8.55-1.98-.23.97c-.09.34-9.18,34.49-14.75,57.22l-.08.32,12.21,2.86.08-.31c2.34-9.5,5.52-22,9.48-37.17,1.74-6.68,7.7-11.34,14.48-11.34.48,0,.96.02,1.43.07l.18.02c2.6.27,4.71.79,6.55,2.41.99.87,3.61,3.17,3.04,8.22-.07.58-.19,1.21-.39,1.98-3.6,13.82-6.52,25.3-8.68,34.12l-.08.32,12.21,2.86.08-.31c2.11-8.59,4.94-19.7,8.4-33.03h.02s.09-.33.09-.33c2.49-9.17.21-17.42-6.43-23.24Z"/>
+      <path d="m129.17,49.77c.05-6.77-2.72-12.53-7.99-16.67-3.68-3.04-8.27-4.65-13.28-4.65-.76,0-1.53.04-2.31.11-14.58,1.31-31.73,15.85-36.7,31.12-3.24,9.94-1.11,18.84,5.98,25.06.29.25.58.5.88.74l.27.12h0c3.76,2.91,8.16,4.38,13.07,4.38h0c2.75,0,5.64-.47,8.58-1.41,15.3-4.87,29.95-21.92,31.37-36.48.08-.77.12-1.55.12-2.31Zm-12.87,1.07c-.94,9.73-11.88,22.13-22.5,25.51-1.66.53-3.22.8-4.64.8-4.11,0-6-2.19-6.8-3.12-.55-.63-1-1.29-1.34-1.93-1.04-2.3-1.02-5.14.06-8.46,3.45-10.6,15.92-21.45,25.66-22.32.4-.04.79-.05,1.16-.05.95,0,1.84.12,2.66.36l.18.06c.32.11.6.23.84.36.96.53,1.79,1.13,2.45,1.76.59.64,1.12,1.4,1.59,2.27.13.23.24.5.34.8.27.86.4,1.77.4,2.79,0,.37-.02.76-.06,1.16Z"/>
+      <path d="m146.98,75.98l-.14-.3-2.53.7-3.39.94s-.1-.06-.12-.08c-.12-.12-.26-.34-.17-.69,4.98-21.45,16.98-66.55,17.11-67.01l.23-1-12.32-2.86-.23.98c-.12.45-12.13,45.56-17.11,67.02-1.08,4.66.32,9.41,3.75,12.69,2.42,2.32,5.57,3.6,8.86,3.6,1.16,0,2.32-.16,3.46-.47l3.14-.87,5.68-1.52-6.16-10.95-.05-.17Z"/>
+      <path d="m229.2,68.46c-6.57,5.84-13.64,9.18-19.39,9.18-1.86,0-3.47-.36-4.8-1.06-3.31-1.77-4.42-5.47-4.54-5.89-1.64-5.9,2.5-14.79,10.28-22.13,5.66-5.34,11.3-7.77,14.15-7.77.44,0,.82.05,1.14.16.87.3,1.71,1.13,1.91,1.9.83,3.25-5.6,11.9-22.03,20.13l-.3.15,6.06,10.78.27-.14c20.31-10.29,30.76-22.99,27.97-33.97-1.23-4.84-5.02-8.88-9.88-10.54-1.59-.54-3.32-.82-5.14-.82-6.98,0-15.01,3.95-22.62,11.13-8.91,8.4-17.2,21.86-13.71,34.42.6,2.15,3.13,9.48,10.63,13.48,3.12,1.66,6.66,2.51,10.52,2.51,8.13,0,17.27-3.79,25.72-10.68l.21-.17-6.15-10.94-.3.26Z"/>
+      <path d="m169.64,77.32s-.1-.06-.12-.08c-.12-.12-.26-.34-.17-.69,1.91-8.21,4.97-20.35,9.1-36.1l13.75.54,3.67-11.84h-14.44c2.63-9.88,4.6-17.12,4.62-17.2l.23-.99-12.3-2.85-.23.98c-.02.09-2.38,8.74-5.38,20.07h-11.44l-2.82,10.35,11.42.45c-3.83,14.62-6.68,25.98-8.49,33.75-1.08,4.65.32,9.39,3.74,12.66,2.42,2.31,5.56,3.59,8.84,3.59,1.16,0,2.32-.16,3.45-.47l16.5-4.59-6.37-11.33-13.57,3.77Z"/>
+    </svg>
+  </div>
+
+  <nav class="flex-1 py-3 px-2 flex flex-col gap-1">
+
+    <div class="nav-item active group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50 [&.active]:bg-stone-300/60 [&.active]:text-gray-800 [&.active]:font-bold" onclick="switchPage('geral', this)">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600 group-[.active]:text-personalized-primary">
+        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+      </div>
+      Geral
+    </div>
+
+    <div class="nav-item group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50 [&.active]:bg-stone-300/60 [&.active]:text-gray-800 [&.active]:font-bold" onclick="switchPage('marketing', this)">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600 group-[.active]:text-personalized-primary">
+        <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+      </div>
+      Marketing
+    </div>
+
+    <div class="nav-item group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50 [&.active]:bg-stone-300/60 [&.active]:text-gray-800 [&.active]:font-bold" onclick="switchPage('conversoes', this)">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600 group-[.active]:text-personalized-primary">
+        <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+      </div>
+      Conversões
+    </div>
+
+    <div class="nav-item group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50 [&.active]:bg-stone-300/60 [&.active]:text-gray-800 [&.active]:font-bold" onclick="switchPage('funil', this)">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600 group-[.active]:text-personalized-primary">
+        <i data-lucide="filter" class="w-4 h-4"></i>
+      </div>
+      Funil de Vendas
+    </div>
+
+    <div class="nav-item group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50 [&.active]:bg-stone-300/60 [&.active]:text-gray-800 [&.active]:font-bold" onclick="switchPage('whatsapp', this)">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600 group-[.active]:text-personalized-primary">
+        <i data-lucide="message-circle" class="w-4 h-4"></i>
+      </div>
+      WhatsApp
+    </div>
+
+    <div class="nav-item group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50 [&.active]:bg-stone-300/60 [&.active]:text-gray-800 [&.active]:font-bold" onclick="switchPage('contatos', this)">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600 group-[.active]:text-personalized-primary">
+        <i data-lucide="users" class="w-4 h-4"></i>
+      </div>
+      Registro de contatos
+    </div>
+
+    <div class="mt-2 group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400 group-hover:text-gray-600">
+        <i data-lucide="settings" class="w-4 h-4"></i>
+      </div>
+      Configurações
+      <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-auto text-gray-400"></i>
+    </div>
+
+  </nav>
+
+  <div class="p-3 border-t border-gray-200 flex items-center gap-2.5 shrink-0">
+    <div class="w-7 h-7 bg-personalized-primary rounded-full flex items-center justify-center text-white text-[11px] font-bold shrink-0">RP</div>
+    <span class="text-[13px] font-medium text-gray-800 flex-1">Renan</span>
+    <i data-lucide="bell" class="w-4 h-4 text-gray-400 cursor-pointer hover:text-gray-600"></i>
+  </div>
+
+</aside>
+
+<div class="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 h-full overflow-hidden">
+  
+  <main class="p-4 sm:p-6 lg:p-8 grow bg-white border border-gray-200 rounded-xl h-full max-h-full overflow-y-auto relative">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- PAGE: GERAL                                            -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="page-geral" class="page hidden [&.active]:block active">
+
+      <!-- Header + Filtros -->
+      <div class="flex flex-wrap items-start justify-between gap-3 mb-6">
+        <div>
+          <h1 class="text-xl font-bold text-gray-800">Visão Geral</h1>
+          <p class="text-[13px] text-gray-500 mt-0.5">Resumo da operação no período selecionado</p>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <select id="geral-periodo" class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm" onchange="updateGeralCharts()">
+            <option value="7">Últimos 7 dias</option>
+            <option value="30" selected>Últimos 30 dias</option>
+            <option value="mes">Este mês</option>
+            <option value="90">Últimos 90 dias</option>
+          </select>
+          <select id="geral-origem" class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm" onchange="updateGeralCharts()">
+            <option value="todas">Todas as origens</option>
+            <option value="meta">Meta Ads</option>
+            <option value="organico">Orgânico</option>
+            <option value="nao-rastreado">Não rastreado</option>
+          </select>
+          <select id="geral-pessoa" class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm" onchange="updateGeralCharts()">
+            <option value="todos">Todos os usuários</option>
+            <option value="cj">CJ</option>
+            <option value="enzo">Enzo</option>
+            <option value="renan">Renan</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Grid 2 colunas: Vendas + Atendimento -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- BLOCO VENDAS -->
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <div class="w-2.5 h-2.5 rounded-full bg-[#1FB041]"></div>
+            <span class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Vendas</span>
+          </div>
+
+          <!-- KPIs Vendas -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <div class="text-xs text-gray-500 font-medium mb-1">Leads novos</div>
+              <div class="text-2xl font-bold text-gray-800 leading-none mb-1">427</div>
+              <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 18.4%</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <div class="text-xs text-gray-500 font-medium mb-1">Taxa de conversão</div>
+              <div class="text-2xl font-bold text-gray-800 leading-none mb-1">7.3%</div>
+              <div class="text-xs font-bold text-red-500 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 1.2pp</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <div class="text-xs text-gray-500 font-medium mb-1">Ganhos</div>
+              <div class="text-2xl font-bold text-gray-800 leading-none mb-1">31</div>
+              <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 10.7%</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm col-span-2">
+              <div class="text-xs text-gray-500 font-medium mb-1">Valor total ganho</div>
+              <div class="text-2xl font-bold text-gray-800 leading-none mb-1">R$ 48.900</div>
+              <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 22.1%</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <div class="text-xs text-gray-500 font-medium mb-1">Ticket médio</div>
+              <div class="text-2xl font-bold text-gray-800 leading-none mb-1">R$ 1.577</div>
+              <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 10.3%</div>
+            </div>
+          </div>
+
+          <!-- Chart Leads por Dia -->
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm mb-3">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-[13px] font-semibold text-gray-800">Leads por dia</div>
+              <div class="flex items-center gap-3">
+                <span class="flex items-center gap-1.5 text-[11px] text-gray-500"><span class="w-2.5 h-2.5 rounded-sm bg-[#FF6828] inline-block"></span>Meta Ads</span>
+                <span class="flex items-center gap-1.5 text-[11px] text-gray-500"><span class="w-2.5 h-2.5 rounded-sm bg-gray-300 inline-block"></span>Não rastreado</span>
+              </div>
+            </div>
+            <div class="relative h-[180px]">
+              <canvas id="chartGeralLeads"></canvas>
+            </div>
+          </div>
+
+          <!-- Origem breakdown -->
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-[13px] font-semibold text-gray-800">Distribuição por origem</div>
+              <button onclick="switchPage('conversoes', this)" class="text-[12px] text-personalized-primary font-semibold hover:underline">Ver detalhes →</button>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="relative w-20 h-20 shrink-0">
+                <canvas id="chartGeralOrigem"></canvas>
+              </div>
+              <div class="flex-1 flex flex-col gap-2">
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-sm bg-[#FF6828] shrink-0"></div>
+                    <span class="text-[12.5px] text-gray-700">Meta Ads</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-24 bg-stone-100 rounded-full h-1.5 overflow-hidden"><div class="h-full rounded-full bg-[#FF6828]" style="width:72%"></div></div>
+                    <span class="text-[12px] font-semibold text-gray-800 w-8 text-right">307</span>
+                    <span class="text-[11px] text-gray-400 w-8">72%</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-sm bg-[#1FB041] shrink-0"></div>
+                    <span class="text-[12.5px] text-gray-700">Orgânico</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-24 bg-stone-100 rounded-full h-1.5 overflow-hidden"><div class="h-full rounded-full bg-[#1FB041]" style="width:9%"></div></div>
+                    <span class="text-[12px] font-semibold text-gray-800 w-8 text-right">37</span>
+                    <span class="text-[11px] text-gray-400 w-8">9%</span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2.5 h-2.5 rounded-sm bg-gray-300 shrink-0"></div>
+                    <span class="text-[12.5px] text-gray-700">Não rastreado</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="w-24 bg-stone-100 rounded-full h-1.5 overflow-hidden"><div class="h-full rounded-full bg-gray-300" style="width:19%"></div></div>
+                    <span class="text-[12px] font-semibold text-gray-800 w-8 text-right">83</span>
+                    <span class="text-[11px] text-gray-400 w-8">19%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLOCO ATENDIMENTO -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <div class="w-2.5 h-2.5 rounded-full bg-[#FF6828]"></div>
+              <span class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Atendimento WPP</span>
+            </div>
+            <button onclick="switchPage('wpp-relatorio', this)" class="text-[12px] text-personalized-primary font-semibold hover:underline">Ver detalhes →</button>
+          </div>
+
+          <!-- KPIs Atendimento -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-4">
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <div class="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1">TMR <i data-lucide="info" class="w-3 h-3 text-gray-300"></i></div>
+              <div class="text-2xl font-bold text-gray-800 leading-none mb-1">4m 32s</div>
+              <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 38s mais rápido</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <div class="text-xs text-gray-500 font-medium mb-1">Atendimentos</div>
+              <div class="text-2xl font-bold text-gray-800 leading-none mb-1">847</div>
+              <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 12.3%</div>
+            </div>
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <div class="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1">Handoff IA <i data-lucide="info" class="w-3 h-3 text-gray-300"></i></div>
+              <div class="text-2xl font-bold text-gray-800 leading-none mb-1">34%</div>
+              <div class="flex items-center gap-2 mt-1">
+                <div class="flex-1 bg-stone-100 rounded-full h-1.5 overflow-hidden"><div class="h-full rounded-full bg-gray-300" style="width:34%"></div></div>
+                <span class="text-xs text-gray-400">288 de 847</span>
+              </div>
+            </div>
+            <!-- Atendimentos por usuário mini-strip -->
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm col-span-2 sm:col-span-3">
+              <div class="text-xs text-gray-500 font-medium mb-2.5">Atendimentos por usuário</div>
+              <div class="flex flex-col gap-2">
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-[#FF6828] flex items-center justify-center text-white text-[9px] font-bold shrink-0">IA</div>
+                  <span class="text-[12px] text-gray-700 w-20 shrink-0">IA Bolty</span>
+                  <div class="flex-1 bg-stone-100 rounded-full h-2 overflow-hidden"><div class="h-full rounded-full bg-[#FF6828]" style="width:66%"></div></div>
+                  <span class="text-[12px] font-semibold text-gray-700 w-8 text-right shrink-0">558</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[9px] font-bold shrink-0">CJ</div>
+                  <span class="text-[12px] text-gray-700 w-20 shrink-0">CJ</span>
+                  <div class="flex-1 bg-stone-100 rounded-full h-2 overflow-hidden"><div class="h-full rounded-full bg-gray-400" style="width:17%"></div></div>
+                  <span class="text-[12px] font-semibold text-gray-700 w-8 text-right shrink-0">142</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[9px] font-bold shrink-0">EG</div>
+                  <span class="text-[12px] text-gray-700 w-20 shrink-0">Enzo</span>
+                  <div class="flex-1 bg-stone-100 rounded-full h-2 overflow-hidden"><div class="h-full rounded-full bg-gray-400" style="width:11%"></div></div>
+                  <span class="text-[12px] font-semibold text-gray-700 w-8 text-right shrink-0">98</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <div class="w-6 h-6 rounded-full bg-personalized-primary flex items-center justify-center text-white text-[9px] font-bold shrink-0">RP</div>
+                  <span class="text-[12px] text-gray-700 w-20 shrink-0">Renan</span>
+                  <div class="flex-1 bg-stone-100 rounded-full h-2 overflow-hidden"><div class="h-full rounded-full bg-personalized-primary" style="width:6%"></div></div>
+                  <span class="text-[12px] font-semibold text-gray-700 w-8 text-right shrink-0">49</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart Atendimentos por Dia -->
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="text-[13px] font-semibold text-gray-800 mb-3">Atendimentos por dia</div>
+            <div class="relative h-[180px]">
+              <canvas id="chartGeralAtendimentos"></canvas>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Funil resumido -->
+      <div class="mt-6">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-2.5 h-2.5 rounded-full bg-indigo-500"></div>
+            <div>
+              <span class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Funil de Vendas</span>
+              <div class="text-[11px] text-gray-400">no período selecionado</div>
+            </div>
+          </div>
+          <button onclick="switchPage('funil-relatorio', this)" class="text-[12px] text-personalized-primary font-semibold hover:underline">Ver detalhes →</button>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+          <!-- Labels row -->
+          <div class="grid grid-cols-6 border-b border-gray-100 bg-stone-50">
+            <div class="p-3 border-r border-gray-100"><div class="text-[15px] font-bold text-gray-800 leading-none mb-0.5">427</div><div class="text-[10px] font-semibold text-green-600">Novo Lead</div></div>
+            <div class="p-3 border-r border-gray-100"><div class="text-[15px] font-bold text-gray-800 leading-none mb-0.5">312</div><div class="text-[10px] font-semibold text-indigo-500">Contato</div><div class="text-[10px] text-gray-400">73.1%</div></div>
+            <div class="p-3 border-r border-gray-100"><div class="text-[15px] font-bold text-gray-800 leading-none mb-0.5">148</div><div class="text-[10px] font-semibold text-purple-500">Qualificado</div><div class="text-[10px] text-gray-400">34.7%</div></div>
+            <div class="p-3 border-r border-gray-100"><div class="text-[15px] font-bold text-gray-800 leading-none mb-0.5">89</div><div class="text-[10px] font-semibold text-yellow-500">Agendamento</div><div class="text-[10px] text-gray-400">20.8%</div></div>
+            <div class="p-3 border-r border-gray-100"><div class="text-[15px] font-bold text-gray-800 leading-none mb-0.5">52</div><div class="text-[10px] font-semibold text-orange-500">Negociação</div><div class="text-[10px] text-gray-400">12.2%</div></div>
+            <div class="p-3"><div class="text-[15px] font-bold text-gray-800 leading-none mb-0.5">31</div><div class="text-[10px] font-semibold text-emerald-600">Ganho</div><div class="text-[10px] text-gray-400">7.3%</div></div>
+          </div>
+          <!-- Canvas -->
+          <div class="w-full relative bg-white" style="height:140px">
+            <canvas id="chartGeralFunil" class="w-full block" style="height:140px"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Marketing resumido -->
+      <div class="mt-6">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div>
+            <div>
+              <span class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">Marketing</span>
+              <div class="text-[11px] text-gray-400">no período selecionado</div>
+            </div>
+          </div>
+          <button onclick="switchPage('marketing', this)" class="text-[12px] text-personalized-primary font-semibold hover:underline">Ver detalhes →</button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1">Alcance</div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">540k</div>
+            <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 32.5%</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1">Visualizações</div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">1,4M</div>
+            <div class="text-xs font-bold text-red-500 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 9.2%</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1">Seguidores</div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">11.406</div>
+            <div class="text-xs text-gray-500 flex items-center gap-1"><span class="font-bold text-green-600">+284</span> no período</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1">Interações</div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">6,8k</div>
+            <div class="text-xs font-bold text-red-500 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 25.2%</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- PAGE: MARKETING (existing)                             -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="page-marketing" class="page hidden [&.active]:block">
+
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-xl font-bold text-gray-800">Relatórios e Insights</h1>
+        <button class="px-4 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-500 hover:bg-gray-50 transition-colors">Voltar</button>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between mb-5">
+        <div class="flex items-center gap-3.5">
+          <div class="w-11 h-11 bg-black rounded-lg flex items-center justify-center shrink-0">
+            <i data-lucide="instagram" class="w-6 h-6 text-white"></i>
+          </div>
+          <div>
+            <h2 class="text-[15px] font-bold text-gray-800 leading-tight">Instagram - boltenbr</h2>
+            <p class="text-[12.5px] text-gray-500 mt-0.5">110 publicações &nbsp;·&nbsp; 11406 seguidores &nbsp;·&nbsp; Seguindo 2</p>
+          </div>
+        </div>
+        <div class="border border-gray-200 rounded-lg px-3 py-1.5 text-[12.5px] text-gray-500 bg-white cursor-pointer flex items-center gap-1.5">
+          <i data-lucide="calendar" class="w-3.5 h-3.5"></i> 18/05/2026 – 17/06/2026
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.7fr_1fr] gap-3 mb-5">
+
+        <div class="flex flex-col gap-3">
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1.5">Alcance <i data-lucide="info" class="w-3 h-3 text-gray-400"></i></div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">540 k</div>
+            <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 32.5%</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1.5">Visualizações <i data-lucide="info" class="w-3 h-3 text-gray-400"></i></div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">1,4 M</div>
+            <div class="text-xs font-bold text-red-600 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 9.2%</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1.5">Interações <i data-lucide="info" class="w-3 h-3 text-gray-400"></i></div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">6,8 k</div>
+            <div class="text-xs font-bold text-red-600 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 25.2%</div>
+          </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+          <div class="text-[14px] font-semibold text-gray-800 mb-3">Interações</div>
+          <div class="grid grid-cols-3 text-center border-b border-gray-100 pb-2 mb-3">
+            <div class="text-[10.5px] text-gray-500 font-medium">Baixo engajamento</div>
+            <div class="text-[10.5px] text-gray-500 font-medium">Engajamento médio</div>
+            <div class="text-[10.5px] text-gray-500 font-medium">Alto engajamento</div>
+          </div>
+          <div class="grid grid-cols-3 gap-y-4 gap-x-3 text-center">
+            <div class="flex flex-col items-center">
+              <div class="text-[11px] text-gray-500">Curtidas</div>
+              <div class="text-lg font-bold text-gray-800 my-0.5">3,4 k</div>
+              <div class="text-[11px] font-bold text-red-600 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 35.2%</div>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="text-[11px] text-gray-500">Comentários</div>
+              <div class="text-lg font-bold text-gray-800 my-0.5">140</div>
+              <div class="text-[11px] font-bold text-red-600 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 47.4%</div>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="text-[11px] text-gray-500">Compartilhamentos</div>
+              <div class="text-lg font-bold text-gray-800 my-0.5">880</div>
+              <div class="text-[11px] font-bold text-red-600 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 25.4%</div>
+            </div>
+            <div class="col-start-1 row-start-3 flex flex-col items-center mt-2">
+              <div class="text-[11px] text-gray-500">Respostas</div>
+              <div class="text-lg font-bold text-gray-800 my-0.5">11</div>
+              <div class="text-[11px] font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 22.2%</div>
+            </div>
+            <div class="col-start-2 row-start-3 flex flex-col items-center mt-2">
+              <div class="text-[11px] text-gray-500">Salvos</div>
+              <div class="text-lg font-bold text-gray-800 my-0.5">1,4 k</div>
+              <div class="text-[11px] font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 23.8%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="bg-white border border-gray-200 rounded-xl p-4 flex-1 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1.5">Engajamento por Alcance <i data-lucide="info" class="w-3 h-3 text-gray-400"></i></div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">1%</div>
+            <div class="text-xs font-bold text-red-600 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 43.5%</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 flex-1 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1.5">Engajamento por Seguidores <i data-lucide="info" class="w-3 h-3 text-gray-400"></i></div>
+            <div class="text-2xl font-bold text-gray-800 leading-none mb-1">59%</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4 flex-1 shadow-sm">
+            <div class="text-xs text-gray-500 font-medium mb-1 flex items-center gap-1.5">Alcance por Seguidores <i data-lucide="info" class="w-3 h-3 text-gray-400"></i></div>
+            <div class="text-xl font-bold text-gray-800 leading-none mb-1">4.765%</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex gap-1 border-b border-gray-200 mb-6 px-1">
+        <button class="tab-btn active px-4 pb-3 -mb-px text-[13.5px] font-medium text-gray-500 hover:text-gray-800 border-b-2 border-transparent transition-colors [&.active]:text-personalized-primary [&.active]:border-personalized-primary [&.active]:font-semibold" onclick="switchTab('seguidores', this)">Evolução de Seguidores</button>
+        <button class="tab-btn px-4 pb-3 -mb-px text-[13.5px] font-medium text-gray-500 hover:text-gray-800 border-b-2 border-transparent transition-colors [&.active]:text-personalized-primary [&.active]:border-personalized-primary [&.active]:font-semibold" onclick="switchTab('divisao', this)">Divisão de Seguidores</button>
+        <button class="tab-btn px-4 pb-3 -mb-px text-[13.5px] font-medium text-gray-500 hover:text-gray-800 border-b-2 border-transparent transition-colors [&.active]:text-personalized-primary [&.active]:border-personalized-primary [&.active]:font-semibold" onclick="switchTab('stories', this)">Stories</button>
+        <button class="tab-btn px-4 pb-3 -mb-px text-[13.5px] font-medium text-gray-500 hover:text-gray-800 border-b-2 border-transparent transition-colors [&.active]:text-personalized-primary [&.active]:border-personalized-primary [&.active]:font-semibold" onclick="switchTab('reels', this)">Reels</button>
+        <button class="tab-btn px-4 pb-3 -mb-px text-[13.5px] font-medium text-gray-500 hover:text-gray-800 border-b-2 border-transparent transition-colors [&.active]:text-personalized-primary [&.active]:border-personalized-primary [&.active]:font-semibold" onclick="switchTab('publicacoes', this)">Publicações</button>
+      </div>
+
+      <div id="tab-seguidores" class="tab-panel hidden [&.active]:block">
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+          <h3 class="text-sm font-semibold text-gray-800 mb-4">Evolução de Seguidores</h3>
+          <div class="relative h-[260px] w-full">
+            <canvas id="chartSeguidores"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-divisao" class="tab-panel hidden [&.active]:block">
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-4">
+          <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-gray-800 mb-4">Por gênero</h3>
+            <div class="relative h-[220px] w-full">
+              <canvas id="chartGenero"></canvas>
+            </div>
+            <div class="flex justify-center gap-3 mt-4 text-xs text-gray-600">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-[#4e79d9] rounded-sm block"></span> Masculino</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-[#e05252] rounded-sm block"></span> Feminino</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-[#f5c542] rounded-sm block"></span> N/D</span>
+            </div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <h3 class="text-sm font-semibold text-gray-800 mb-4">Por idade e gênero</h3>
+            <div class="relative h-[280px] w-full">
+              <canvas id="chartIdade"></canvas>
+            </div>
+            <div class="flex justify-center gap-3 mt-4 text-xs text-gray-600">
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-[#4e79d9] rounded-sm block"></span> Masculino</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-[#e05252] rounded-sm block"></span> Feminino</span>
+              <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 bg-[#f5c542] rounded-sm block"></span> N/D</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-stories" class="tab-panel hidden [&.active]:block">
+        <div class="grid grid-cols-4 gap-3 mb-4">
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Total <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">1</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Total de Visualizações <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">390</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Alcance <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">310</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Média de Visualizações <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">390</div>
+          </div>
+        </div>
+        <div class="overflow-hidden border border-gray-200 rounded-xl bg-white">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-stone-50 border-b border-gray-200">
+              <tr>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Publicado em <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Pré-visualização</th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Tipo de Mídia <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Visualizações <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Interações <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Alcance <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-100 hover:bg-stone-50/50 transition-colors">
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">16 de junho, 11:00</td>
+                <td class="px-4 py-3 align-middle"><div class="w-10 h-10 bg-gray-300 rounded-md"></div></td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle"><span class="inline-flex items-center gap-1.5"><i data-lucide="image" class="w-3.5 h-3.5 text-gray-400"></i> Imagem</span></td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">393</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">6</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">305</td>
+                <td class="px-4 py-3 align-middle">
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100" title="Ver no Instagram">
+                    <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-reels" class="tab-panel hidden [&.active]:block">
+        <div class="grid grid-cols-4 gap-3 mb-4">
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Total <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">—</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Total de Visualizações <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">—</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Alcance <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">—</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Média de Visualizações <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">—</div>
+          </div>
+        </div>
+        <div class="overflow-hidden border border-gray-200 rounded-xl bg-white">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-stone-50 border-b border-gray-200">
+              <tr>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Publicado em</th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Pré-visualização</th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Tipo de Mídia</th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Visualizações</th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Curtidas</th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Comentários</th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="7" class="text-center text-gray-500 py-8 text-sm">Nenhum Reel publicado no período</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab-publicacoes" class="tab-panel hidden [&.active]:block">
+        <div class="grid grid-cols-4 gap-3 mb-4">
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Total <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">4</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Total de Visualizações <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">3,6 k</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Alcance <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">840</div>
+          </div>
+          <div class="bg-white border border-gray-200 rounded-xl p-4">
+            <div class="text-xs text-gray-500 mb-1 flex items-center gap-1.5">Média de Visualizações <i data-lucide="info" class="w-3 h-3"></i></div>
+            <div class="text-2xl font-bold text-gray-800">890</div>
+          </div>
+        </div>
+        <div class="overflow-hidden border border-gray-200 rounded-xl bg-white">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-stone-50 border-b border-gray-200">
+              <tr>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Publicado em <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Pré-visualização</th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Tipo de Mídia <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Curtidas <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none">Comentários <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+                <th class="px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-100 hover:bg-stone-50/50 transition-colors">
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">16 de junho, 10:58</td>
+                <td class="px-4 py-3 align-middle"><div class="w-10 h-10 bg-[#ED91AA] rounded-md text-[7px] text-white flex items-center justify-center p-1 text-center font-semibold leading-tight">Guia Prático do Prompt Builder</div></td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">Carrossel</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">23</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">8</td>
+                <td class="px-4 py-3 align-middle">
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100 mr-1" title="Velocímetro"><i data-lucide="clock" class="w-3.5 h-3.5"></i></button>
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100" title="Ver no Instagram"><i data-lucide="instagram" class="w-3.5 h-3.5"></i></button>
+                </td>
+              </tr>
+              <tr class="border-b border-gray-100 hover:bg-stone-50/50 transition-colors">
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">11 de junho, 10:40</td>
+                <td class="px-4 py-3 align-middle"><div class="w-10 h-10 bg-[#1FB041] rounded-md text-white flex items-center justify-center"><i data-lucide="bar-chart" class="w-4 h-4"></i></div></td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">Imagem</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">13</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">1</td>
+                <td class="px-4 py-3 align-middle">
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100 mr-1" title="Velocímetro"><i data-lucide="clock" class="w-3.5 h-3.5"></i></button>
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100" title="Ver no Instagram"><i data-lucide="instagram" class="w-3.5 h-3.5"></i></button>
+                </td>
+              </tr>
+              <tr class="border-b border-gray-100 hover:bg-stone-50/50 transition-colors">
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">28 de maio, 14:17</td>
+                <td class="px-4 py-3 align-middle"><div class="w-10 h-10 bg-[#1a1a1a] rounded-md text-[7px] text-white flex items-center justify-center p-1 text-center font-semibold leading-tight">3 parceiros. 3 formas de operar. 1 plataforma.</div></td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">Carrossel</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">42</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">3</td>
+                <td class="px-4 py-3 align-middle">
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100 mr-1" title="Velocímetro"><i data-lucide="clock" class="w-3.5 h-3.5"></i></button>
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100" title="Ver no Instagram"><i data-lucide="instagram" class="w-3.5 h-3.5"></i></button>
+                </td>
+              </tr>
+              <tr class="hover:bg-stone-50/50 transition-colors">
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">21 de maio, 10:53</td>
+                <td class="px-4 py-3 align-middle"><div class="w-10 h-10 bg-[#FF6828] rounded-md text-[8px] text-white flex items-center justify-center p-1 text-center font-semibold leading-tight">Junte-se a Bolten</div></td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">Carrossel</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">29</td>
+                <td class="px-4 py-3 text-[13px] text-gray-800 align-middle">1</td>
+                <td class="px-4 py-3 align-middle">
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100 mr-1" title="Velocímetro"><i data-lucide="clock" class="w-3.5 h-3.5"></i></button>
+                  <button class="w-7 h-7 inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 hover:bg-stone-100" title="Ver no Instagram"><i data-lucide="instagram" class="w-3.5 h-3.5"></i></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="flex items-center justify-center gap-2.5 p-3 text-[13px] text-gray-500 border-t border-gray-200">
+            <span class="cursor-pointer hover:text-gray-800"><i data-lucide="chevrons-left" class="w-4 h-4"></i></span>
+            <span class="cursor-pointer hover:text-gray-800"><i data-lucide="chevron-left" class="w-4 h-4"></i></span>
+            <span class="font-bold text-gray-800">1</span>
+            <span class="cursor-pointer hover:text-gray-800"><i data-lucide="chevron-right" class="w-4 h-4"></i></span>
+            <span class="cursor-pointer hover:text-gray-800"><i data-lucide="chevrons-right" class="w-4 h-4"></i></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="page-conversoes" class="page hidden [&.active]:block">
+
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-xl font-bold text-gray-800">Conversões</h1>
+        <button class="px-4 py-2 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-600 hover:bg-gray-50 transition-colors">Integrações com Meta Ads</button>
+      </div>
+
+      <div class="flex flex-wrap gap-2.5 bg-white border border-gray-200 rounded-xl p-3.5 mb-4 items-center shadow-sm">
+        <input type="text" placeholder="Origem, nome do lead ou número de telefone" class="flex-1 min-w-[200px] border border-gray-200 rounded-lg px-3.5 py-2 text-[13px] text-gray-600 outline-none focus:border-gray-400">
+        <div class="border border-gray-200 rounded-lg px-3.5 py-2 text-[13px] text-gray-800 cursor-pointer whitespace-nowrap bg-white flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-400"></i> 01/06/2026</div>
+        <div class="border border-gray-200 rounded-lg px-3.5 py-2 text-[13px] text-gray-800 cursor-pointer whitespace-nowrap bg-white flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5 text-gray-400"></i> 11/06/2026</div>
+        <button class="px-4 py-2 bg-gray-900 text-white rounded-lg text-[13px] font-semibold hover:bg-gray-800 whitespace-nowrap transition-colors">Buscar</button>
+        <button class="px-4 py-2 border-[1.5px] border-gray-900 text-gray-900 bg-white rounded-lg text-[13px] font-semibold hover:bg-gray-50 whitespace-nowrap transition-colors">Limpar filtros</button>
+      </div>
+
+      <div class="bg-stone-50 border border-gray-200 rounded-xl mb-4 overflow-hidden shadow-sm">
+        <div class="flex justify-between items-center p-4 cursor-pointer select-none" onclick="toggleSection(this)">
+          <h3 class="text-[15px] font-semibold text-gray-800 flex items-center gap-2">Origem</h3>
+          <i data-lucide="chevron-down" class="w-4.5 h-4.5 text-gray-400 transition-transform duration-200"></i>
+        </div>
+        <div class="px-5 pb-5 pt-0">
+          <div class="grid grid-cols-1 md:grid-cols-[180px_260px_1fr] gap-4 items-start">
+            
+            <div class="flex flex-col gap-2.5">
+              <div class="bg-white border border-gray-200 rounded-lg p-2.5 flex items-center gap-2.5 shadow-sm">
+                <div class="w-6 h-6 rounded bg-[#FF6828] flex shrink-0 items-center justify-center">
+                  <i data-lucide="instagram" class="w-3.5 h-3.5 text-white"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-[13px] text-gray-800 leading-tight">Meta Ads</div>
+                  <div class="text-[12px] text-gray-500">97</div>
+                </div>
+              </div>
+              <div class="bg-white border border-gray-200 rounded-lg p-2.5 flex items-center gap-2.5 shadow-sm">
+                <div class="w-6 h-6 rounded bg-gray-600 flex shrink-0 items-center justify-center">
+                  <i data-lucide="circle-dashed" class="w-3.5 h-3.5 text-white"></i>
+                </div>
+                <div>
+                  <div class="font-semibold text-[13px] text-gray-800 leading-tight">Não rastreado</div>
+                  <div class="text-[12px] text-gray-500">39</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <h4 class="text-[13px] font-semibold text-center mb-3 text-gray-800">Distribuição por origem</h4>
+              <div class="relative h-[160px] w-full">
+                <canvas id="chartOrigem"></canvas>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+              <h4 class="text-[13px] font-semibold text-left mb-3 text-gray-800">01 de junho até 11 de junho</h4>
+              <div class="relative h-[200px] w-full">
+                <canvas id="chartOrigem2"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <div class="flex items-center gap-2 mb-2.5">
+          <span class="text-[15px] font-semibold text-gray-800">Funil</span>
+          <i data-lucide="info" class="w-3.5 h-3.5 text-gray-400"></i>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+          <div class="grid grid-cols-7 border-b border-gray-100 bg-stone-50">
+            <div class="p-3.5 border-r border-gray-100 last:border-0">
+              <div class="text-[22px] font-bold text-gray-800 leading-none mb-1">118</div>
+              <div class="text-[11.5px] font-semibold text-green-600 mb-0.5">Aguardando Atendimento</div>
+            </div>
+            <div class="p-3.5 border-r border-gray-100 last:border-0">
+              <div class="text-[22px] font-bold text-gray-800 leading-none mb-1">114</div>
+              <div class="text-[11.5px] font-semibold text-indigo-500 mb-0.5">Sem Resposta</div>
+              <div class="text-[13px] font-semibold text-gray-400">96.6%</div>
+            </div>
+            <div class="p-3.5 border-r border-gray-100 last:border-0">
+              <div class="text-[22px] font-bold text-gray-800 leading-none mb-1">48</div>
+              <div class="text-[11.5px] font-semibold text-green-600 mb-0.5">Conversa Iniciada</div>
+              <div class="text-[13px] font-semibold text-gray-400">40.7%</div>
+            </div>
+            <div class="p-3.5 border-r border-gray-100 last:border-0">
+              <div class="text-[22px] font-bold text-gray-800 leading-none mb-1">9</div>
+              <div class="text-[11.5px] font-semibold text-purple-500 mb-0.5">Qualificado</div>
+              <div class="text-[13px] font-semibold text-gray-400">7.6%</div>
+            </div>
+            <div class="p-3.5 border-r border-gray-100 last:border-0">
+              <div class="text-[22px] font-bold text-gray-800 leading-none mb-1">2</div>
+              <div class="text-[11.5px] font-semibold text-green-600 mb-0.5">Agendado</div>
+              <div class="text-[13px] font-semibold text-gray-400">1.7%</div>
+            </div>
+            <div class="p-3.5 border-r border-gray-100 last:border-0">
+              <div class="text-[22px] font-bold text-gray-800 leading-none mb-1">0</div>
+              <div class="text-[11.5px] font-semibold text-pink-500 mb-0.5">Negociação</div>
+              <div class="text-[13px] font-semibold text-gray-400">0%</div>
+            </div>
+            <div class="p-3.5 border-r border-gray-100 last:border-0">
+              <div class="text-[22px] font-bold text-gray-800 leading-none mb-1">0</div>
+              <div class="text-[11.5px] font-semibold text-indigo-500 mb-0.5">Ganho</div>
+              <div class="text-[13px] font-semibold text-gray-400">0%</div>
+            </div>
+          </div>
+          <div class="h-[240px] p-0 w-full relative bg-white">
+            <canvas id="chartFunil" class="w-full h-[240px] block"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-stone-50 border border-gray-200 rounded-xl mb-4 overflow-hidden shadow-sm">
+        <div class="flex justify-between items-center p-4 cursor-pointer select-none" onclick="toggleSection(this)">
+          <h3 class="text-[15px] font-semibold text-gray-800 flex items-center gap-2">
+            Progresso diário por status <i data-lucide="info" class="w-3.5 h-3.5 text-gray-400"></i>
+          </h3>
+          <i data-lucide="chevron-down" class="w-4.5 h-4.5 text-gray-400 transition-transform duration-200"></i>
+        </div>
+        <div class="px-5 pb-5 pt-0">
+          <div class="text-xs text-gray-400 mb-3.5 -mt-2">(28 dias até o filtro de data final)</div>
+          <div class="overflow-x-auto pb-2">
+            <div id="heatmap-container"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-stone-50 border border-gray-200 rounded-xl mb-4 overflow-hidden shadow-sm">
+        <div class="flex justify-between items-center p-4 cursor-pointer select-none" onclick="toggleSection(this)">
+          <h3 class="text-[15px] font-semibold text-gray-800">Conversões</h3>
+          <i data-lucide="chevron-down" class="w-4.5 h-4.5 text-gray-400 transition-transform duration-200"></i>
+        </div>
+        <div class="px-5 pb-5 pt-0">
+          <div class="overflow-hidden border border-gray-200 rounded-xl bg-white">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-stone-50 border-b border-gray-200">
+                <tr>
+                  <th class="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Fonte</th>
+                  <th class="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Nome</th>
+                  <th class="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Número de Telefone</th>
+                  <th class="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Status Atual</th>
+                  <th class="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Criado Em</th>
+                  <th class="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Última Atualização</th>
+                  <th class="px-4 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Card no Kanban</th>
+                  <th class="px-4 py-3"></th>
+                </tr>
+              </thead>
+              <tbody id="cv-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="page-funil" class="page hidden [&.active]:flex flex-col h-full">
+
+      <div class="flex flex-wrap items-center gap-2 mb-4 shrink-0">
+        <div class="flex gap-2 flex-1">
+          <div class="flex gap-0.5">
+            <div class="w-7 h-7 border border-gray-200 rounded-md bg-stone-100 flex items-center justify-center cursor-pointer text-gray-800" title="Kanban">
+              <i data-lucide="trello" class="w-3.5 h-3.5"></i>
+            </div>
+            <div class="w-7 h-7 border border-gray-200 rounded-md bg-white flex items-center justify-center cursor-pointer text-gray-400 hover:text-gray-600" title="Lista">
+              <i data-lucide="list" class="w-3.5 h-3.5"></i>
+            </div>
+          </div>
+          <button class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-800 hover:bg-stone-50 transition-colors whitespace-nowrap">
+            <i data-lucide="filter" class="w-3 h-3 text-gray-500"></i> + Filtro
+          </button>
+          <button class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-800 hover:bg-stone-50 transition-colors whitespace-nowrap">
+            Buscar
+          </button>
+        </div>
+        
+        <div class="flex items-center gap-2 justify-center">
+          <select class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm">
+            <option>Data de criação</option>
+          </select>
+          <select class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm">
+            <option>Desc</option>
+            <option>Asc</option>
+          </select>
+        </div>
+
+        <div class="flex items-center gap-2 ml-auto">
+          <button onclick="switchPage('funil-relatorio', this)" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-800 hover:bg-stone-50 transition-colors whitespace-nowrap">
+            <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-gray-500"></i> Relatório
+          </button>
+          <button class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-800 hover:bg-stone-50 transition-colors whitespace-nowrap">
+            <i data-lucide="settings" class="w-3.5 h-3.5 text-gray-500"></i> Configurar
+          </button>
+          <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-[13px] font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Adicionar
+          </button>
+          <button class="inline-flex items-center justify-center px-2 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-500 hover:bg-stone-50 transition-colors">
+            <i data-lucide="more-horizontal" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex gap-3.5 overflow-x-auto pb-3 flex-1 items-start h-full">
+
+        <div class="w-64 min-w-[16rem] bg-stone-100 border border-gray-200 rounded-xl flex flex-col shrink-0 max-h-full shadow-sm">
+          <div class="flex items-center gap-2 p-3 pb-2 shrink-0">
+            <span class="text-sm font-semibold text-gray-800">Novo lead</span>
+            <span class="bg-gray-200 text-gray-700 text-[11px] font-bold rounded-full px-2 py-0.5 min-w-[1.25rem] text-center">3</span>
+            <button class="ml-auto w-6 h-6 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:bg-stone-50 hover:text-gray-800 transition-colors shrink-0">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="overflow-y-auto px-2.5 flex flex-col gap-2 pb-2">
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">5511987252596</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Alta</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Ligar para o lead dia 25. Criamos um grupo exclusivo no WhatsApp para parceiros ativos e engajado...</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Marcos | Gerente Comercial</div>
+                </div>
+              </div>
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">gwsddsbbffdbd</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1.5 flex-wrap"><span class="bg-gray-800 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full">Facebook</span></div>
+                <div class="w-6 h-6 rounded-full bg-personalized-primary flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">RP</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Enzo</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1.5 flex-wrap"><span class="bg-gray-800 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full">Facebook</span></div>
+                <div class="w-6 h-6 rounded-full bg-personalized-primary flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">RP</div>
+              </div>
+            </div>
+
+          </div>
+          <div class="flex items-center justify-center gap-1.5 p-2.5 text-xs font-semibold text-gray-400 hover:text-gray-500 cursor-pointer tracking-wider shrink-0 mt-auto border-t border-gray-200/50">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> ADICIONAR
+          </div>
+        </div>
+
+        <div class="w-64 min-w-[16rem] bg-stone-100 border border-gray-200 rounded-xl flex flex-col shrink-0 max-h-full shadow-sm">
+          <div class="flex items-center gap-2 p-3 pb-2 shrink-0">
+            <span class="text-sm font-semibold text-gray-800">Agendamento</span>
+            <span class="bg-gray-200 text-gray-700 text-[11px] font-bold rounded-full px-2 py-0.5 min-w-[1.25rem] text-center">3</span>
+            <button class="ml-auto w-6 h-6 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:bg-stone-50 hover:text-gray-800 transition-colors shrink-0">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="overflow-y-auto px-2.5 flex flex-col gap-2 pb-2">
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Enzo</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Alta</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Ligar para ele dia 25 no período da manhã, agendado para dia 26/04/2026 às 15:30 com o João Silva</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Renan Pinheiro</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Alta</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Ligar para ele dia 25 no período da manhã, agendado para dia 27/04/2026 às 15:30 com o Renan Silva</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Renan Kataoka</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+          </div>
+          <div class="flex items-center justify-center gap-1.5 p-2.5 text-xs font-semibold text-gray-400 hover:text-gray-500 cursor-pointer tracking-wider shrink-0 mt-auto border-t border-gray-200/50">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> ADICIONAR
+          </div>
+        </div>
+
+        <div class="w-64 min-w-[16rem] bg-emerald-50/50 border border-emerald-100 rounded-xl flex flex-col shrink-0 max-h-full shadow-sm">
+          <div class="flex items-center gap-2 p-3 pb-2 shrink-0">
+            <span class="text-sm font-semibold text-gray-800">Ganho</span>
+            <span class="bg-green-200 text-green-800 text-[11px] font-bold rounded-full px-2 py-0.5 min-w-[1.25rem] text-center">3</span>
+            <button class="ml-auto w-6 h-6 rounded-md border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:bg-stone-50 hover:text-gray-800 transition-colors shrink-0">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <div class="overflow-y-auto px-2.5 flex flex-col gap-2 pb-2">
+
+            <div class="bg-white border border-emerald-100 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Média</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Ligar para o Paulo Antonio e responder antes de sexta-feira</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-emerald-100 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Renan Kataoka</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1.5 flex-wrap"><span class="bg-orange-400 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full">Olá</span></div>
+                <div class="w-6 h-6 rounded-full bg-personalized-primary flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">RP</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-emerald-100 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Renan Pinheiro</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1.5 flex-wrap"><span class="bg-purple-600 text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full">Indicação</span></div>
+                <div class="w-6 h-6 rounded-full bg-personalized-primary flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">RP</div>
+              </div>
+            </div>
+
+          </div>
+          <div class="flex items-center justify-center gap-1.5 p-2.5 text-xs font-semibold text-green-300 hover:text-green-400 cursor-pointer tracking-wider shrink-0 mt-auto border-t border-emerald-100/50">
+            <i data-lucide="plus-circle" class="w-4 h-4 text-green-300"></i> ADICIONAR
+          </div>
+        </div>
+
+        <div class="w-64 min-w-[16rem] bg-stone-100 border border-gray-200 rounded-xl flex flex-col shrink-0 max-h-full shadow-sm">
+          <div class="flex items-center gap-2 p-3 pb-2 shrink-0">
+            <span class="text-sm font-semibold text-gray-800">Status não mapeado</span>
+            <span class="bg-gray-200 text-gray-700 text-[11px] font-bold rounded-full px-2 py-0.5 min-w-[1.25rem] text-center">5</span>
+          </div>
+          <div class="overflow-y-auto px-2.5 flex flex-col gap-2 pb-2">
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Alta</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Marcar agenda com Erick e responder antes de segunda-feira</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Baixa</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Ligar para a dona Maria Silva e responder antes de terça-feira</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Bolten – Financeiro</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Alta</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Cliente expressou urgência para o plano de marketing avançado. TASK: Preparar e enviar proposta.</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Follow-up pendente — aguardando retorno do cliente sobre proposta enviada</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-personalized-primary flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">RP</div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-gray-200 rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow">
+              <div class="flex gap-4 mb-2">
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Contato</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Prioridade</div>
+                  <div class="text-[12.5px] font-medium text-gray-800 truncate">Média</div>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0 mb-2">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Observação</div>
+                <div class="text-[12.5px] font-medium text-gray-800 line-clamp-3 leading-snug">Verificar integração com CRM e confirmar acesso ao painel</div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[10.5px] font-semibold text-gray-400 mb-0.5">Nível de parceiro</div>
+                <div class="text-[12.5px] font-medium text-gray-800 truncate">-</div>
+              </div>
+              <div class="flex items-center justify-between mt-2.5">
+                <div class="flex gap-1 flex-wrap"></div>
+                <div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0 ml-auto">EG</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- PAGE: FUNIL RELATÓRIO                                  -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="page-funil-relatorio" class="page hidden [&.active]:block">
+
+      <!-- Header -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div class="flex items-center gap-3">
+          <button onclick="switchPage('funil', document.querySelector('[onclick*=\'funil\']'))" class="w-8 h-8 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:bg-stone-50 transition-colors shadow-sm">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <h1 class="text-xl font-bold text-gray-800">Funil de Vendas · Relatório</h1>
+            <p class="text-[13px] text-gray-500 mt-0.5">Conversão e performance por etapa</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <select class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm">
+            <option>Últimos 7 dias</option>
+            <option selected>Últimos 30 dias</option>
+            <option>Este mês</option>
+            <option>Últimos 90 dias</option>
+          </select>
+          <select class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm">
+            <option>Todos os vendedores</option>
+            <option>CJ</option>
+            <option>Enzo</option>
+            <option>Renan</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Funil Sankey -->
+      <div class="bg-slate-800 rounded-xl overflow-hidden shadow-sm mb-6">
+        <div class="grid grid-cols-3 sm:grid-cols-6 border-b border-white/10">
+          <div class="p-4 border-r border-white/10"><div class="text-[22px] font-bold text-white leading-none mb-1">427</div><div class="text-[11px] font-semibold text-green-400 mb-0.5">Novo Lead</div><div class="text-[12px] text-gray-400">100%</div></div>
+          <div class="p-4 border-r border-white/10"><div class="text-[22px] font-bold text-white leading-none mb-1">312</div><div class="text-[11px] font-semibold text-indigo-400 mb-0.5">Contato</div><div class="text-[12px] text-gray-400">73.1%</div></div>
+          <div class="p-4 border-r border-white/10"><div class="text-[22px] font-bold text-white leading-none mb-1">148</div><div class="text-[11px] font-semibold text-purple-400 mb-0.5">Qualificado</div><div class="text-[12px] text-gray-400">34.7%</div></div>
+          <div class="p-4 border-r border-white/10"><div class="text-[22px] font-bold text-white leading-none mb-1">89</div><div class="text-[11px] font-semibold text-yellow-400 mb-0.5">Agendamento</div><div class="text-[12px] text-gray-400">20.8%</div></div>
+          <div class="p-4 border-r border-white/10"><div class="text-[22px] font-bold text-white leading-none mb-1">52</div><div class="text-[11px] font-semibold text-orange-400 mb-0.5">Negociação</div><div class="text-[12px] text-gray-400">12.2%</div></div>
+          <div class="p-4"><div class="text-[22px] font-bold text-white leading-none mb-1">31</div><div class="text-[11px] font-semibold text-emerald-400 mb-0.5">Ganho</div><div class="text-[12px] text-gray-400">7.3%</div></div>
+        </div>
+        <div class="h-[180px] p-0 w-full relative">
+          <canvas id="chartFunilRelatorio" class="w-full h-[180px] block"></canvas>
+        </div>
+      </div>
+
+      <!-- Grid: Somatório + Detalhamento vendedor -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+
+        <!-- Somatório por etapa -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+          <div class="px-5 py-3.5 border-b border-gray-100">
+            <span class="text-[13px] font-semibold text-gray-800">Somatório por etapa</span>
+          </div>
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-stone-50 border-b border-gray-200">
+              <tr>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Etapa</th>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">Leads</th>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">Conversão</th>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">
+                  <span class="inline-flex items-center gap-1 justify-end">Valor <i data-lucide="info" class="w-3 h-3 text-gray-300" title="Negociação = valor das propostas em aberto. Ganho = receita confirmada."></i></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-100 hover:bg-stone-50"><td class="px-4 py-3 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400 shrink-0"></span><span class="text-[13px] text-gray-800">Novo Lead</span></td><td class="px-4 py-3 text-[13px] font-semibold text-gray-800 text-right">427</td><td class="px-4 py-3 text-[13px] text-gray-500 text-right">100%</td><td class="px-4 py-3 text-[13px] text-gray-400 text-right">—</td></tr>
+              <tr class="border-b border-gray-100 hover:bg-stone-50"><td class="px-4 py-3 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-indigo-400 shrink-0"></span><span class="text-[13px] text-gray-800">Contato</span></td><td class="px-4 py-3 text-[13px] font-semibold text-gray-800 text-right">312</td><td class="px-4 py-3 text-[13px] text-gray-500 text-right">73.1%</td><td class="px-4 py-3 text-[13px] text-gray-400 text-right">—</td></tr>
+              <tr class="border-b border-gray-100 hover:bg-stone-50"><td class="px-4 py-3 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-purple-400 shrink-0"></span><span class="text-[13px] text-gray-800">Qualificado</span></td><td class="px-4 py-3 text-[13px] font-semibold text-gray-800 text-right">148</td><td class="px-4 py-3 text-[13px] text-gray-500 text-right">34.7%</td><td class="px-4 py-3 text-[13px] text-gray-400 text-right">—</td></tr>
+              <tr class="border-b border-gray-100 hover:bg-stone-50"><td class="px-4 py-3 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-yellow-400 shrink-0"></span><span class="text-[13px] text-gray-800">Agendamento</span></td><td class="px-4 py-3 text-[13px] font-semibold text-gray-800 text-right">89</td><td class="px-4 py-3 text-[13px] text-gray-500 text-right">20.8%</td><td class="px-4 py-3 text-[13px] text-gray-400 text-right">—</td></tr>
+              <tr class="border-b border-gray-100 hover:bg-stone-50"><td class="px-4 py-3 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange-400 shrink-0"></span><span class="text-[13px] text-gray-800">Negociação</span></td><td class="px-4 py-3 text-[13px] font-semibold text-gray-800 text-right">52</td><td class="px-4 py-3 text-[13px] text-gray-500 text-right">12.2%</td><td class="px-4 py-3 text-right"><div class="text-[13px] text-gray-700 font-medium">R$ 82.400</div><div class="text-[11px] text-gray-400">em aberto</div></td></tr>
+              <tr class="hover:bg-stone-50 bg-emerald-50/40"><td class="px-4 py-3 flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span><span class="text-[13px] font-semibold text-gray-800">Ganho</span></td><td class="px-4 py-3 text-[13px] font-bold text-emerald-700 text-right">31</td><td class="px-4 py-3 text-[13px] font-semibold text-emerald-700 text-right">7.3%</td><td class="px-4 py-3 text-right"><div class="text-[13px] font-bold text-emerald-700">R$ 48.900</div><div class="text-[11px] text-emerald-600">confirmado</div></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Performance por vendedor -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+          <div class="px-5 py-3.5 border-b border-gray-100">
+            <span class="text-[13px] font-semibold text-gray-800">Performance por vendedor</span>
+          </div>
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-stone-50 border-b border-gray-200">
+              <tr>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Vendedor</th>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">Leads</th>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">Ganhos</th>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">Conversão</th>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">Valor</th>
+                <th class="px-4 py-2.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider text-right">Ticket médio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-100 hover:bg-stone-50">
+                <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[9px] font-bold">CJ</div><span class="text-[13px] text-gray-800">CJ</span></div></td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-gray-800 text-right">186</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-emerald-700 text-right">14</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-gray-700 text-right">7.5%</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-emerald-700 text-right">R$ 22.100</td>
+                <td class="px-4 py-3 text-[13px] text-gray-600 text-right">R$ 1.578</td>
+              </tr>
+              <tr class="border-b border-gray-100 hover:bg-stone-50">
+                <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full bg-gray-500 flex items-center justify-center text-white text-[9px] font-bold">EG</div><span class="text-[13px] text-gray-800">Enzo</span></div></td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-gray-800 text-right">142</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-emerald-700 text-right">11</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-gray-700 text-right">7.7%</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-emerald-700 text-right">R$ 17.360</td>
+                <td class="px-4 py-3 text-[13px] text-gray-600 text-right">R$ 1.578</td>
+              </tr>
+              <tr class="hover:bg-stone-50">
+                <td class="px-4 py-3"><div class="flex items-center gap-2"><div class="w-6 h-6 rounded-full bg-personalized-primary flex items-center justify-center text-white text-[9px] font-bold">RP</div><span class="text-[13px] text-gray-800">Renan</span></div></td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-gray-800 text-right">99</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-emerald-700 text-right">6</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-gray-700 text-right">6.1%</td>
+                <td class="px-4 py-3 text-[13px] font-semibold text-emerald-700 text-right">R$ 9.440</td>
+                <td class="px-4 py-3 text-[13px] text-gray-600 text-right">R$ 1.573</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div id="page-whatsapp" class="page hidden [&.active]:flex h-full w-full border border-gray-200 rounded-xl overflow-hidden min-h-[600px]">
+
+      <div class="w-full md:w-80 shrink-0 border-r border-gray-200 bg-white flex flex-col h-full overflow-hidden">
+
+        <div class="p-3 border-b border-gray-100 flex items-center gap-2 shrink-0 bg-white">
+          <i data-lucide="message-circle" class="w-4 h-4 text-gray-500 shrink-0"></i>
+          <span class="flex-1 text-[13px] font-semibold text-gray-800">+55 859 6124578</span>
+          <button onclick="switchPage('wpp-relatorio', this); document.getElementById('wpp-filter-canal').value='55859';" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-800 hover:bg-stone-50 transition-colors whitespace-nowrap">
+            <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-gray-500"></i> Relatório
+          </button>
+          <div class="w-7 h-7 rounded-full flex items-center justify-center cursor-pointer text-gray-400 hover:bg-stone-100 hover:text-gray-600 transition-colors">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+          </div>
+        </div>
+
+        <div class="p-2 border-b border-gray-100 shrink-0">
+          <div class="bg-stone-100 rounded-lg flex items-center gap-2 px-3 py-1.5">
+            <i data-lucide="search" class="w-4 h-4 text-gray-400 shrink-0"></i>
+            <input type="text" placeholder="Pesquisar por nome ou número" class="bg-transparent border-none outline-none text-[13px] text-gray-800 w-full placeholder:text-gray-400">
+          </div>
+        </div>
+
+        <div class="px-3 py-2 flex gap-2 shrink-0">
+          <button class="px-3.5 py-1 rounded-full text-[13px] font-semibold bg-gray-200 text-gray-800 transition-colors">Tudo</button>
+          <button class="px-3.5 py-1 rounded-full text-[13px] font-medium text-gray-500 hover:bg-stone-100 transition-colors">Minhas</button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto">
+
+          <div class="flex items-center gap-2.5 p-2.5 border-b border-stone-50 cursor-pointer hover:bg-stone-50 transition-colors group" onclick="selectContact(this, 'Ana Claudia')">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-sky-500 text-white font-bold text-sm">AC</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="text-[13.5px] font-semibold text-gray-800 truncate max-w-[160px]">Ana Claudia</span>
+                <span class="text-[11px] text-gray-400 shrink-0">17/06/2026</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[12.5px] text-gray-400 truncate">Bom diaaaaaa, Ana! Como você est...</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 p-2.5 border-b border-stone-50 cursor-pointer hover:bg-stone-50 transition-colors group" onclick="selectContact(this, 'Andresa Lemos')">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-gray-700 text-white font-bold text-sm">AL</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="text-[13.5px] font-semibold text-gray-800 truncate max-w-[160px]">Andresa Lemos</span>
+                <span class="text-[11px] text-gray-400 shrink-0">17/06/2026</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[12.5px] text-gray-400 truncate flex items-center gap-1"><i data-lucide="mic" class="w-3 h-3"></i> Áudio</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 p-2.5 border-b border-stone-50 cursor-pointer hover:bg-stone-50 transition-colors group" onclick="selectContact(this, 'Josy Maia')">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-teal-600 text-white font-bold text-sm">JM</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="text-[13.5px] font-semibold text-gray-800 truncate max-w-[160px]">Josy Maia</span>
+                <span class="text-[11px] text-gray-400 shrink-0">16/06/2026</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[12.5px] text-gray-400 truncate">Pra variar o de sempre , acredito.....</span>
+                <span class="bg-personalized-primary text-white text-[11px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5 shrink-0">3</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 p-2.5 border-b border-stone-50 cursor-pointer hover:bg-stone-50 transition-colors group" onclick="selectContact(this, 'Irisvanda Gomes')">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-violet-600 text-white font-bold text-sm">IG</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="text-[13.5px] font-semibold text-gray-800 truncate max-w-[160px]">Irisvanda Gomes</span>
+                <span class="text-[11px] text-gray-400 shrink-0">16/06/2026</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[12.5px] text-gray-400 truncate">🤍</span>
+                <span class="bg-personalized-primary text-white text-[11px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5 shrink-0">1</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 p-2.5 border-b border-stone-50 cursor-pointer hover:bg-stone-50 transition-colors group" onclick="selectContact(this, 'MARIANA HOLANDA')">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-yellow-700 text-white font-bold text-sm">MH</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="text-[13.5px] font-semibold text-gray-800 truncate max-w-[160px]">MARIANA HOLANDA</span>
+                <span class="text-[11px] text-gray-400 shrink-0">16/06/2026</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[12.5px] text-gray-400 truncate">Mas tá tudo bem</span>
+                <span class="bg-personalized-primary text-white text-[11px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1.5 shrink-0">3</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 p-2.5 border-b border-stone-50 cursor-pointer transition-colors bg-stone-100 group [&.active]:bg-stone-100 active" onclick="selectContact(this, '256281436782790@lid')">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0 bg-pink-700 text-white font-bold text-sm">VN</div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-0.5">
+                <span class="text-[13.5px] font-semibold text-gray-800 truncate max-w-[160px]">256281436782790@lid</span>
+                <span class="text-[11px] text-gray-400 shrink-0">16/06/2026</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-[12.5px] text-gray-400 truncate">Passando por aqui porque lembrei de...</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="flex-1 flex flex-col bg-white min-w-0">
+
+        <div class="p-3 border-b border-gray-200 flex items-center gap-2.5 bg-white shrink-0">
+          <div class="w-9 h-9 rounded-full bg-pink-700 shrink-0 flex items-center justify-center text-white font-bold text-xs">VN</div>
+          <div class="flex flex-col">
+            <div class="text-sm font-semibold text-gray-800 flex items-center gap-1">
+              256281436782790@lid <i data-lucide="lock" class="w-3.5 h-3.5 text-gray-400"></i>
+            </div>
+          </div>
+          <div class="ml-4 inline-flex items-center gap-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-md px-2.5 py-1 bg-white hover:bg-stone-50 cursor-pointer transition-colors">
+            <i data-lucide="filter" class="w-3 h-3"></i> Funil de vendas
+          </div>
+          <div class="ml-auto text-gray-400 cursor-pointer p-1.5 rounded-md hover:bg-stone-100 transition-colors">
+            <i data-lucide="more-vertical" class="w-5 h-5"></i>
+          </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-5 sm:p-10 lg:px-16 flex flex-col gap-1.5 bg-[#f0f2f5] relative z-0">
+          <div class="absolute inset-0 z-[-1] opacity-40 mix-blend-multiply bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22 opacity=%220.06%22%3E%3Cg fill=%22none%22 stroke=%22%23999%22 stroke-width=%221.2%22%3E%3Ccircle cx=%2240%22 cy=%2240%22 r=%2214%22/%3E%3Cpath d=%22M33 40a7 7 0 0114 0v5l3 5H30l3-5z%22/%3E%3Ccircle cx=%2237%22 cy=%2236%22 r=%222%22/%3E%3Ccircle cx=%2243%22 cy=%2236%22 r=%222%22/%3E%3Crect x=%22120%22 y=%2225%22 width=%2260%22 height=%2238%22 rx=%226%22/%3E%3Cpath d=%22M138 63l-8 12%22/%3E%3Cpath d=%22M135 40h30M135 48h20%22/%3E%3Ccircle cx=%22320%22 cy=%2250%22 r=%2218%22/%3E%3Cpath d=%22M310 50h20M320 40v20%22/%3E%3Crect x=%2220%22 y=%22130%22 width=%2250%22 height=%2265%22 rx=%224%22/%3E%3Ccircle cx=%2245%22 cy=%22148%22 r=%228%22/%3E%3Cpath d=%22M30 165h30M30 173h20%22/%3E%3Crect x=%22150%22 y=%22140%22 width=%2270%22 height=%2250%22 rx=%225%22/%3E%3Cpath d=%22M158 155h54M158 165h40M158 175h30%22/%3E%3Ccircle cx=%22280%22 cy=%22160%22 r=%2222%22/%3E%3Cpath d=%22M270 160l6 6 14-14%22/%3E%3Ccircle cx=%2260%22 cy=%22270%22 r=%2216%22/%3E%3Cpath d=%22M52 270h16M60 262v16%22/%3E%3Crect x=%22130%22 y=%22250%22 width=%2280%22 height=%2255%22 rx=%226%22/%3E%3Cpath d=%22M148 268l14 14 14-14%22/%3E%3Ccircle cx=%22310%22 cy=%22280%22 r=%2220%22/%3E%3Cpath d=%22M300 280a10 10 0 0020 0v-4l4-6h-28l4 6z%22/%3E%3Ccircle cx=%22305%22 cy=%22275%22 r=%222%22/%3E%3Ccircle cx=%22315%22 cy=%22275%22 r=%222%22/%3E%3Ccircle cx=%2280%22 cy=%22360%22 r=%2214%22/%3E%3Cpath d=%22M74 360h12M80 354v12%22/%3E%3Crect x=%22180%22 y=%22340%22 width=%2265%22 height=%2245%22 rx=%225%22/%3E%3Cpath d=%22M195 353h35M195 362h25%22/%3E%3C/g%3E%3C/svg%3E')] bg-[length:380px]"></div>
+          
+          <div class="flex flex-col items-end gap-0.5">
+            <div class="bg-personalized-primary text-white px-3 py-2 rounded-xl rounded-tr-sm max-w-[480px] text-[13.5px] leading-relaxed shadow-sm break-words relative">Oleeeeee, Vânia. Tudo bem?</div>
+            <div class="text-[11px] text-gray-400 text-right pr-1">16 de junho, 16:56</div>
+          </div>
+          <div class="flex flex-col items-end gap-0.5">
+            <div class="bg-personalized-primary text-white px-3 py-2 rounded-xl rounded-tr-sm max-w-[480px] text-[13.5px] leading-relaxed shadow-sm break-words relative">Passando por aqui porque lembrei de você e fiquei curiosa para saber como você está.</div>
+            <div class="text-[11px] text-gray-400 text-right pr-1">16 de junho, 16:56</div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-stone-50 border-t border-gray-200 flex items-center justify-center gap-2 text-[13px] text-gray-500 shrink-0">
+          <i data-lucide="lock" class="w-4 h-4 shrink-0"></i> Você não tem acesso de cliente neste projeto.
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- PAGE: WPP RELATÓRIO                                    -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <div id="page-wpp-relatorio" class="page hidden [&.active]:block">
+
+      <!-- Header -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div class="flex items-center gap-3">
+          <button onclick="switchPage('whatsapp', document.querySelector('[onclick*=\'whatsapp\']'))" class="w-8 h-8 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:bg-stone-50 transition-colors shadow-sm">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          </button>
+          <div>
+            <h1 class="text-xl font-bold text-gray-800">WhatsApp · Relatório</h1>
+            <p class="text-[13px] text-gray-500 mt-0.5">Performance de atendimento no período</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <select class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm">
+            <option>Últimos 7 dias</option>
+            <option selected>Últimos 30 dias</option>
+            <option>Este mês</option>
+          </select>
+          <select id="wpp-filter-canal" class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm">
+            <option value="todos">Todos os canais</option>
+            <option value="55859">+55 859 6124578</option>
+            <option value="55811">+55 811 9934221</option>
+          </select>
+          <select class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-800 cursor-pointer outline-none shadow-sm">
+            <option>Todos os atendentes</option>
+            <option>CJ</option>
+            <option>Enzo</option>
+            <option>Renan</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+          <div class="text-xs text-gray-500 font-medium mb-1.5 flex items-center gap-1.5">
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-[#FF6828]"></i>
+            Tempo médio de 1ª resposta
+          </div>
+          <div class="text-3xl font-bold text-gray-800 leading-none mb-2">4m 32s</div>
+          <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-down" class="w-3 h-3"></i> 38s mais rápido que o mês anterior</div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+          <div class="text-xs text-gray-500 font-medium mb-1.5 flex items-center gap-1.5">
+            <i data-lucide="message-circle" class="w-3.5 h-3.5 text-[#FF6828]"></i>
+            Total de atendimentos
+          </div>
+          <div class="text-3xl font-bold text-gray-800 leading-none mb-2">847</div>
+          <div class="text-xs font-bold text-green-600 flex items-center gap-1"><i data-lucide="trending-up" class="w-3 h-3"></i> 12.3% vs período anterior</div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+          <div class="text-xs text-gray-500 font-medium mb-1.5 flex items-center gap-1.5">
+            <i data-lucide="zap" class="w-3.5 h-3.5 text-[#FF6828]"></i>
+            Taxa de handoff IA → humano
+          </div>
+          <div class="text-3xl font-bold text-gray-800 leading-none mb-2">34%</div>
+          <div class="flex items-center gap-2 mt-1">
+            <div class="flex-1 bg-stone-100 rounded-full h-1.5 overflow-hidden">
+              <div class="h-full rounded-full bg-[#FF6828]" style="width:34%"></div>
+            </div>
+            <span class="text-xs text-gray-400">288 de 847</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts row -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-6">
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+          <div class="text-[13px] font-semibold text-gray-800 mb-4">Atendimentos por dia</div>
+          <div class="relative h-[200px]">
+            <canvas id="chartWppDia"></canvas>
+          </div>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+          <div class="text-[13px] font-semibold text-gray-800 mb-4">Volume por atendente</div>
+          <div class="relative h-[200px]">
+            <canvas id="chartWppAtendentes"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabela por atendente -->
+      <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-gray-100">
+          <span class="text-[13px] font-semibold text-gray-800">Detalhamento por atendente</span>
+        </div>
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-stone-50 border-b border-gray-200">
+            <tr>
+              <th class="px-5 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Atendente</th>
+              <th class="px-5 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Atendimentos</th>
+              <th class="px-5 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">TMR</th>
+              <th class="px-5 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">Handoffs recebidos</th>
+              <th class="px-5 py-3 text-[11px] font-semibold text-gray-500 uppercase tracking-wider">% do total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-gray-100 hover:bg-stone-50 transition-colors">
+              <td class="px-5 py-3.5">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-[#FF6828] flex items-center justify-center text-white text-[10px] font-bold shrink-0">IA</div>
+                  <span class="text-[13px] font-medium text-gray-800">IA Bolty</span>
+                  <span class="bg-orange-50 text-[#FF6828] text-[10px] font-bold border border-orange-200 rounded-full px-2 py-0.5">Automático</span>
+                </div>
+              </td>
+              <td class="px-5 py-3.5 text-[13px] font-semibold text-gray-800">558</td>
+              <td class="px-5 py-3.5 text-[13px] text-gray-700">1m 12s</td>
+              <td class="px-5 py-3.5 text-[13px] text-gray-500">—</td>
+              <td class="px-5 py-3.5">
+                <div class="flex items-center gap-2">
+                  <div class="w-20 bg-stone-100 rounded-full h-1.5 overflow-hidden"><div class="h-full rounded-full bg-[#FF6828]" style="width:66%"></div></div>
+                  <span class="text-[12px] font-semibold text-gray-700">65.9%</span>
+                </div>
+              </td>
+            </tr>
+            <tr class="border-b border-gray-100 hover:bg-stone-50 transition-colors">
+              <td class="px-5 py-3.5">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0">CJ</div>
+                  <span class="text-[13px] font-medium text-gray-800">CJ</span>
+                </div>
+              </td>
+              <td class="px-5 py-3.5 text-[13px] font-semibold text-gray-800">142</td>
+              <td class="px-5 py-3.5 text-[13px] text-gray-700">8m 45s</td>
+              <td class="px-5 py-3.5 text-[13px] text-gray-700">102</td>
+              <td class="px-5 py-3.5">
+                <div class="flex items-center gap-2">
+                  <div class="w-20 bg-stone-100 rounded-full h-1.5 overflow-hidden"><div class="h-full rounded-full bg-gray-400" style="width:17%"></div></div>
+                  <span class="text-[12px] font-semibold text-gray-700">16.8%</span>
+                </div>
+              </td>
+            </tr>
+            <tr class="border-b border-gray-100 hover:bg-stone-50 transition-colors">
+              <td class="px-5 py-3.5">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-gray-500 flex items-center justify-center text-white text-[10px] font-bold shrink-0">EG</div>
+                  <span class="text-[13px] font-medium text-gray-800">Enzo</span>
+                </div>
+              </td>
+              <td class="px-5 py-3.5 text-[13px] font-semibold text-gray-800">98</td>
+              <td class="px-5 py-3.5 text-[13px] text-gray-700">6m 20s</td>
+              <td class="px-5 py-3.5 text-[13px] text-gray-700">79</td>
+              <td class="px-5 py-3.5">
+                <div class="flex items-center gap-2">
+                  <div class="w-20 bg-stone-100 rounded-full h-1.5 overflow-hidden"><div class="h-full rounded-full bg-gray-400" style="width:11%"></div></div>
+                  <span class="text-[12px] font-semibold text-gray-700">11.6%</span>
+                </div>
+              </td>
+            </tr>
+            <tr class="hover:bg-stone-50 transition-colors">
+              <td class="px-5 py-3.5">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-7 h-7 rounded-full bg-personalized-primary flex items-center justify-center text-white text-[10px] font-bold shrink-0">RP</div>
+                  <span class="text-[13px] font-medium text-gray-800">Renan</span>
+                </div>
+              </td>
+              <td class="px-5 py-3.5 text-[13px] font-semibold text-gray-800">49</td>
+              <td class="px-5 py-3.5 text-[13px] text-gray-700">12m 30s</td>
+              <td class="px-5 py-3.5 text-[13px] text-gray-700">107</td>
+              <td class="px-5 py-3.5">
+                <div class="flex items-center gap-2">
+                  <div class="w-20 bg-stone-100 rounded-full h-1.5 overflow-hidden"><div class="h-full rounded-full bg-personalized-primary" style="width:6%"></div></div>
+                  <span class="text-[12px] font-semibold text-gray-700">5.8%</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <div id="page-contatos" class="page hidden [&.active]:block">
+
+      <div class="flex flex-wrap items-center gap-2.5 mb-5">
+        <select class="px-3 py-1.5 pr-8 border border-gray-200 rounded-lg text-[13px] font-medium bg-white text-gray-800 cursor-pointer outline-none shadow-sm">
+          <option>Todos</option>
+          <option>Com e-mail</option>
+          <option>Sem e-mail</option>
+        </select>
+        <input type="text" placeholder="Buscar por..." class="px-3.5 py-1.5 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-600 outline-none focus:border-gray-400 flex-1 min-w-[160px] shadow-sm">
+        <input type="text" placeholder="Selecionar data" class="px-3.5 py-1.5 border border-gray-200 rounded-lg text-[13px] bg-white text-gray-600 outline-none focus:border-gray-400 max-w-[180px] shadow-sm">
+        <button class="px-4 py-1.5 bg-gray-900 text-white rounded-lg text-[13px] font-semibold hover:bg-gray-800 transition-colors shadow-sm">Buscar</button>
+        <div class="flex-1"></div>
+        <button class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 rounded-lg bg-white text-[13px] font-medium text-gray-800 hover:bg-stone-50 transition-colors shadow-sm">
+          <i data-lucide="settings" class="w-3.5 h-3.5 text-gray-500"></i> Configurar
+        </button>
+        <button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-[13px] font-semibold hover:bg-gray-800 transition-colors shadow-sm">
+          <i data-lucide="contact" class="w-3.5 h-3.5"></i> Registro
+        </button>
+        <button class="inline-flex items-center justify-center px-2 py-1.5 border border-gray-200 rounded-lg bg-white text-gray-500 hover:bg-stone-50 transition-colors shadow-sm">
+          <i data-lucide="more-horizontal" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+        <table class="w-full text-left border-collapse">
+          <thead class="bg-stone-50 border-b border-gray-200">
+            <tr>
+              <th class="px-5 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none whitespace-nowrap">Nome <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+              <th class="px-5 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none whitespace-nowrap">E-mail <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+              <th class="px-5 py-3 text-[11px] font-bold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-stone-100 select-none whitespace-nowrap">Telefone <i data-lucide="arrow-up-down" class="w-3 h-3 inline-block ml-1 opacity-50"></i></th>
+              <th class="w-10"></th>
+            </tr>
+          </thead>
+          <tbody id="contatos-tbody"></tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── INICIALIZAÇÃO DE ÍCONES LUCIDE ──
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+});
+window.addEventListener('load', () => {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+});
+
+// ── TAB SWITCHING ──
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+
+  if (name === 'seguidores' && !window._chartsInit?.seguidores) initChartSeguidores();
+  if (name === 'divisao' && !window._chartsInit?.divisao) initChartsDivisao();
+}
+
+window._chartsInit = {};
+
+// ── CHART: Evolução de Seguidores ──
+function initChartSeguidores() {
+  window._chartsInit.seguidores = true;
+  const labels = [];
+  const today = new Date(2026, 4, 18);
+  for (let i = 0; i < 31; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() + i);
+    labels.push(d.getDate() + '/' + (d.getMonth()+1));
+  }
+  const data = [65,48,55,52,47,58,80,60,62,55,45,57,53,38,42,70,88,65,63,60,58,52,64,67,45,35,42,55,60,58,63];
+
+  new Chart(document.getElementById('chartSeguidores'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: '#4e79d9',
+        borderRadius: 3,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 12 }
+        },
+        y: {
+          grid: { color: '#f3f4f6' },
+          ticks: { font: { size: 11 } },
+          beginAtZero: true,
+          max: 100
+        }
+      }
+    }
+  });
+}
+
+// ── CHARTS: Divisão de Seguidores ──
+function initChartsDivisao() {
+  window._chartsInit.divisao = true;
+  new Chart(document.getElementById('chartGenero'), {
+    type: 'pie',
+    data: {
+      labels: ['Masculino', 'Feminino', 'Não declarado'],
+      datasets: [{
+        data: [65, 15, 20],
+        backgroundColor: ['#4e79d9', '#e05252', '#f5c542'],
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + '%' } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chartIdade'), {
+    type: 'bar',
+    data: {
+      labels: ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+'],
+      datasets: [
+        { label: 'Masculino', data: [30, 820, 2820, 3300, 1750, 350, 80], backgroundColor: '#4e79d9' },
+        { label: 'Feminino', data: [5, 120, 380, 390, 120, 30, 10], backgroundColor: '#e05252' },
+        { label: 'Não declarado', data: [10, 200, 350, 320, 180, 40, 20], backgroundColor: '#f5c542' }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { stacked: true, grid: { color: '#f3f4f6' }, ticks: { font: { size: 10 } } },
+        y: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+  initChartSeguidores();
+  buildHeatmap();
+  buildCvTable();
+  buildContatos();
+  setTimeout(() => {
+    initGeralCharts();
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }, 100);
+});
+
+// ── PAGE SWITCHING ──
+function switchPage(name, clickedItem) {
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  // Highlight correct nav item
+  document.querySelectorAll('.nav-item').forEach(n => {
+    const oc = n.getAttribute('onclick') || '';
+    if (oc.includes("'" + name + "'")) n.classList.add('active');
+  });
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + name);
+  if (page) page.classList.add('active');
+  // Re-init icons for new page content
+  setTimeout(() => { if (typeof lucide !== 'undefined') lucide.createIcons(); }, 30);
+  if (name === 'conversoes' && !window._chartsInit?.conversoes) setTimeout(initChartConversoes, 80);
+  if (name === 'geral' && !window._chartsInit?.geral) setTimeout(initGeralCharts, 80);
+  if (name === 'wpp-relatorio' && !window._chartsInit?.wpp) setTimeout(initWppCharts, 80);
+  if (name === 'funil-relatorio' && !window._chartsInit?.funilRelatorio) setTimeout(initFunilRelatorioChart, 80);
+}
+
+// ── GERAL CHARTS ──
+function drawFunnelGeral() {
+  const canvas = document.getElementById('chartGeralFunil');
+  if (!canvas) return;
+  const W = canvas.parentElement.clientWidth || 600;
+  const H = 140;
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const values = [427, 312, 148, 89, 52, 31];
+  const maxVal = values[0];
+  const maxH   = H * 0.92;
+  const cols   = values.length;
+  const colW   = W / cols;
+  const cy     = H / 2;
+
+  ctx.clearRect(0, 0, W, H);
+
+  const hh = values.map(v => Math.max((v / maxVal) * maxH / 2, 2));
+
+  function segTop(i) {
+    const x0 = i * colW, x1 = (i + 1) * colW;
+    const y0 = cy - hh[i], y1 = cy - hh[i + 1];
+    ctx.bezierCurveTo(x0 + colW * 0.72, y0, x1 - colW * 0.08, y1, x1, y1);
+  }
+  function segBot(i) {
+    const x0 = (i + 1) * colW, x1 = i * colW;
+    const y0 = cy + hh[i + 1], y1 = cy + hh[i];
+    ctx.bezierCurveTo(x0 - colW * 0.08, y0, x1 + colW * 0.72, y1, x1, y1);
+  }
+
+  // Fill shape
+  ctx.beginPath();
+  ctx.moveTo(0, cy - hh[0]);
+  for (let i = 0; i < cols - 1; i++) segTop(i);
+  ctx.lineTo(W, cy - hh[cols - 1]);
+  ctx.lineTo(W, cy + hh[cols - 1]);
+  for (let i = cols - 2; i >= 0; i--) segBot(i);
+  ctx.lineTo(0, cy + hh[0]);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.45)';
+  ctx.fill();
+
+  // Top edge stroke
+  ctx.beginPath();
+  ctx.moveTo(0, cy - hh[0]);
+  for (let i = 0; i < cols - 1; i++) segTop(i);
+  ctx.lineTo(W, cy - hh[cols - 1]);
+  ctx.strokeStyle = 'rgba(34, 197, 94, 0.7)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Vertical dividers
+  ctx.strokeStyle = 'rgba(0,0,0,0.07)';
+  ctx.lineWidth = 1;
+  for (let i = 1; i < cols; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * colW, 0);
+    ctx.lineTo(i * colW, H);
+    ctx.stroke();
+  }
+}
+function initGeralCharts() {
+  window._chartsInit.geral = true;
+  drawFunnelGeral();
+  const labels = [];
+  const start = new Date(2026, 4, 18);
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    labels.push(d.getDate() + '/' + (d.getMonth()+1));
+  }
+  const metaData  = [9,13,10,16,6,5,14,18,12,15,9,12,20,8,11,14,18,10,13,16,7,12,18,14,10,15,12,9,15,13];
+  const orgData   = [1,2,1,2,1,1,2,2,1,2,1,2,3,1,1,2,3,1,2,2,1,1,2,2,1,2,2,1,2,2];
+  const naoData   = [2,3,3,4,2,2,3,4,3,4,3,3,5,2,3,4,5,3,3,4,2,3,4,3,3,4,3,3,3,3];
+  const atendData = [24,31,28,38,18,14,35,42,29,38,22,31,52,19,27,36,48,25,33,41,18,29,44,35,26,39,31,24,37,33];
+
+  new Chart(document.getElementById('chartGeralLeads'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Meta Ads',       data: metaData, backgroundColor: '#FF6828', borderRadius: 2, borderSkipped: false, stack: 'leads' },
+        { label: 'Orgânico',       data: orgData,  backgroundColor: '#1FB041', borderRadius: 0, borderSkipped: false, stack: 'leads' },
+        { label: 'Não rastreado',  data: naoData,  backgroundColor: '#d1d5db', borderRadius: 0, borderSkipped: false, stack: 'leads' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+        y: { stacked: true, grid: { color: '#f3f4f6' }, ticks: { font: { size: 10 } }, beginAtZero: true }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chartGeralAtendimentos'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: atendData, backgroundColor: '#FF6828', borderRadius: 3, borderSkipped: false }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+        y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 10 } }, beginAtZero: true }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chartGeralOrigem'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Meta Ads', 'Orgânico', 'Não rastreado'],
+      datasets: [{
+        data: [307, 37, 83],
+        backgroundColor: ['#FF6828', '#1FB041', '#d1d5db'],
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '68%',
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.parsed } } }
+    }
+  });
+}
+
+function updateGeralCharts() { /* future: re-fetch data based on filters */ }
+
+// ── WPP CHARTS ──
+function initWppCharts() {
+  window._chartsInit.wpp = true;
+  const labels = [];
+  const start = new Date(2026, 4, 18);
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    labels.push(d.getDate() + '/' + (d.getMonth()+1));
+  }
+  const wppData = [24,31,28,38,18,14,35,42,29,38,22,31,52,19,27,36,48,25,33,41,18,29,44,35,26,39,31,24,37,33];
+
+  new Chart(document.getElementById('chartWppDia'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{ data: wppData, backgroundColor: '#FF6828', borderRadius: 3, borderSkipped: false }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } },
+        y: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 10 } }, beginAtZero: true }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('chartWppAtendentes'), {
+    type: 'bar',
+    data: {
+      labels: ['IA Bolty', 'CJ', 'Enzo', 'Renan'],
+      datasets: [{
+        data: [558, 142, 98, 49],
+        backgroundColor: ['#FF6828', '#94a3b8', '#94a3b8', '#ce8a1d'],
+        borderRadius: 4,
+        borderSkipped: false
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: '#f3f4f6' }, ticks: { font: { size: 10 } }, beginAtZero: true },
+        y: { grid: { display: false }, ticks: { font: { size: 12, weight: '500' } } }
+      }
+    }
+  });
+}
+
+// ── FUNIL RELATÓRIO CHART ──
+function initFunilRelatorioChart() {
+  window._chartsInit.funilRelatorio = true;
+  const ctx = document.getElementById('chartFunilRelatorio');
+  if (!ctx) return;
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Novo Lead', 'Contato', 'Qualificado', 'Agendamento', 'Negociação', 'Ganho'],
+      datasets: [{
+        data: [427, 312, 148, 89, 52, 31],
+        backgroundColor: ['#4ade80','#818cf8','#c084fc','#facc15','#fb923c','#34d399'],
+        borderRadius: 4,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 10 } } },
+        y: { display: false, beginAtZero: true }
+      }
+    }
+  });
+}
+
+// ── TOGGLE COLLAPSIBLE SECTIONS ──
+function toggleSection(header) {
+  const body = header.nextElementSibling;
+  const chevron = header.querySelector('svg');
+  const isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if(chevron) chevron.style.transform = isOpen ? 'rotate(-90deg)' : 'rotate(0deg)';
+}
+
+// ── REGISTRO DE CONTATOS ──
+function buildContatos() {
+  const tbody = document.getElementById('contatos-tbody');
+  if (!tbody) return;
+
+  const rows = [
+    { nome: 'Alison Mateus',          email: '-', tel: '558598490542' },
+    { nome: 'Izzah',                   email: '-', tel: '558491854681' },
+    { nome: '5585978190030',           email: '-', tel: '558597819030' },
+    { nome: 'João Victor',             email: '-', tel: '553491332338' },
+    { nome: 'Aline Portela',           email: '-', tel: '558596123441' },
+    { nome: 'Lana',                    email: '-', tel: '558599518222' },
+    { nome: 'Valeria Martins',         email: '-', tel: '558587657687' },
+    { nome: 'Ls',                      email: '-', tel: '558589619750' },
+    { nome: '558589385121',            email: '-', tel: '558589385121' },
+    { nome: '‹›"',                     email: '-', tel: '558585487149' },
+    { nome: 'Katia Fernanda Da Silva', email: '-', tel: '558597529951' },
+    { nome: 'Janielle Mesquita',       email: '-', tel: '558599296043' },
+    { nome: 'Silvia Rocha',            email: '-', tel: '558591913696' },
+    { nome: '558587551160',            email: '-', tel: '558587551160' },
+    { nome: 'Eveline',                 email: '-', tel: '558587754738' },
+    { nome: 'Edilene Nunes',           email: '-', tel: '558591236865' },
+    { nome: '558581014383',            email: '-', tel: '558581014383' },
+    { nome: '558597384053',            email: '-', tel: '558597384053' },
+  ];
+
+  tbody.innerHTML = rows.map(r => `
+    <tr class="border-b border-gray-100 transition-colors cursor-pointer hover:bg-stone-50/50 group">
+      <td class="px-5 py-3.5 text-[13.5px] text-gray-800 align-middle">${r.nome}</td>
+      <td class="px-5 py-3.5 text-[13.5px] text-gray-400 align-middle">${r.email}</td>
+      <td class="px-5 py-3.5 text-[13.5px] text-gray-800 align-middle">${r.tel}</td>
+      <td class="px-5 py-3.5 align-middle"><div class="w-6 h-6 flex items-center justify-center text-gray-400 rounded-md group-hover:text-gray-800 group-hover:bg-stone-100 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></div></td>
+    </tr>
+  `).join('');
+  
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+// ── WHATSAPP: select contact ──
+function selectContact(el, name) {
+  // Limpa as classes de estado ativo (agora com Tailwind arbitrary variant)
+  document.querySelectorAll('.wa-contact-item').forEach(i => {
+    i.classList.remove('active');
+    i.classList.remove('bg-stone-100');
+  });
+  el.classList.add('active');
+  el.classList.add('bg-stone-100');
+}
+
+// ── CONVERSÕES CHARTS ──
+function initChartConversoes() {
+  window._chartsInit.conversoes = true;
+
+  new Chart(document.getElementById('chartOrigem'), {
+    type: 'pie',
+    data: {
+      labels: ['Meta Ads', 'Não rastreado'],
+      datasets: [{
+        data: [97, 39],
+        backgroundColor: ['#FF6828', '#4b5563'],
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  const dayLabels = ['01/06','02/06','03/06','04/06','05/06','06/06','07/06','08/06','09/06','10/06','11/06','12/06'];
+  new Chart(document.getElementById('chartOrigem2'), {
+    type: 'bar',
+    data: {
+      labels: dayLabels,
+      datasets: [
+        { label: 'Meta Ads',      data: [13,15,13,10,9,10,13,13,2,6,3,1],  backgroundColor: '#FF6828', borderRadius: 2 },
+        { label: 'Não rastreado', data: [3,4,4,4,6,2,3,7,1,3,0,0],         backgroundColor: '#4b5563', borderRadius: 2 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 10 } } },
+        y: { stacked: true, grid: { color: '#f3f4f6' }, ticks: { font: { size: 10 } }, max: 22 }
+      }
+    }
+  });
+
+  drawFunnel();
+}
+
+function drawFunnel() {
+  const canvas = document.getElementById('chartFunil');
+  if (!canvas) return;
+  const W = canvas.parentElement.clientWidth || 900;
+  const H = 240;
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const values = [118, 114, 48, 9, 2, 0.6, 0.6];
+  const maxVal  = 118;
+  const maxH    = H * 0.92;
+  const cols    = values.length;
+  const colW    = W / cols;
+  const cy      = H / 2;
+
+  ctx.clearRect(0, 0, W, H);
+
+  const hh = values.map(v => Math.max((v / maxVal) * maxH / 2, 1.5));
+
+  function segTop(i) {
+    const x0 = i * colW, x1 = (i + 1) * colW;
+    const y0 = cy - hh[i], y1 = cy - hh[i + 1];
+    ctx.bezierCurveTo(x0 + colW * 0.72, y0,  x1 - colW * 0.08, y1,  x1, y1);
+  }
+  function segBot(i) { 
+    const x0 = (i + 1) * colW, x1 = i * colW;
+    const y0 = cy + hh[i + 1], y1 = cy + hh[i];
+    ctx.bezierCurveTo(x0 - colW * 0.08, y0,  x1 + colW * 0.72, y1,  x1, y1);
+  }
+
+  ctx.beginPath();
+  ctx.moveTo(0, cy - hh[0]);
+  for (let i = 0; i < cols - 1; i++) segTop(i);
+  ctx.lineTo(W, cy - hh[cols - 1]);
+  ctx.lineTo(W, cy + hh[cols - 1]);
+  for (let i = cols - 2; i >= 0; i--) segBot(i);
+  ctx.lineTo(0, cy + hh[0]);
+  ctx.closePath();
+
+  ctx.fillStyle = 'rgba(74, 222, 128, 0.45)';
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(0, cy - hh[0]);
+  for (let i = 0; i < cols - 1; i++) segTop(i);
+  ctx.lineTo(W, cy - hh[cols - 1]);
+  ctx.strokeStyle = 'rgba(34, 197, 94, 0.7)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(0,0,0,0.07)';
+  ctx.lineWidth = 1;
+  for (let i = 1; i < cols; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * colW, 0);
+    ctx.lineTo(i * colW, H);
+    ctx.stroke();
+  }
+}
+
+// ── HEATMAP ──
+function buildHeatmap() {
+  const container = document.getElementById('heatmap-container');
+  if (!container) return;
+
+  const rows = [
+    { label: 'Aguardando Atendimento', data: [24,9,8,11,7,8,3,7,16,19,22,10,10,14,21,35,42,33,14,19,16,0,9,14,15,16,4,7,3] },
+    { label: 'Sem Resposta',           data: [24,9,8,11,7,3,2,7,13,17,21,10,8,8,21,34,32,25,11,19,16,0,9,14,15,15,4,7,3] },
+    { label: 'Conversa Iniciada',      data: [8,4,4,3,2,0,0,3,5,5,3,4,3,4,11,16,7,7,5,11,7,0,4,4,2,8,2,3,2] },
+    { label: 'Qualificado',            data: [1,2,2,2,1,0,0,1,3,2,3,0,0,2,6,6,2,3,1,2,3,0,0,0,1,0,1,1,0] },
+    { label: 'Agendado',               data: [1,1,1,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0] },
+    { label: 'Negociação',             data: [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] },
+    { label: 'Ganho',                  data: [0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0] },
+  ];
+
+  const dates = [];
+  const start = new Date(2026, 4, 14);
+  for (let i = 0; i < 29; i++) {
+    const d = new Date(start); d.setDate(start.getDate() + i);
+    dates.push(d.getDate().toString().padStart(2,'0') + '/' + (d.getMonth()+1).toString().padStart(2,'0'));
+  }
+
+  const maxVal = 42;
+  function cellColor(v) {
+    if (v === 0) return null;
+    const intensity = Math.min(v / maxVal, 1);
+    const r = Math.round(22 + (134 - 22) * (1 - intensity));
+    const g = Math.round(163 + (239 - 163) * (1 - intensity));
+    const b = Math.round(74 + (172 - 74) * (1 - intensity));
+    return `rgb(${r},${g},${b})`;
+  }
+
+  let html = '<table class="w-full text-[11px] whitespace-nowrap border-collapse"><tbody>';
+
+  rows.forEach(row => {
+    html += '<tr>';
+    html += `<td class="text-right pr-2.5 text-[12px] font-medium text-gray-700 whitespace-nowrap py-0.5">${row.label}</td>`;
+    row.data.forEach(v => {
+      const bg = cellColor(v);
+      if (bg) {
+        html += `<td class="p-0"><div class="w-[30px] h-[30px] rounded-md m-[1px] flex items-center justify-center text-[10px] font-semibold text-white cursor-default" style="background:${bg};">${v}</div></td>`;
+      } else {
+        html += `<td class="p-0"><div class="w-[30px] h-[30px] rounded-md m-[1px] flex items-center justify-center text-[10px] font-semibold bg-gray-200 text-gray-400 cursor-default">${v}</div></td>`;
+      }
+    });
+    html += '</tr>';
+  });
+
+  html += '<tr><td></td>';
+  dates.forEach((d, i) => {
+    html += `<td class="text-[10px] text-gray-400 pt-1.5 text-center p-0">${i % 2 === 0 ? d : ''}</td>`;
+  });
+  html += '</tr>';
+
+  html += '</tbody></table>';
+  container.innerHTML = html;
+}
+
+// ── CONVERSÕES TABLE ──
+function buildCvTable() {
+  const tbody = document.getElementById('cv-table-body');
+  if (!tbody) return;
+
+  const rows = [
+    { fonte:'meta', nome:'Rozana Oliveira',    tel:'558591290766', status:'sem-resposta', criado:'11 de junho, 23:36', atualiz:'12 de junho, 10:03', kanban:true },
+    { fonte:'meta', nome:'Erilane Verissimo',  tel:'558597360601', status:'sem-resposta', criado:'11 de junho, 20:33', atualiz:'12 de junho, 10:02', kanban:true },
+    { fonte:'meta', nome:'Mercia',             tel:'558597203069', status:'conversa',     criado:'11 de junho, 16:34', atualiz:'11 de junho, 16:40', kanban:true },
+    { fonte:'meta', nome:'Glam RM',            tel:'558588404104', status:'conversa',     criado:'11 de junho, 11:38', atualiz:'11 de junho, 14:12', kanban:true },
+    { fonte:'meta', nome:'Chirley',            tel:'558592524173', status:'qualificado',  criado:'10 de junho, 17:53', atualiz:'10 de junho, 20:25', kanban:true },
+    { fonte:'nao',  nome:'Jéssica Nascimento', tel:'558591401862', status:'empty',        criado:'10 de junho, 18:01', atualiz:'10 de junho, 18:01', kanban:true },
+    { fonte:'nao',  nome:'Mykaella Nunes',     tel:'558597135004', status:'sem-resposta', criado:'10 de junho, 17:29', atualiz:'10 de junho, 17:30', kanban:false },
+    { fonte:'meta', nome:'magna',              tel:'558586083973', status:'conversa',     criado:'10 de junho, 12:39', atualiz:'10 de junho, 13:28', kanban:true },
+    { fonte:'meta', nome:'Maria Silva',        tel:'558592957234', status:'sem-resposta', criado:'10 de junho, 13:00', atualiz:'10 de junho, 13:05', kanban:true },
+    { fonte:'meta', nome:'Patricia',           tel:'558587748237', status:'conversa',     criado:'10 de junho, 08:18', atualiz:'10 de junho, 10:48', kanban:true },
+    { fonte:'meta', nome:'Ger',                tel:'558591784468', status:'sem-resposta', criado:'09 de junho, 22:25', atualiz:'10 de junho, 10:17', kanban:true },
+    { fonte:'meta', nome:"Joana D'arc 💅",     tel:'558591050133', status:'sem-resposta', criado:'10 de junho, 09:57', atualiz:'10 de junho, 10:14', kanban:true },
+    { fonte:'nao',  nome:'Nataly',             tel:'13824820358',  status:'empty',        criado:'10 de junho, 06:27', atualiz:'10 de junho, 06:27', kanban:false },
+    { fonte:'nao',  nome:'🙏',                 tel:'558599564697', status:'empty',        criado:'09 de junho, 14:51', atualiz:'09 de junho, 14:51', kanban:false },
+    { fonte:'meta', nome:'GRATIDÃO ✨',        tel:'558588322806', status:'conversa',     criado:'08 de junho, 15:54', atualiz:'09 de junho, 14:00', kanban:true },
+  ];
+
+  const statusMap = {
+    'sem-resposta': { label: 'Sem Resposta',    cls: 'bg-emerald-100 text-emerald-800 border-emerald-200', rowCls: 'bg-emerald-50/50 hover:bg-emerald-50' },
+    'conversa':     { label: 'Conversa Iniciada', cls: 'bg-rose-100 text-rose-800 border-rose-200',  rowCls: 'bg-rose-50/50 hover:bg-rose-50' },
+    'qualificado':  { label: 'Qualificado',     cls: 'bg-indigo-100 text-indigo-800 border-indigo-200',  rowCls: 'bg-indigo-50/50 hover:bg-indigo-50' },
+    'empty':        { label: '-',               cls: 'bg-stone-100 text-gray-500 border-gray-200',        rowCls: 'bg-white hover:bg-stone-50' },
+  };
+
+  let html = '';
+  rows.forEach(r => {
+    const st = statusMap[r.status];
+    
+    const fonteBadge = r.fonte === 'meta'
+      ? `<button class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-orange-50 text-[#FF6828] border border-orange-200 shadow-sm"><i data-lucide="instagram" class="w-3 h-3"></i> Meta Ads <i data-lucide="chevron-down" class="w-2.5 h-2.5"></i></button>`
+      : `<button class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-stone-100 text-gray-700 border border-gray-200 shadow-sm"><i data-lucide="circle-dashed" class="w-3 h-3"></i> Não rastreado <i data-lucide="chevron-down" class="w-2.5 h-2.5"></i></button>`;
+
+    const kanbanCell = r.kanban
+      ? `<div class="w-7 h-7 bg-stone-100 border border-gray-200 rounded-md inline-flex items-center justify-center text-gray-500 cursor-pointer hover:bg-stone-200 transition-colors shadow-sm"><i data-lucide="trello" class="w-4 h-4"></i></div>`
+      : '';
+
+    html += `<tr class="border-b border-gray-100 cursor-pointer transition-colors ${st.rowCls} group">
+      <td class="px-4 py-3 align-middle">${fonteBadge}</td>
+      <td class="px-4 py-3 align-middle font-medium text-gray-800 text-[13px]">${r.nome}</td>
+      <td class="px-4 py-3 align-middle text-gray-500 text-[13px]">${r.tel}</td>
+      <td class="px-4 py-3 align-middle"><select class="px-2.5 py-1 pr-1 rounded-md border text-xs font-semibold cursor-pointer outline-none ${st.cls}"><option>${st.label}</option></select></td>
+      <td class="px-4 py-3 align-middle text-gray-500 text-[12.5px]">${r.criado}</td>
+      <td class="px-4 py-3 align-middle text-gray-500 text-[12.5px]">${r.atualiz}</td>
+      <td class="px-4 py-3 align-middle">${kanbanCell}</td>
+      <td class="px-4 py-3 align-middle text-gray-400 group-hover:text-gray-800 transition-colors"><i data-lucide="chevron-right" class="w-4 h-4"></i></td>
+    </tr>`;
+  });
+
+  tbody.innerHTML = html;
+  
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+</script>
+</body>
+</html>
