@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolten – Onboarding do cliente</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { inter: ['Inter', 'sans-serif'] },
+        colors: { personalized: { primary: '#44403c', secondary: '#44403c' } }
+      }
+    }
+  }
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="font-inter antialiased bg-stone-100 text-gray-600 flex h-screen overflow-hidden">
+
+<!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+<aside class="w-[220px] bg-stone-100 border-r border-gray-200 flex flex-col shrink-0 h-full overflow-y-auto z-10 relative">
+  <div class="px-5 py-4 border-b border-gray-200 shrink-0"><svg viewBox="0 0 300 93.57" xmlns="http://www.w3.org/2000/svg" class="w-[86px] h-auto fill-gray-900 block">
+      <path d="m58.01,31.94c-4.7-3.73-10.26-5.63-16.51-5.63-4.42,0-9.17.97-14.13,2.89-1.64.63-3.33,1.38-5.03,2.23l-.88.44,7.05-24.6-13.16-3.1-.16.56C7.89,30.21,3.89,44.19,3.62,45.16c-.69,2.55.5,5.22,2.97,6.64,1.17.67,2.37,1.01,3.56,1.01,2.66,0,4.89-1.65,6.51-2.85,10.34-7.66,18.42-11.39,24.7-11.39,2.95,0,5.53.86,7.66,2.55,1.5,1.19,6.06,4.81,2.92,13.69-4.08,11.57-17.83,22.42-26.22,23.19-.31.03-.61.04-.89.04-2.19,0-3.19-.9-4.02-2.24-.57-.93-.69-2.01-.36-3.23,1.32-4.76,9.36-10.49,14.44-13.18l.29-.16-6.63-10.68-.26.13c-8.62,4.45-18.7,12.34-21.17,21.16-1.15,4.11-.54,8.12,1.8,11.9,3.4,5.49,9.08,8.52,15.98,8.52.72,0,1.46-.03,2.2-.1,14.66-1.35,32.33-16.14,37.8-31.66,3.75-10.63,1.3-20.07-6.89-26.57Z"/>
+      <path d="m289.33,33.57c-4.18-3.66-9.12-5.52-14.69-5.52-1.28,0-7.83.32-13.87,6.4l-.51-4.52-8.55-1.98-.23.97c-.09.34-9.18,34.49-14.75,57.22l-.08.32,12.21,2.86.08-.31c2.34-9.5,5.52-22,9.48-37.17,1.74-6.68,7.7-11.34,14.48-11.34.48,0,.96.02,1.43.07l.18.02c2.6.27,4.71.79,6.55,2.41.99.87,3.61,3.17,3.04,8.22-.07.58-.19,1.21-.39,1.98-3.6,13.82-6.52,25.3-8.68,34.12l-.08.32,12.21,2.86.08-.31c2.11-8.59,4.94-19.7,8.4-33.03h.02s.09-.33.09-.33c2.49-9.17.21-17.42-6.43-23.24Z"/>
+      <path d="m129.17,49.77c.05-6.77-2.72-12.53-7.99-16.67-3.68-3.04-8.27-4.65-13.28-4.65-.76,0-1.53.04-2.31.11-14.58,1.31-31.73,15.85-36.7,31.12-3.24,9.94-1.11,18.84,5.98,25.06.29.25.58.5.88.74l.27.12h0c3.76,2.91,8.16,4.38,13.07,4.38h0c2.75,0,5.64-.47,8.58-1.41,15.3-4.87,29.95-21.92,31.37-36.48.08-.77.12-1.55.12-2.31Zm-12.87,1.07c-.94,9.73-11.88,22.13-22.5,25.51-1.66.53-3.22.8-4.64.8-4.11,0-6-2.19-6.8-3.12-.55-.63-1-1.29-1.34-1.93-1.04-2.3-1.02-5.14.06-8.46,3.45-10.6,15.92-21.45,25.66-22.32.4-.04.79-.05,1.16-.05.95,0,1.84.12,2.66.36l.18.06c.32.11.6.23.84.36.96.53,1.79,1.13,2.45,1.76.59.64,1.12,1.4,1.59,2.27.13.23.24.5.34.8.27.86.4,1.77.4,2.79,0,.37-.02.76-.06,1.16Z"/>
+      <path d="m146.98,75.98l-.14-.3-2.53.7-3.39.94s-.1-.06-.12-.08c-.12-.12-.26-.34-.17-.69,4.98-21.45,16.98-66.55,17.11-67.01l.23-1-12.32-2.86-.23.98c-.12.45-12.13,45.56-17.11,67.02-1.08,4.66.32,9.41,3.75,12.69,2.42,2.32,5.57,3.6,8.86,3.6,1.16,0,2.32-.16,3.46-.47l3.14-.87,5.68-1.52-6.16-10.95-.05-.17Z"/>
+      <path d="m229.2,68.46c-6.57,5.84-13.64,9.18-19.39,9.18-1.86,0-3.47-.36-4.8-1.06-3.31-1.77-4.42-5.47-4.54-5.89-1.64-5.9,2.5-14.79,10.28-22.13,5.66-5.34,11.3-7.77,14.15-7.77.44,0,.82.05,1.14.16.87.3,1.71,1.13,1.91,1.9.83,3.25-5.6,11.9-22.03,20.13l-.3.15,6.06,10.78.27-.14c20.31-10.29,30.76-22.99,27.97-33.97-1.23-4.84-5.02-8.88-9.88-10.54-1.59-.54-3.32-.82-5.14-.82-6.98,0-15.01,3.95-22.62,11.13-8.91,8.4-17.2,21.86-13.71,34.42.6,2.15,3.13,9.48,10.63,13.48,3.12,1.66,6.66,2.51,10.52,2.51,8.13,0,17.27-3.79,25.72-10.68l.21-.17-6.15-10.94-.3.26Z"/>
+      <path d="m169.64,77.32s-.1-.06-.12-.08c-.12-.12-.26-.34-.17-.69,1.91-8.21,4.97-20.35,9.1-36.1l13.75.54,3.67-11.84h-14.44c2.63-9.88,4.6-17.12,4.62-17.2l.23-.99-12.3-2.85-.23.98c-.02.09-2.38,8.74-5.38,20.07h-11.44l-2.82,10.35,11.42.45c-3.83,14.62-6.68,25.98-8.49,33.75-1.08,4.65.32,9.39,3.74,12.66,2.42,2.31,5.56,3.59,8.84,3.59,1.16,0,2.32-.16,3.45-.47l16.5-4.59-6.37-11.33-13.57,3.77Z"/>
+    </svg></div>
+
+  <nav class="flex-1 py-3 px-2 flex flex-col gap-1">
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400"><i data-lucide="bar-chart-2" class="w-4 h-4"></i></div>Marketing
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400"><i data-lucide="send" class="w-4 h-4"></i></div>Campanhas
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-orange-500"><i data-lucide="filter" class="w-4 h-4"></i></div>Funil de Vendas
+    </div>
+    <div class="active group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] transition-all bg-stone-300/60 text-gray-800 font-bold">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-emerald-600"><i data-lucide="message-circle" class="w-4 h-4"></i></div>WhatsApp
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400"><i data-lucide="users" class="w-4 h-4"></i></div>Registro de contatos
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-blue-600"><i data-lucide="calendar" class="w-4 h-4"></i></div>Calendário
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400"><i data-lucide="check-square" class="w-4 h-4"></i></div>Tarefas
+    </div>
+    <div class="group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-violet-500"><i data-lucide="sparkles" class="w-4 h-4"></i></div>Agente de IA
+      <span class="ml-auto text-[9px] font-bold uppercase tracking-wider text-violet-600 bg-violet-50 border border-violet-200 rounded px-1 py-0.5">novo</span>
+    </div>
+    <div class="mt-2 group flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer text-[13px] font-medium transition-all text-gray-500 hover:text-gray-800 hover:bg-stone-200/50">
+      <div class="w-5 h-5 flex items-center justify-center shrink-0 text-gray-400"><i data-lucide="settings" class="w-4 h-4"></i></div>Configurações
+      <i data-lucide="chevron-down" class="w-3.5 h-3.5 ml-auto text-gray-400"></i>
+    </div>
+  </nav>
+
+  <div class="p-3 border-t border-gray-200 flex items-center gap-2.5 shrink-0">
+    <div class="w-7 h-7 bg-personalized-primary rounded-full flex items-center justify-center text-white text-[11px] font-bold shrink-0">MD</div>
+    <span class="text-[13px] font-medium text-gray-800 flex-1">Marina</span>
+    <i data-lucide="bell" class="w-4 h-4 text-gray-400 cursor-pointer"></i>
+  </div>
+</aside>
+
+<!-- ═══════════════════ TELA ESTÁTICA DE WHATSAPP ═══════════════════ -->
+<div class="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 h-full overflow-hidden">
+  <div class="grid grid-cols-1 md:grid-cols-[300px_1fr] h-full min-h-[560px] border border-gray-200 rounded-xl overflow-hidden bg-white">
+
+    <div class="border-r border-gray-200 flex flex-col bg-stone-50/40">
+      <div class="px-3 py-3 border-b border-gray-200 flex items-center gap-2">
+        <div class="w-6 h-6 rounded-md bg-emerald-500 flex items-center justify-center shrink-0">
+          <i data-lucide="message-circle" class="w-3.5 h-3.5 text-white"></i></div>
+        <h2 class="text-[15px] font-bold text-gray-800">WhatsApp</h2>
+        <span class="text-[10px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded ml-auto">7 conversas</span>
+      </div>
+      <div class="px-3 py-2 border-b border-gray-100">
+        <div class="relative">
+          <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input type="text" placeholder="Buscar conversa…" class="w-full pl-9 pr-3 py-1.5 border border-gray-200 rounded-lg text-[12px] text-gray-800 outline-none bg-white">
+        </div>
+      </div>
+      <div class="px-3 py-2 flex items-center gap-1.5 flex-wrap border-b border-gray-100">
+        <button class="text-[10.5px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500 text-white">Todas</button>
+        <button class="text-[10.5px] font-medium px-2 py-0.5 rounded-full text-gray-600">Não lidas</button>
+        <button class="text-[10.5px] font-medium px-2 py-0.5 rounded-full text-gray-600">Agente</button>
+        <button class="text-[10.5px] font-medium px-2 py-0.5 rounded-full text-gray-600">Humano</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto divide-y divide-gray-100">
+        <div class="px-3 py-2.5 flex items-center gap-2.5 bg-emerald-50/70 border-l-[3px] border-emerald-500 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-[12px] font-bold shrink-0">MD</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-[12.5px] font-semibold text-gray-800 truncate">Marina Duarte</div>
+              <div class="text-[10px] text-gray-500 shrink-0">14:52</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-2.5 h-2.5 text-violet-500 shrink-0"></i>
+              <div class="text-[11px] text-gray-600 truncate">Confirmado para sexta às 14h…</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-3 py-2.5 flex items-center gap-2.5 hover:bg-stone-100/60 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center text-gray-700 text-[12px] font-bold shrink-0">JA</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-[12.5px] font-semibold text-gray-800 truncate">João Almeida</div>
+              <div class="text-[10px] text-gray-500 shrink-0">13:20</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <div class="text-[11px] text-gray-500 truncate">Ótimo, obrigado!</div>
+              <span class="ml-auto w-4 h-4 bg-emerald-500 rounded-full text-white text-[9px] font-bold flex items-center justify-center shrink-0">2</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-3 py-2.5 flex items-center gap-2.5 hover:bg-stone-100/60 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center text-gray-700 text-[12px] font-bold shrink-0">PS</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-[12.5px] font-semibold text-gray-800 truncate">Patrícia Souza</div>
+              <div class="text-[10px] text-gray-500 shrink-0">11:45</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-2.5 h-2.5 text-violet-500 shrink-0"></i>
+              <div class="text-[11px] text-gray-500 truncate">Perfeito, obrigada!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-3 py-2.5 flex items-center gap-2.5 hover:bg-stone-100/60 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center text-gray-700 text-[12px] font-bold shrink-0">FC</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-[12.5px] font-semibold text-gray-800 truncate">Fernando Coelho</div>
+              <div class="text-[10px] text-gray-500 shrink-0">10:12</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="repeat-2" class="w-2.5 h-2.5 text-gray-500 shrink-0"></i>
+              <div class="text-[11px] text-gray-500 truncate">Ainda tem interesse?</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-3 py-2.5 flex items-center gap-2.5 hover:bg-stone-100/60 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center text-gray-700 text-[12px] font-bold shrink-0">RA</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-[12.5px] font-semibold text-gray-800 truncate">Renata Alves</div>
+              <div class="text-[10px] text-gray-500 shrink-0">ontem</div>
+            </div>
+            <div class="text-[11px] text-gray-500 truncate">Vou pensar e te retorno</div>
+          </div>
+        </div>
+
+        <div class="px-3 py-2.5 flex items-center gap-2.5 hover:bg-stone-100/60 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center text-gray-700 text-[12px] font-bold shrink-0">RM</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-[12.5px] font-semibold text-gray-800 truncate">Roberto Menezes</div>
+              <div class="text-[10px] text-gray-500 shrink-0">ontem</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="user-round" class="w-2.5 h-2.5 text-gray-500 shrink-0"></i>
+              <div class="text-[11px] text-gray-500 truncate">Você: Confirmo sim!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="px-3 py-2.5 flex items-center gap-2.5 hover:bg-stone-100/60 cursor-pointer">
+          <div class="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center text-gray-700 text-[12px] font-bold shrink-0">LB</div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-[12.5px] font-semibold text-gray-800 truncate">Luiza Bittencourt</div>
+              <div class="text-[10px] text-gray-500 shrink-0">seg</div>
+            </div>
+            <div class="text-[11px] text-gray-500 truncate">Bom dia! Vocês atendem sábado?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col min-w-0">
+      <div class="px-4 py-3 border-b border-gray-200 flex items-center gap-3 bg-white shrink-0">
+        <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 text-[12.5px] font-bold shrink-0">MD</div>
+        <div class="flex-1 min-w-0">
+          <div class="text-[14px] font-bold text-gray-800 truncate">Marina Duarte</div>
+          <div class="text-[11px] text-gray-500 truncate flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>online · +55 11 98877-6655
+          </div>
+        </div>
+        <div class="hidden lg:flex items-center gap-3 shrink-0">
+          <label class="flex items-center gap-1.5 select-none">
+            <div class="relative inline-flex">
+              <input type="checkbox" checked disabled class="sr-only peer">
+              <div class="w-8 h-4 bg-gray-200 rounded-full peer peer-checked:bg-violet-500 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-4"></div>
+            </div>
+            <span class="text-[11.5px] font-medium text-gray-700 inline-flex items-center gap-1"><i data-lucide="sparkles" class="w-3 h-3 text-violet-500"></i> Agente</span>
+          </label>
+          <label class="flex items-center gap-1.5 select-none">
+            <div class="relative inline-flex">
+              <input type="checkbox" checked disabled class="sr-only peer">
+              <div class="w-8 h-4 bg-gray-200 rounded-full peer peer-checked:bg-emerald-500 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:after:translate-x-4"></div>
+            </div>
+            <span class="text-[11.5px] font-medium text-gray-700 inline-flex items-center gap-1"><i data-lucide="repeat-2" class="w-3 h-3 text-gray-500"></i> Follow-up</span>
+          </label>
+          <div class="h-6 w-px bg-gray-200"></div>
+          <button class="w-8 h-8 flex items-center justify-center rounded-md text-orange-500" title="Ver no funil"><i data-lucide="filter" class="w-4 h-4"></i></button>
+          <button class="w-8 h-8 flex items-center justify-center rounded-md text-gray-500" title="Mais opções"><i data-lucide="more-vertical" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+
+      <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-1.5 bg-[#efeae2]">
+        <div class="flex justify-center my-1">
+          <span class="px-2.5 py-0.5 rounded-md bg-white/80 text-[10px] text-gray-600 font-medium shadow-sm">Quarta-feira, 26/jun</span>
+        </div>
+
+        <div class="flex justify-start">
+          <div class="max-w-[75%] bg-white rounded-lg rounded-tl-none px-3 py-1.5 shadow-sm">
+            <div class="text-[9.5px] font-semibold text-fuchsia-600 uppercase tracking-wide flex items-center gap-1 mb-0.5">
+              <i data-lucide="instagram" class="w-2.5 h-2.5"></i> veio de Instagram Ads</div>
+            <p class="text-[12.5px] text-gray-800 leading-snug">Oi, vi seu anúncio. Ainda tem horário essa semana?</p>
+            <span class="block text-[9px] text-gray-400 text-right mt-0.5">14:22</span>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="max-w-[75%] bg-emerald-50 border border-emerald-100 rounded-lg rounded-tr-none px-3 py-1.5 shadow-sm">
+            <div class="text-[9.5px] font-semibold text-violet-600 uppercase tracking-wide flex items-center gap-1 mb-0.5"><i data-lucide="sparkles" class="w-2.5 h-2.5"></i> Agente</div>
+            <p class="text-[12.5px] text-gray-800 leading-snug">Oi Marina! Temos sim. A sessão dura 1h e custa R$ 180. Qual dia funciona melhor para você?</p>
+            <div class="flex items-center justify-end gap-1 mt-0.5"><span class="text-[9px] text-gray-500">14:23</span><i data-lucide="check-check" class="w-2.5 h-2.5 text-sky-500"></i></div>
+          </div>
+        </div>
+
+        <div class="flex justify-center my-2">
+          <span class="px-2 py-0.5 rounded-md bg-white/70 text-[9.5px] text-gray-600 font-medium inline-flex items-center gap-1"><i data-lucide="clock-3" class="w-2.5 h-2.5"></i> Cliente em silêncio · 4h</span>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="max-w-[75%] bg-emerald-50 border border-emerald-200 rounded-lg rounded-tr-none px-3 py-1.5 shadow-sm">
+            <div class="text-[9.5px] font-semibold text-gray-600 uppercase tracking-wide flex items-center gap-1 mb-0.5"><i data-lucide="repeat-2" class="w-2.5 h-2.5"></i> Follow-up · Passo 1</div>
+            <p class="text-[12.5px] text-gray-800 leading-snug">Oi! Só passando para saber se ficou alguma dúvida 😊</p>
+            <div class="flex items-center justify-end gap-1 mt-0.5"><span class="text-[9px] text-gray-500">18:23</span><i data-lucide="check-check" class="w-2.5 h-2.5 text-sky-500"></i></div>
+          </div>
+        </div>
+
+        <div class="flex justify-center my-2">
+          <span class="px-2.5 py-0.5 rounded-md bg-white/80 text-[10px] text-gray-600 font-medium shadow-sm">Quinta-feira, 27/jun</span>
+        </div>
+
+        <div class="flex justify-start">
+          <div class="max-w-[75%] bg-white rounded-lg rounded-tl-none px-3 py-1.5 shadow-sm">
+            <p class="text-[12.5px] text-gray-800 leading-snug">Ah oi, desculpa a demora! Sim, ainda tenho interesse 🙈 sexta dá?</p>
+            <span class="block text-[9px] text-gray-400 text-right mt-0.5">14:38</span>
+          </div>
+        </div>
+
+        <div class="flex justify-center my-2">
+          <span class="px-2 py-0.5 rounded-md bg-emerald-100 border border-emerald-200 text-[9.5px] text-emerald-800 font-semibold inline-flex items-center gap-1"><i data-lucide="check-circle" class="w-2.5 h-2.5"></i> Follow-up encerrado · cliente respondeu</span>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="max-w-[75%] bg-emerald-50 border border-emerald-100 rounded-lg rounded-tr-none px-3 py-1.5 shadow-sm">
+            <div class="text-[9.5px] font-semibold text-violet-600 uppercase tracking-wide flex items-center gap-1 mb-0.5"><i data-lucide="sparkles" class="w-2.5 h-2.5"></i> Agente</div>
+            <p class="text-[12.5px] text-gray-800 leading-snug">Consultei sua agenda: sexta tenho 10h, 14h ou 16h livres. Qual prefere?</p>
+            <div class="flex items-center justify-end gap-1 mt-0.5"><span class="text-[9px] text-gray-500">14:39</span><i data-lucide="check-check" class="w-2.5 h-2.5 text-sky-500"></i></div>
+          </div>
+        </div>
+
+        <div class="flex justify-start">
+          <div class="max-w-[75%] bg-white rounded-lg rounded-tl-none px-3 py-1.5 shadow-sm">
+            <p class="text-[12.5px] text-gray-800 leading-snug">14h!</p>
+            <span class="block text-[9px] text-gray-400 text-right mt-0.5">14:50</span>
+          </div>
+        </div>
+
+        <div class="flex justify-end">
+          <div class="max-w-[75%] bg-emerald-50 border border-emerald-100 rounded-lg rounded-tr-none px-3 py-1.5 shadow-sm">
+            <div class="text-[9.5px] font-semibold text-violet-600 uppercase tracking-wide flex items-center gap-1 mb-0.5"><i data-lucide="sparkles" class="w-2.5 h-2.5"></i> Agente</div>
+            <p class="text-[12.5px] text-gray-800 leading-snug">Confirmado para <strong>sexta, 28/jun às 14h</strong>. Te espero aqui!</p>
+            <div class="flex items-center justify-end gap-1 mt-0.5"><span class="text-[9px] text-gray-500">14:52</span><i data-lucide="check-check" class="w-2.5 h-2.5 text-sky-500"></i></div>
+          </div>
+        </div>
+
+        <div class="flex justify-center my-2">
+          <div class="max-w-[80%] bg-white border border-blue-200 rounded-lg px-3 py-2 shadow-sm">
+            <div class="flex items-start gap-2.5">
+              <div id="chatCalIcon" class="shrink-0"></div>
+              <div class="flex-1 min-w-0">
+                <div class="text-[11px] font-bold text-blue-700 uppercase tracking-wide">Agendamento criado no Google Agenda</div>
+                <div class="text-[12.5px] font-semibold text-gray-800 mt-0.5">Sessão · Marina Duarte</div>
+                <div class="text-[11px] text-gray-600 mt-0.5 flex items-center gap-3">
+                  <span class="inline-flex items-center gap-1"><i data-lucide="calendar" class="w-3 h-3"></i> Sexta, 28/jun · 14:00</span>
+                  <span class="inline-flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 45 min</span>
+                </div>
+                <div class="mt-1.5"><button class="text-[10.5px] font-semibold text-blue-600 hover:underline inline-flex items-center gap-0.5">Ver no calendário <i data-lucide="external-link" class="w-2.5 h-2.5"></i></button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-gray-200 bg-stone-50/60 shrink-0">
+        <div class="px-4 py-3">
+          <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <div class="flex items-center gap-2 px-3 py-2.5 opacity-60 pointer-events-none">
+              <i data-lucide="paperclip" class="w-4 h-4 text-gray-400"></i>
+              <input type="text" placeholder="Digite uma mensagem..." disabled class="flex-1 outline-none bg-transparent text-[12.5px] text-gray-400">
+              <i data-lucide="smile" class="w-4 h-4 text-gray-400"></i>
+              <button class="w-8 h-8 rounded-md bg-emerald-500/30 text-white flex items-center justify-center"><i data-lucide="send" class="w-4 h-4"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ MODAL: ONBOARDING ═══════════════════ -->
+<div id="onb" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-2xl border border-gray-200 overflow-hidden flex flex-col max-h-[calc(100vh-2rem)]">
+    <div class="px-5 py-4 border-b border-gray-100 flex items-center justify-between gap-3 shrink-0">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div id="obIcon" class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0 overflow-hidden"></div>
+        <div class="min-w-0">
+          <h3 class="text-[15px] font-bold text-gray-800 leading-tight" id="obTitle"></h3>
+          <p class="text-[11px] text-gray-500 leading-snug" id="obSub"></p>
+        </div>
+      </div>
+      <span id="obTrial" class="inline-flex items-center gap-1.5 text-[11px] font-medium text-gray-600 bg-stone-50 border border-gray-200 rounded-full px-2.5 py-1 shrink-0 whitespace-nowrap"></span>
+    </div>
+
+    <div class="px-3 border-b border-gray-200 shrink-0 flex items-center gap-1 overflow-x-auto" id="obSteps"></div>
+    <div class="h-1 bg-gray-100 shrink-0"><div id="obTrack" class="h-full transition-all duration-300" style="width:0"></div></div>
+
+    <div class="p-5 overflow-y-auto" id="obBody"></div>
+
+    <div class="px-5 py-3 border-t border-gray-100 flex items-center justify-between gap-3 bg-stone-50/50 shrink-0">
+      <p class="text-[11.5px] text-gray-500 leading-snug flex items-start gap-1.5 min-w-0" id="obHelp"></p>
+      <button id="obCta" class="shrink-0"></button>
+    </div>
+  </div>
+</div>
+
+<div class="fixed right-3 bottom-3 z-[60]">
+  <div id="hPanel" class="hidden absolute right-0 bottom-10 w-[178px] bg-white border border-gray-200 rounded-lg shadow-xl p-2.5">
+    <div class="text-[9px] font-bold text-gray-400 uppercase tracking-wider mb-1.5" id="hTitle"></div>
+    <div id="hMods" class="flex flex-col gap-1"></div>
+    <div class="flex gap-1.5 mt-2">
+      <select id="lang" class="flex-1 min-w-0 px-1.5 py-1 border border-gray-200 rounded text-[10.5px] text-gray-700 bg-white outline-none">
+        <option value="pt">PT-BR</option><option value="es">ES</option><option value="en">EN</option>
+      </select>
+      <button id="reset" class="px-2 py-1 rounded border border-gray-200 bg-white text-[10.5px] font-semibold text-gray-600 hover:bg-stone-50 transition-colors"></button>
+    </div>
+  </div>
+  <button id="hToggle" title="Controles do mockup"
+    class="w-8 h-8 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center text-gray-400 hover:text-gray-700 transition-colors">
+    <i data-lucide="sliders-horizontal" class="w-3.5 h-3.5"></i>
+  </button>
+</div>
+
+<script>
+/* ============================================================
+   Onboarding do cliente final · v5
+   Cores por ferramenta · sem etapa de Agente de IA
+   Bloco descritivo de rastreio de origem · tela de parabéns
+============================================================ */
+
+/* ---------- marcas simplificadas (padrão do mockup original) ---------- */
+const MARK = {
+  whatsapp:`<svg viewBox="0 0 32 32" class="w-full h-full"><rect width="32" height="32" rx="8" fill="#25D366"/>
+    <path d="M16 7.5c-4.7 0-8.5 3.8-8.5 8.5 0 1.5.4 2.9 1.1 4.1L7.5 24.5l4.6-1.1c1.2.6 2.5 1 3.9 1 4.7 0 8.5-3.8 8.5-8.5S20.7 7.5 16 7.5Z" fill="#fff"/>
+    <path d="M13.2 12.1c.2-.4.4-.4.7-.4h.5c.2 0 .4 0 .6.5l.7 1.7c.1.3 0 .4-.1.6l-.4.5c-.1.2-.2.3 0 .6.5.9 1.4 1.7 2.4 2.1.3.1.4.1.6-.1l.5-.5c.2-.2.3-.2.6-.1l1.6.8c.4.2.4.4.4.6 0 .3-.1.9-.4 1.2-.3.3-.9.6-1.5.6-1.6 0-3.4-1-4.8-2.4-1.2-1.2-2.1-2.7-2.2-4 0-.7.2-1.3.5-1.7Z" fill="#25D366"/></svg>`,
+  instagram:`<svg viewBox="0 0 32 32" class="w-full h-full"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="#FBAD50"/><stop offset=".35" stop-color="#E1306C"/><stop offset=".7" stop-color="#C13584"/><stop offset="1" stop-color="#833AB4"/></linearGradient></defs>
+    <rect width="32" height="32" rx="8" fill="url(#ig)"/>
+    <rect x="8.5" y="8.5" width="15" height="15" rx="4.5" fill="none" stroke="#fff" stroke-width="2"/>
+    <circle cx="16" cy="16" r="3.6" fill="none" stroke="#fff" stroke-width="2"/>
+    <circle cx="20.6" cy="11.4" r="1.15" fill="#fff"/></svg>`,
+  gcal:`<svg viewBox="0 0 32 32" class="w-full h-full"><rect x="1" y="1" width="30" height="30" rx="6" fill="#fff" stroke="#DADCE0" stroke-width="1.5"/>
+    <path d="M4 7.5A2.5 2.5 0 0 1 6.5 5H12v4H4V7.5Z" fill="#4285F4"/><path d="M12 5h8v4h-8V5Z" fill="#EA4335"/>
+    <path d="M20 5h5.5A2.5 2.5 0 0 1 28 7.5V9h-8V5Z" fill="#FBBC04"/><path d="M4 9h24v1.6H4V9Z" fill="#34A853" opacity=".85"/>
+    <text x="16" y="25" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="700" fill="#5F6368">31</text></svg>`,
+  funil:`<svg viewBox="0 0 32 32" class="w-full h-full"><rect width="32" height="32" rx="8" fill="#F97316"/>
+    <path d="M8 10h16l-6 7v6l-4 2v-8L8 10Z" fill="#fff"/></svg>`,
+  meta:`<svg viewBox="0 0 32 32" class="w-full h-full"><rect width="32" height="32" rx="7" fill="#0668E1"/>
+    <path d="M8 19.5c1.6-6 3.3-8 5-8s2.4 1.4 3 3.4c.8-2.4 1.9-3.4 3.3-3.4 2.2 0 3.7 2.4 4.7 8" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M8 19.5c0 1.5.9 2.4 2 2.4 1.6 0 2.7-1.8 3.8-4.6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M24 19.5c0 1.5-.9 2.4-2 2.4-1.6 0-2.7-1.8-3.8-4.6" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+  gads:`<svg viewBox="0 0 32 32" class="w-full h-full"><rect x="1" y="1" width="30" height="30" rx="7" fill="#fff" stroke="#DADCE0" stroke-width="1.5"/>
+    <rect x="9" y="6" width="6" height="16" rx="3" transform="rotate(-30 12 14)" fill="#FBBC04"/>
+    <rect x="17" y="6" width="6" height="16" rx="3" transform="rotate(30 20 14)" fill="#4285F4"/>
+    <circle cx="12.4" cy="23" r="3.4" fill="#34A853"/></svg>`,
+  tiktok:`<svg viewBox="0 0 32 32" class="w-full h-full"><rect width="32" height="32" rx="7" fill="#111"/>
+    <path d="M18 7h3c.3 2.2 1.6 3.6 3.6 3.9v3c-1.4 0-2.6-.4-3.7-1.2v5.6c0 3.4-2.5 5.7-5.6 5.7-3 0-5.3-2.2-5.3-5.2 0-3.2 2.6-5.5 6.1-5.2v3.1c-1.6-.3-2.9.5-2.9 2.1 0 1.3 1 2.2 2.2 2.2 1.3 0 2.3-1 2.3-2.6V7Z" fill="#fff"/>
+    <path d="M17 6h3c.3 2.2 1.6 3.6 3.6 3.9v3c-1.4 0-2.6-.4-3.7-1.2v5.6c0 3.4-2.5 5.7-5.6 5.7-1 0-1.9-.2-2.7-.7" fill="none" stroke="#25F4EE" stroke-width=".9" opacity=".9"/></svg>`
+};
+
+/* ---------- paleta por etapa ---------- */
+const C = {
+  wa:{mark:"whatsapp", tint:"bg-emerald-50 border border-emerald-200", txt:"text-emerald-600",
+      brd:"border-emerald-500", cta:"bg-emerald-600 hover:bg-emerald-700", bar:"bg-emerald-500",
+      soft:"bg-emerald-50 border-emerald-200", dot:"bg-emerald-500"},
+  funil:{mark:"funil", tint:"bg-orange-50 border border-orange-200", txt:"text-orange-600",
+      brd:"border-orange-500", cta:"bg-orange-500 hover:bg-orange-600", bar:"bg-orange-500",
+      soft:"bg-orange-50 border-orange-200", dot:"bg-orange-500"},
+  cal:{mark:"gcal", tint:"bg-blue-50 border border-blue-200", txt:"text-blue-600",
+      brd:"border-blue-500", cta:"bg-blue-600 hover:bg-blue-700", bar:"bg-blue-500",
+      soft:"bg-blue-50 border-blue-200", dot:"bg-blue-500"},
+  social:{mark:"instagram", tint:"bg-fuchsia-50 border border-fuchsia-200", txt:"text-fuchsia-600",
+      brd:"border-fuchsia-500", cta:"bg-gradient-to-r from-purple-600 via-fuchsia-600 to-orange-400 hover:brightness-110",
+      bar:"bg-gradient-to-r from-purple-600 via-fuchsia-600 to-orange-400",
+      soft:"bg-fuchsia-50 border-fuchsia-200", dot:"bg-fuchsia-500"},
+  end:{mark:null, tint:"bg-emerald-50 border border-emerald-200", txt:"text-emerald-600",
+      brd:"border-emerald-500", cta:"bg-emerald-600 hover:bg-emerald-700", bar:"bg-emerald-500",
+      soft:"bg-emerald-50 border-emerald-200", dot:"bg-emerald-500"}
+};
+
+const T = {
+ pt:{
+  brand:"Vamos começar", sub:"Três passos rápidos e sua conta está pronta",
+  trial:d=>`Teste gratuito · ${d} dias`, cont:"Continuar", skip:"Deixar para depois",
+  hTitle:"Controles do mockup",
+  hCap:"As ferramentas ativas vêm do Modelo criado pelo parceiro. Desligue uma e ela sai da sequência.",
+  reset:"Reiniciar",
+  wa:{tab:"WhatsApp", title:"Vamos conectar seu WhatsApp",
+   why:"É por aqui que as conversas chegam. Depois de conectar, tudo o que o cliente manda aparece na plataforma.",
+   qr:"QR Code", api:"API oficial",
+   steps:["Abra o WhatsApp no celular","Toque em Aparelhos conectados","Aponte a câmera para o código"],
+   waiting:"Aguardando leitura", sim:"Mockup: clique no código para simular a leitura.",
+   pin:"PIN de 6 dígitos",
+   apiHelp:"Você será levado ao login da Meta para escolher o número do portfólio. Um número só fica ativo em um método por vez.",
+   apiCta:"Conectar via Meta",
+   ok:"Conectado! Seu número já está ativo", okBody:"Olha só: a primeira mensagem já caiu na sua caixa.",
+   who:"Novo contato · agora", msg:"Oi, vi seu anúncio. Ainda tem horário essa semana?"},
+  funil:{tab:"Funil", title:"Cadastre sua primeira oportunidade",
+   why:"O funil começa vazio. Coloque alguém com quem você já conversa e acompanhe o card andando até a venda.",
+   name:"Nome do contato", phone:"Telefone", value:"Valor estimado", stage:"Etapa inicial",
+   stages:["Novo lead","Triagem","Aguardando confirmação","Agendado","Pós-atendimento"],
+   cta:"Criar oportunidade", drop:"O card aparece aqui",
+   help:"Use um lead real. Cards de teste sujam o relatório depois.",
+   ok:"Pronto, sua primeira oportunidade está no funil", okBody:"Arraste o card entre as etapas conforme a conversa evolui.", drag:"Arraste para mover"},
+  cal:{tab:"Agenda", title:"Conecte sua agenda do Google",
+   why:"Assim os horários oferecidos são de verdade: nada de agendamento em cima de compromisso que já existe.",
+   cta:"Conectar com Google", email:"contato@clinicamarina.com.br", acct:"Conta conectada",
+   which:"Agenda usada", cals:["Principal","Atendimentos","Equipe comercial"],
+   dur:"Duração padrão", durs:["30 min","45 min","1 hora"],
+   lead:"Antecedência mínima", leads:["1 hora","3 horas","24 horas"],
+   save:"Salvar agenda",
+   help:"Nada é publicado na sua agenda sem passar por essas regras."},
+  social:{tab:"Instagram", title:"Conecte seu Instagram",
+   why:"Publicações e mensagens diretas passam a ficar no mesmo lugar do resto do atendimento.",
+   note:"O perfil precisa ser Conta Comercial ou de Criador de Conteúdo. Se o seu for pessoal, o próprio Instagram converte durante a conexão.",
+   cta:"Conectar Instagram", handle:"@clinicamarina", ok:"Perfil conectado",
+   help:"Você pode conectar mais de um perfil depois."},
+  end:{title:"Parabéns, agora já pode usar seu sistema!",
+   why:"Está tudo conectado e funcionando. As conversas já chegam, o funil registra e a agenda preenche sozinha.",
+   cta:"Começar a usar", ready:"Tudo pronto",
+   laterTitle:"Quando quiser, dá um passo além",
+   ia:{name:"Agente de IA", tag:"Faça depois",
+     desc:"Você ensina o agente a responder no seu tom e ele assume as conversas — inclusive agendando pela sua agenda. Leva uns minutos e fica em Agente de IA, no menu."},
+   track:{name:"Rastreio da origem dos leads", tag:"Descubra de onde vêm",
+     desc:"Cada conversa guarda de onde o lead veio. Assim você para de adivinhar e vê qual canal traz cliente que fecha.",
+     rows:[["instagram","Instagram Ads","Marina Duarte","fechou · R$ 180"],
+           ["meta","Meta Ads","João Almeida","em conversa"],
+           ["gads","Google Ads","Patrícia Souza","fechou · R$ 240"],
+           ["tiktok","TikTok","Renata Alves","novo lead"]],
+     foot:"Exemplo de como a origem aparece em cada conversa"},
+   items:{wa:["WhatsApp","conectado"],funil:["Primeira oportunidade","criada"],
+          cal:["Google Agenda","conectada"],social:["Instagram","conectado"]}}
+ },
+ es:{
+  brand:"Vamos a empezar", sub:"Tres pasos rápidos y tu cuenta queda lista",
+  trial:d=>`Prueba gratuita · ${d} días`, cont:"Continuar", skip:"Dejar para después",
+  hTitle:"Controles del mockup",
+  hCap:"Las herramientas activas vienen del Modelo creado por el socio. Desactiva una y sale de la secuencia.",
+  reset:"Reiniciar",
+  wa:{tab:"WhatsApp", title:"Conectemos tu WhatsApp",
+   why:"Por aquí llegan las conversaciones. Después de conectar, todo lo que el cliente escribe aparece en la plataforma.",
+   qr:"Código QR", api:"API oficial",
+   steps:["Abre WhatsApp en el celular","Toca Dispositivos vinculados","Apunta la cámara al código"],
+   waiting:"Esperando lectura", sim:"Mockup: haz clic en el código para simular la lectura.",
+   pin:"PIN de 6 dígitos",
+   apiHelp:"Te llevaremos al inicio de sesión de Meta para elegir el número del portafolio. Un número solo está activo en un método a la vez.",
+   apiCta:"Conectar con Meta",
+   ok:"¡Conectado! Tu número ya está activo", okBody:"Mira: el primer mensaje ya llegó a tu bandeja.",
+   who:"Nuevo contacto · ahora", msg:"Hola, vi tu anuncio. ¿Tienes cupo esta semana?"},
+  funil:{tab:"Embudo", title:"Registra tu primera oportunidad",
+   why:"El embudo empieza vacío. Pon a alguien con quien ya hablas y sigue la tarjeta hasta la venta.",
+   name:"Nombre del contacto", phone:"Teléfono", value:"Valor estimado", stage:"Etapa inicial",
+   stages:["Nuevo lead","Triaje","Esperando confirmación","Agendado","Postventa"],
+   cta:"Crear oportunidad", drop:"La tarjeta aparece aquí",
+   help:"Usa un lead real. Las tarjetas de prueba ensucian el reporte después.",
+   ok:"Listo, tu primera oportunidad está en el embudo", okBody:"Arrastra la tarjeta entre etapas según avanza la conversación.", drag:"Arrastra para mover"},
+  cal:{tab:"Calendario", title:"Conecta tu calendario de Google",
+   why:"Así los horarios que ofreces son reales: nada de citas encima de un compromiso que ya existe.",
+   cta:"Conectar con Google", email:"contacto@clinicamarina.com", acct:"Cuenta conectada",
+   which:"Calendario usado", cals:["Principal","Atenciones","Equipo comercial"],
+   dur:"Duración estándar", durs:["30 min","45 min","1 hora"],
+   lead:"Anticipación mínima", leads:["1 hora","3 horas","24 horas"],
+   save:"Guardar calendario",
+   help:"Nada entra en tu calendario sin pasar por estas reglas."},
+  social:{tab:"Instagram", title:"Conecta tu Instagram",
+   why:"Las publicaciones y los mensajes directos quedan en el mismo lugar que el resto de la atención.",
+   note:"El perfil debe ser Cuenta de Empresa o de Creador de Contenido. Si el tuyo es personal, Instagram lo convierte durante la conexión.",
+   cta:"Conectar Instagram", handle:"@clinicamarina", ok:"Perfil conectado",
+   help:"Puedes conectar más de un perfil después."},
+  end:{title:"¡Felicidades, ya puedes usar tu sistema!",
+   why:"Todo está conectado y funcionando. Las conversaciones llegan, el embudo registra y la agenda se llena sola.",
+   cta:"Empezar a usar", ready:"Todo listo",
+   laterTitle:"Cuando quieras, da un paso más",
+   ia:{name:"Agente de IA", tag:"Hazlo después",
+     desc:"Le enseñas al agente a responder en tu tono y él asume las conversaciones — incluso agendando en tu calendario. Toma unos minutos y está en Agente de IA, en el menú."},
+   track:{name:"Rastreo del origen de los leads", tag:"Descubre de dónde vienen",
+     desc:"Cada conversación guarda de dónde vino el lead. Así dejas de adivinar y ves qué canal trae clientes que cierran.",
+     rows:[["instagram","Instagram Ads","Marina Duarte","cerró · R$ 180"],
+           ["meta","Meta Ads","João Almeida","en conversación"],
+           ["gads","Google Ads","Patrícia Souza","cerró · R$ 240"],
+           ["tiktok","TikTok","Renata Alves","nuevo lead"]],
+     foot:"Ejemplo de cómo aparece el origen en cada conversación"},
+   items:{wa:["WhatsApp","conectado"],funil:["Primera oportunidad","creada"],
+          cal:["Google Calendar","conectado"],social:["Instagram","conectado"]}}
+ },
+ en:{
+  brand:"Let's get started", sub:"Three quick steps and your account is ready",
+  trial:d=>`Free trial · ${d} days`, cont:"Continue", skip:"Do this later",
+  hTitle:"Mockup controls",
+  hCap:"Active tools come from the model your partner built. Turn one off and it leaves the sequence.",
+  reset:"Reset",
+  wa:{tab:"WhatsApp", title:"Let's connect your WhatsApp",
+   why:"This is where conversations land. Once it's connected, everything your customer sends shows up here.",
+   qr:"QR code", api:"Official API",
+   steps:["Open WhatsApp on your phone","Tap Linked devices","Point the camera at the code"],
+   waiting:"Waiting for scan", sim:"Mockup: click the code to simulate the scan.",
+   pin:"6-digit PIN",
+   apiHelp:"You'll be sent to Meta's login to pick the number from your portfolio. A number is only active on one method at a time.",
+   apiCta:"Connect with Meta",
+   ok:"Connected! Your number is live", okBody:"See? The first message already landed in your inbox.",
+   who:"New contact · now", msg:"Hi, I saw your ad. Any openings this week?"},
+  funil:{tab:"Pipeline", title:"Add your first opportunity",
+   why:"The pipeline starts empty. Add someone you're already talking to and follow the card all the way to the sale.",
+   name:"Contact name", phone:"Phone", value:"Estimated value", stage:"Starting stage",
+   stages:["New lead","Screening","Awaiting confirmation","Booked","Follow-up"],
+   cta:"Create opportunity", drop:"The card lands here",
+   help:"Use a real lead. Test cards pollute your reports later.",
+   ok:"Nice, your first opportunity is in the pipeline", okBody:"Drag the card across stages as the conversation moves.", drag:"Drag to move"},
+  cal:{tab:"Calendar", title:"Connect your Google Calendar",
+   why:"That way the slots you offer are real — no double-booking on top of something already there.",
+   cta:"Connect with Google", email:"hello@clinicamarina.com", acct:"Account connected",
+   which:"Calendar used", cals:["Primary","Appointments","Sales team"],
+   dur:"Default duration", durs:["30 min","45 min","1 hour"],
+   lead:"Minimum notice", leads:["1 hour","3 hours","24 hours"],
+   save:"Save calendar",
+   help:"Nothing hits your calendar without passing these rules."},
+  social:{tab:"Instagram", title:"Connect your Instagram",
+   why:"Posts and direct messages end up in the same place as the rest of your conversations.",
+   note:"The profile must be a Business or Creator account. If yours is personal, Instagram converts it during the connection.",
+   cta:"Connect Instagram", handle:"@clinicamarina", ok:"Profile connected",
+   help:"You can connect more profiles later."},
+  end:{title:"You're all set — the system is yours to use!",
+   why:"Everything is connected and running. Conversations arrive, the pipeline records, the calendar fills itself.",
+   cta:"Start using it", ready:"All set",
+   laterTitle:"When you're ready, go one step further",
+   ia:{name:"AI agent", tag:"Do it later",
+     desc:"You teach the agent to reply in your voice and it takes over conversations — booking straight into your calendar. Takes a few minutes, and it lives under AI agent in the menu."},
+   track:{name:"Lead source tracking", tag:"See where they come from",
+     desc:"Every conversation remembers where the lead came from. So you stop guessing and see which channel brings customers who actually close.",
+     rows:[["instagram","Instagram Ads","Marina Duarte","closed · R$ 180"],
+           ["meta","Meta Ads","João Almeida","in conversation"],
+           ["gads","Google Ads","Patrícia Souza","closed · R$ 240"],
+           ["tiktok","TikTok","Renata Alves","new lead"]],
+     foot:"How the source shows up on each conversation"},
+   items:{wa:["WhatsApp","connected"],funil:["First opportunity","created"],
+          cal:["Google Calendar","connected"],social:["Instagram","connected"]}}
+ }
+};
+
+const CATALOG=[{id:"wa",always:true},{id:"funil",mod:"funil"},{id:"cal",mod:"cal"},{id:"social",mod:"social"}];
+const S={lang:"pt",trialDays:7,modules:{funil:true,cal:true,social:true},
+  idx:0,done:{},finished:false,waMethod:"qr",waConnected:false,opp:null,
+  cal:{connected:false,which:0,dur:1,lead:2},social:{connected:false}};
+
+const $=id=>document.getElementById(id), t=()=>T[S.lang];
+const active=()=>CATALOG.filter(s=>s.always||S.modules[s.mod]);
+const isDone=id=>!!S.done[id];
+const icons=()=>{ if(window.lucide) lucide.createIcons(); };
+
+const INPUT="w-full px-3 py-2 border border-gray-200 rounded-lg text-[12.5px] text-gray-800 bg-white outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-100 transition-colors";
+const LBL="block text-[11px] font-semibold text-gray-600 mb-1";
+
+function okBox(step,title,body){
+  const c=C[step];
+  return `<div class="${c.soft} border rounded-xl p-3.5 flex items-start gap-3">
+    <div class="w-9 h-9 rounded-full bg-white border ${c.brd} flex items-center justify-center shrink-0">
+      <i data-lucide="check" class="w-4.5 h-4.5 ${c.txt}"></i></div>
+    <div class="min-w-0"><div class="text-[13px] font-bold text-gray-800">${title}</div>
+    <p class="text-[12px] text-gray-600 leading-snug mt-0.5">${body}</p></div></div>`;
+}
+
+function qrSvg(){
+  let c="",seed=11;
+  for(let y=0;y<23;y++)for(let x=0;x<23;x++){
+    seed=(seed*1103515245+12345)&0x7fffffff;
+    const f=(x<7&&y<7)||(x>15&&y<7)||(x<7&&y>15);
+    const on=f?((x%6===0||y%6===0)||(x>1&&x<5&&y>1&&y<5)):(seed>>17)%100<44;
+    if(on)c+=`<rect x="${x}" y="${y}" width="1" height="1" rx=".2"/>`;
+  }
+  return `<svg viewBox="0 0 23 23" class="w-full h-full fill-gray-900">${c}</svg>`;
+}
+
+function render(){
+  const L=t(),list=active();
+  $("obTitle").textContent=L.brand;
+  $("obSub").textContent=L.sub;
+  $("obTrial").innerHTML=`<i data-lucide="clock" class="w-3 h-3 text-gray-400"></i>${L.trial(S.trialDays)}`;
+  $("hTitle").textContent=L.hTitle;$("reset").textContent=L.reset;
+  document.documentElement.lang=S.lang==="pt"?"pt-BR":S.lang;
+  $("chatCalIcon").innerHTML=`<div class="w-8 h-8">${MARK.gcal}</div>`;
+
+  const bar=$("obSteps");bar.innerHTML="";
+  list.forEach((s,i)=>{
+    const c=C[s.id],dn=isDone(s.id),cur=!S.finished&&i===S.idx;
+    const b=document.createElement("button");
+    b.className="px-3 pb-2.5 pt-2.5 -mb-px text-[12.5px] whitespace-nowrap flex items-center gap-1.5 border-b-2 transition-colors "
+      +(cur?`font-semibold ${c.txt} ${c.brd}`
+        :dn?"font-medium text-gray-700 border-transparent hover:text-gray-900"
+            :"font-medium text-gray-400 border-transparent hover:text-gray-700");
+    b.innerHTML=(dn?`<i data-lucide="check-circle-2" class="w-3.5 h-3.5 ${c.txt}"></i>`
+      :`<span class="w-4 h-4 shrink-0 ${cur?"":"opacity-40 grayscale"}">${MARK[c.mark]}</span>`)+T[S.lang][s.id].tab;
+    b.onclick=()=>{S.finished=false;S.idx=i;render();};
+    bar.appendChild(b);
+  });
+  const d=list.filter(s=>isDone(s.id)).length;
+  const cnt=document.createElement("span");
+  cnt.className="ml-auto pl-3 text-[11px] font-semibold text-gray-400 shrink-0";
+  cnt.textContent=String(d).padStart(2,"0")+"/"+String(list.length).padStart(2,"0");
+  bar.appendChild(cnt);
+
+  const cur=S.finished?"end":list[S.idx].id;
+  $("obTrack").className="h-full transition-all duration-300 "+C[cur].bar;
+  $("obTrack").style.width=(S.finished?100:d/list.length*100)+"%";
+
+  S.finished?renderEnd():renderStep(list[S.idx]);
+  icons();
+}
+
+const stepHead=(C_)=>`<div class="mb-4">
+  <h4 class="text-[17px] font-bold text-gray-800 leading-snug">${C_.title}</h4>
+  <p class="text-[12.5px] text-gray-500 leading-relaxed mt-1 max-w-[60ch]">${C_.why}</p></div>`;
+
+function setCta(label,color,enabled,onClick){
+  const cta=$("obCta");
+  cta.innerHTML=`${label}<i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>`;
+  cta.className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-[13px] font-semibold transition-all shadow-sm shrink-0 "
+    +(enabled?`text-white ${color}`:"bg-gray-100 text-gray-400 cursor-not-allowed");
+  cta.onclick=enabled?onClick:null;
+}
+
+/* ---------------- tela final ---------------- */
+function renderEnd(){
+  const L=t(),E=L.end,c=C.end;
+  $("obIcon").innerHTML=`<div class="w-9 h-9 rounded-lg bg-emerald-500 flex items-center justify-center">
+    <i data-lucide="party-popper" class="w-4.5 h-4.5 text-white"></i></div>`;
+  $("obTitle").textContent=E.ready;
+  $("obSub").textContent="";
+
+  const rows=active().map((s,i)=>{const[a,b]=E.items[s.id];
+    return `<div class="flex items-center gap-3 py-2.5 ${i?"border-t border-gray-100":""}">
+      <span class="w-6 h-6 shrink-0">${MARK[C[s.id].mark]}</span>
+      <span class="text-[13px] font-semibold text-gray-800">${a}</span>
+      <span class="ml-auto text-[11.5px] text-gray-500">${b}</span>
+      <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 shrink-0"></i></div>`;}).join("");
+
+  const sources=E.track.rows.map(([mk,src,lead,st],i)=>`
+    <div class="flex items-center gap-2.5 bg-white border border-gray-200 rounded-lg px-2.5 py-2 shadow-sm ${i?"-mt-1":""}"
+         style="margin-left:${i*10}px;z-index:${9-i};position:relative">
+      <span class="w-5 h-5 shrink-0">${MARK[mk]}</span>
+      <span class="text-[11.5px] font-semibold text-gray-700 shrink-0">${src}</span>
+      <i data-lucide="arrow-right" class="w-3 h-3 text-gray-300 shrink-0"></i>
+      <span class="text-[11.5px] text-gray-600 truncate">${lead}</span>
+      <span class="ml-auto text-[10px] font-semibold text-gray-500 bg-stone-100 border border-gray-200 rounded px-1.5 py-0.5 shrink-0 whitespace-nowrap">${st}</span>
+    </div>`).join("");
+
+  $("obBody").innerHTML=`
+    <div class="text-center pb-1">
+      <div class="w-14 h-14 mx-auto rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mb-3">
+        <i data-lucide="check" class="w-7 h-7 text-emerald-600"></i></div>
+      <h4 class="text-[19px] font-bold text-gray-800 leading-snug">${E.title}</h4>
+      <p class="text-[12.5px] text-gray-500 leading-relaxed mt-1.5 max-w-[54ch] mx-auto">${E.why}</p>
+    </div>
+
+    <div class="mt-4 border border-gray-200 rounded-xl px-3.5 py-1 bg-stone-50/50">${rows}</div>
+
+    <div class="mt-5 pt-4 border-t border-dashed border-gray-200">
+      <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-2.5">${E.laterTitle}</div>
+
+      <div class="border border-violet-200 bg-violet-50/50 rounded-xl p-3.5 flex items-start gap-3">
+        <div class="w-9 h-9 rounded-lg bg-violet-500 flex items-center justify-center shrink-0">
+          <i data-lucide="sparkles" class="w-4.5 h-4.5 text-white"></i></div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-[13px] font-bold text-gray-800">${E.ia.name}</span>
+            <span class="text-[9.5px] font-bold uppercase tracking-wider text-violet-700 bg-white border border-violet-200 rounded px-1.5 py-0.5">${E.ia.tag}</span>
+          </div>
+          <p class="text-[12px] text-gray-600 leading-relaxed mt-1">${E.ia.desc}</p>
+        </div>
+      </div>
+
+      <div class="mt-2.5 border border-gray-200 rounded-xl p-3.5">
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-lg bg-gray-900 flex items-center justify-center shrink-0">
+            <i data-lucide="route" class="w-4.5 h-4.5 text-white"></i></div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-[13px] font-bold text-gray-800">${E.track.name}</span>
+              <span class="text-[9.5px] font-bold uppercase tracking-wider text-gray-600 bg-stone-100 border border-gray-200 rounded px-1.5 py-0.5">${E.track.tag}</span>
+            </div>
+            <p class="text-[12px] text-gray-600 leading-relaxed mt-1">${E.track.desc}</p>
+          </div>
+        </div>
+        <div class="mt-3 pt-3 border-t border-gray-100">
+          <div class="pr-1">${sources}</div>
+          <p class="text-[10.5px] text-gray-400 mt-2.5">${E.track.foot}</p>
+        </div>
+      </div>
+    </div>`;
+
+  $("obHelp").innerHTML="";
+  setCta(E.cta,c.cta,true,()=>{$("onb").style.display="none";});
+}
+
+/* ---------------- etapas ---------------- */
+function renderStep(step){
+  const L=t(),D=L[step.id],c=C[step.id],body=$("obBody");
+  $("obIcon").innerHTML=`<div class="w-9 h-9">${MARK[c.mark]}</div>`;
+  $("obTitle").textContent=L.brand;
+  $("obSub").textContent=L.sub;
+  $("obHelp").innerHTML=D.help?`<i data-lucide="info" class="w-3.5 h-3.5 text-gray-400 mt-px shrink-0"></i><span>${D.help}</span>`:"";
+  let html=stepHead(D), label=D.cta||L.cont, on=()=>advance(step.id), enabled=true;
+
+  if(step.id==="wa"){
+    if(S.waConnected){
+      html+=okBox("wa",D.ok,D.okBody)+`
+        <div class="mt-3 flex justify-start">
+          <div class="max-w-[80%] bg-white border border-gray-200 rounded-lg rounded-tl-none px-3 py-2 shadow-sm">
+            <div class="text-[9.5px] font-semibold text-gray-400 uppercase tracking-wide flex items-center gap-1 mb-0.5">
+              <i data-lucide="user-round" class="w-2.5 h-2.5"></i> ${D.who}</div>
+            <p class="text-[12.5px] text-gray-800 leading-snug">${D.msg}</p></div></div>`;
+      label=L.cont;
+    } else {
+      html+=`<div class="inline-flex bg-stone-100 border border-gray-200 rounded-lg p-0.5 gap-0.5 mb-4">
+        ${[["qr",D.qr,"qr-code"],["api",D.api,"link"]].map(([k,lbl,i])=>`
+          <button data-wa="${k}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] transition-colors ${
+            S.waMethod===k?"bg-white border border-gray-200 text-gray-800 font-semibold shadow-sm":"text-gray-500 font-medium"}">
+            <i data-lucide="${i}" class="w-3 h-3"></i>${lbl}</button>`).join("")}</div>`;
+      if(S.waMethod==="qr"){
+        html+=`<div class="flex flex-wrap items-center gap-5">
+          <div id="qrBox" class="w-[136px] h-[136px] p-2.5 bg-white border-2 border-emerald-200 rounded-xl shrink-0 cursor-pointer hover:border-emerald-400 hover:shadow-md transition-all" role="button" tabindex="0">${qrSvg()}</div>
+          <div class="min-w-[190px] flex-1">
+            <ol class="list-none space-y-2">${D.steps.map((s,i)=>`
+              <li class="flex items-start gap-2 text-[12.5px] text-gray-700">
+                <span class="w-4.5 h-4.5 mt-px rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[10px] font-bold flex items-center justify-center shrink-0" style="width:18px;height:18px">${i+1}</span>${s}</li>`).join("")}</ol>
+            <div class="mt-3 inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-full px-2.5 py-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>${D.waiting}</div>
+          </div></div>`;
+        $("obHelp").innerHTML=`<i data-lucide="info" class="w-3.5 h-3.5 text-gray-400 mt-px shrink-0"></i><span>${D.sim}</span>`;
+        enabled=false;
+      } else {
+        html+=`<div class="max-w-[240px]"><label class="${LBL}">${D.pin}</label>
+          <input maxlength="6" inputmode="numeric" placeholder="••••••" class="${INPUT}"></div>
+          <div class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2.5">
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5 shrink-0"></i>
+            <p class="text-[11.5px] text-amber-900 leading-snug">${D.apiHelp}</p></div>`;
+        label=D.apiCta;on=()=>{S.waConnected=true;render();};
+        $("obHelp").innerHTML="";
+      }
+    }
+  }
+
+  if(step.id==="funil"){
+    if(!S.opp){
+      html+=`<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3">
+        <div><label class="${LBL}">${D.name}</label><input id="fName" placeholder="Marina Duarte" class="${INPUT}"></div>
+        <div><label class="${LBL}">${D.phone}</label><input id="fPhone" placeholder="+55 11 9 8877-6655" class="${INPUT}"></div>
+        <div><label class="${LBL}">${D.value}</label><input id="fVal" placeholder="R$ 1.800,00" class="${INPUT}"></div>
+        <div><label class="${LBL}">${D.stage}</label><select id="fStage" class="${INPUT}">
+          ${D.stages.map((s,i)=>`<option value="${i}">${s}</option>`).join("")}</select></div></div>`;
+      on=()=>{S.opp={name:($("fName").value||"Marina Duarte").trim(),
+        value:($("fVal").value||"R$ 1.800,00").trim(),stage:+$("fStage").value};render();};
+    } else { html+=okBox("funil",D.ok,D.okBody); }
+    html+=`<div class="mt-4 flex gap-2 overflow-x-auto pb-1">
+      ${D.stages.map((s,i)=>{
+        const hot=S.opp?S.opp.stage===i:i===0;
+        return `<div class="flex-1 min-w-[128px] border rounded-xl p-2 ${hot?"border-orange-200 bg-orange-50/50":"border-gray-200 bg-stone-50/60"}">
+          <div class="flex items-center gap-1.5 mb-2">
+            <span class="w-1.5 h-1.5 rounded-full ${hot?"bg-orange-500":"bg-gray-300"}"></span>
+            <span class="text-[9.5px] font-bold uppercase tracking-wider ${hot?"text-orange-700":"text-gray-500"} truncate">${s}</span></div>
+          ${S.opp&&S.opp.stage===i?`
+            <div class="bg-white border border-orange-200 rounded-lg p-2 shadow-sm">
+              <div class="text-[12px] font-semibold text-gray-800 truncate">${S.opp.name}</div>
+              <div class="text-[12.5px] font-bold text-orange-600 mt-0.5">${S.opp.value}</div>
+              <div class="text-[10px] text-gray-400 mt-1 flex items-center gap-1">
+                <i data-lucide="grip-vertical" class="w-2.5 h-2.5"></i>${D.drag}</div></div>`
+            :(!S.opp&&i===0?`<div class="border border-dashed border-orange-300 rounded-lg h-[46px] flex items-center justify-center text-[10px] text-orange-600/70 text-center px-1">${D.drop}</div>`:"")}
+        </div>`;}).join("")}</div>`;
+  }
+
+  if(step.id==="cal"){
+    if(!S.cal.connected){
+      html+=`<button id="calBtn" class="inline-flex items-center gap-2.5 pl-2.5 pr-4 py-2.5 rounded-lg border border-gray-300 bg-white text-[13px] font-semibold text-gray-700 hover:bg-stone-50 hover:shadow-sm transition-all">
+        <span class="w-6 h-6">${MARK.gcal}</span>${D.cta}</button>`;
+      enabled=false;
+    } else {
+      html+=`<div class="flex items-center gap-2.5 border border-blue-200 rounded-xl px-3 py-2.5 bg-blue-50/50 mb-4">
+          <span class="w-8 h-8 shrink-0">${MARK.gcal}</span>
+          <div class="min-w-0"><div class="text-[12.5px] font-semibold text-gray-800 truncate">${D.email}</div>
+            <div class="text-[11px] text-blue-700">${D.acct}</div></div>
+          <span class="ml-auto shrink-0"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-600"></i></span></div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          ${[[D.which,D.cals,"which"],[D.dur,D.durs,"dur"],[D.lead,D.leads,"lead"]].map(([lbl,opts,key])=>`
+            <div><label class="${LBL}">${lbl}</label><select data-cal="${key}" class="${INPUT}">
+              ${opts.map((o,i)=>`<option value="${i}" ${S.cal[key]===i?"selected":""}>${o}</option>`).join("")}
+            </select></div>`).join("")}</div>`;
+      label=isDone("cal")?L.cont:D.save;
+    }
+  }
+
+  if(step.id==="social"){
+    if(!S.social.connected){
+      html+=`<button id="igBtn" class="inline-flex items-center gap-2.5 pl-2.5 pr-4 py-2.5 rounded-lg text-[13px] font-semibold text-white bg-gradient-to-r from-purple-600 via-fuchsia-600 to-orange-400 hover:brightness-110 transition-all shadow-sm">
+        <span class="w-6 h-6 bg-white/20 rounded-md p-0.5">${MARK.instagram}</span>${D.cta}</button>
+        <div class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2.5">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-600 mt-0.5 shrink-0"></i>
+          <p class="text-[11.5px] text-amber-900 leading-snug">${D.note}</p></div>`;
+      enabled=false;
+    } else {
+      html+=`<div class="flex items-center gap-2.5 border border-fuchsia-200 rounded-xl px-3 py-2.5 bg-fuchsia-50/50">
+        <span class="w-8 h-8 shrink-0">${MARK.instagram}</span>
+        <div class="min-w-0"><div class="text-[12.5px] font-semibold text-gray-800">${D.handle}</div>
+          <div class="text-[11px] text-fuchsia-700">${D.ok}</div></div>
+        <span class="ml-auto shrink-0"><i data-lucide="check-circle-2" class="w-4 h-4 text-fuchsia-600"></i></span></div>`;
+    }
+  }
+
+  body.innerHTML=html;
+
+  body.querySelectorAll("[data-wa]").forEach(b=>b.onclick=()=>{S.waMethod=b.dataset.wa;render();});
+  body.querySelectorAll("[data-cal]").forEach(s=>s.onchange=e=>{S.cal[s.dataset.cal]=+e.target.value;});
+  const qb=$("qrBox");
+  if(qb){const go=()=>{S.waConnected=true;render();};
+    qb.onclick=go;qb.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go();}};}
+  const cb=$("calBtn"); if(cb)cb.onclick=()=>{S.cal.connected=true;render();};
+  const ib=$("igBtn"); if(ib)ib.onclick=()=>{S.social.connected=true;render();};
+
+  setCta(label,c.cta,enabled,on);
+}
+
+function advance(id){
+  S.done[id]=true;
+  const list=active(),next=list.findIndex(s=>!isDone(s.id));
+  if(next===-1)S.finished=true;else S.idx=next;
+  render();
+}
+
+const MOD_NAMES={funil:{pt:"Funil de vendas",es:"Embudo de ventas",en:"Sales pipeline"},
+  cal:{pt:"Google Agenda",es:"Google Calendar",en:"Google Calendar"},
+  social:{pt:"Redes sociais",es:"Redes sociales",en:"Social media"}};
+
+function renderHarness(){
+  const w=$("hMods");w.innerHTML="";
+  Object.keys(S.modules).forEach(k=>{
+    const l=document.createElement("label");
+    l.className="flex items-center gap-2 text-[11.5px] text-gray-700 cursor-pointer";
+    l.innerHTML=`<input type="checkbox" ${S.modules[k]?"checked":""} class="accent-emerald-600"><span>${MOD_NAMES[k][S.lang]}</span>`;
+    l.querySelector("input").onchange=e=>{
+      S.modules[k]=e.target.checked;delete S.done[k];
+      const list=active();S.finished=false;
+      const nxt=list.findIndex(s=>!isDone(s.id));
+      if(nxt===-1){S.finished=true;S.idx=0;}else S.idx=nxt;
+      render();};
+    w.appendChild(l);
+  });
+}
+$("hToggle").onclick=()=>{ $("hPanel").classList.toggle("hidden"); };
+$("lang").onchange=e=>{S.lang=e.target.value;renderHarness();render();};
+$("reset").onclick=()=>{
+  Object.assign(S,{idx:0,done:{},finished:false,waMethod:"qr",waConnected:false,opp:null,
+    cal:{connected:false,which:0,dur:1,lead:2},social:{connected:false}});
+  $("onb").style.display="";render();
+};
+
+renderHarness();render();
+</script>
+</body>
+</html>
