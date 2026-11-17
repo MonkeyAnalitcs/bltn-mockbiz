@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bolten – Redesenho da experiência</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  // v6 (17/11/2026): as telas de hoje da plataforma (classes lidas em www.bolten.io), com ajustes pequenos.
+  tailwind.config = {
+    darkMode: 'class',
+    theme: { extend: {
+      fontFamily: { inter: ['Inter', 'sans-serif'] },
+      colors: { personalized: { primary: '#FF6828', secondary: '#FF6828' } }
+    } }
+  };
+</script>
+<style type="text/tailwindcss">
+@layer components {
+  /* botões e campos do tema da plataforma (btn, btn-primary, form-input) */
+  .btn{@apply font-medium text-sm inline-flex items-center justify-center gap-2 border border-transparent rounded-lg leading-5 shadow-sm transition px-3 py-2 whitespace-nowrap}
+  .btn-sm{@apply text-xs px-2.5 py-1.5}
+  .btn-primary{@apply bg-gray-900 text-gray-100 hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-800 dark:hover:bg-white}
+  .btn-sec{@apply bg-white border-gray-200 text-gray-800 hover:border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-300 dark:hover:border-gray-600}
+  .btn-ghost{@apply shadow-none text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-100 px-2}
+  .form-input{@apply text-sm bg-white dark:bg-gray-900/30 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 outline-none focus:border-gray-300 dark:focus:border-gray-600 w-full}
+  .lbl{@apply block text-sm font-medium mb-1 text-gray-800 dark:text-gray-100}
+  .h1{@apply text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold}
+  .h2{@apply text-lg text-gray-800 dark:text-gray-100 font-semibold}
+  .caixa{@apply bg-gray-100 dark:bg-gray-800 shadow-sm rounded-xl}
+  .tabela{@apply overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700}
+  .tabela table{@apply table-auto w-full dark:text-gray-300}
+  .tabela thead{@apply text-xs uppercase text-gray-500 dark:text-gray-200 bg-gray-100 dark:bg-gray-600/50}
+  .tabela th{@apply px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap text-left font-semibold}
+  .tabela td{@apply px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap text-sm font-medium}
+  .tabela tbody{@apply divide-y divide-gray-200 dark:divide-gray-700/60 bg-white dark:bg-gray-800}
+  .pilula{@apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium}
+  .chk{@apply w-4 h-4 rounded border-gray-300 dark:border-gray-600 accent-gray-800}
+}
+</style>
+<style>
+  :root{ --bolten-laranja:#FF6828; --wa-bg:#EFEAE2; --wa-in:#FFFFFF; --wa-out:#ECFDF5; --wa-out-brd:#D1FAE5; --wa-out-fg:#1F2937; --wa-doodle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%23000000' stroke-opacity='0.045' stroke-width='1.5'%3E%3Ccircle cx='25' cy='28' r='9'/%3E%3Cpath d='M60 20h16v11h-16z'/%3E%3Cpath d='M100 25l10 6-10 6z'/%3E%3Ccircle cx='128' cy='45' r='7'/%3E%3Cpath d='M20 70q8-12 16 0'/%3E%3Cpath d='M55 66h18M55 72h12'/%3E%3Ccircle cx='95' cy='75' r='10'/%3E%3Cpath d='M92 75l3 3 5-6'/%3E%3Cpath d='M125 95c-6 0-6 8 0 8'/%3E%3Ccircle cx='30' cy='110' r='8'/%3E%3Cpath d='M60 108h20v14h-20z'/%3E%3Cpath d='M105 118l7-4v8z'/%3E%3Cpath d='M20 138h14M70 140h18M115 140h10'/%3E%3C/g%3E%3C/svg%3E"); }
+  .dark{ --wa-bg:#141B26; --wa-in:#2A3442; --wa-out:#005C4B; --wa-out-brd:#005C4B; --wa-out-fg:#FFFFFF; --wa-doodle:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.03' stroke-width='1.5'%3E%3Ccircle cx='25' cy='28' r='9'/%3E%3Cpath d='M60 20h16v11h-16z'/%3E%3Cpath d='M100 25l10 6-10 6z'/%3E%3Ccircle cx='128' cy='45' r='7'/%3E%3Cpath d='M20 70q8-12 16 0'/%3E%3Cpath d='M55 66h18M55 72h12'/%3E%3Ccircle cx='95' cy='75' r='10'/%3E%3Cpath d='M92 75l3 3 5-6'/%3E%3Cpath d='M125 95c-6 0-6 8 0 8'/%3E%3Ccircle cx='30' cy='110' r='8'/%3E%3Cpath d='M60 108h20v14h-20z'/%3E%3Cpath d='M105 118l7-4v8z'/%3E%3Cpath d='M20 138h14M70 140h18M115 140h10'/%3E%3C/g%3E%3C/svg%3E"); }
+  html,body{height:100%}
+  svg.logo{fill:currentColor;display:block;width:124px;height:auto}
+  .wa-fundo{background-color:var(--wa-bg);background-image:var(--wa-doodle)}
+  .bal-in{background:var(--wa-in)}
+  .bal-out{background:var(--wa-out);border:1px solid var(--wa-out-brd);color:var(--wa-out-fg)}
+  .no-scrollbar::-webkit-scrollbar{display:none}
+</style>
+</head>
+<body class="font-inter antialiased bg-stone-100 text-gray-600 flex h-screen overflow-hidden dark:bg-gray-800 dark:text-gray-400">
+<div class="flex h-screen w-full overflow-hidden min-w-[1180px]">
+  <div id="side" class="flex flex-col w-64 shrink-0 bg-stone-100 dark:bg-gray-800 px-4"></div>
+  <div class="relative flex flex-col flex-1 overflow-hidden p-2">
+    <main id="page" class="p-8 grow bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl h-full max-h-full overflow-y-auto relative"></main>
+    <div id="panel"></div>
+  </div>
+</div>
+<div id="modal" class="fixed inset-0 z-40 hidden items-start justify-center bg-gray-900/40 px-4 pt-[10vh]" onclick="foraModal(event)"></div>
+<div id="palette" class="fixed inset-0 z-40 hidden items-start justify-center bg-gray-900/40 px-4 pt-[12vh]" onclick="foraPaleta(event)"></div>
+<div id="ctx" class="fixed z-50 hidden min-w-[220px] bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg py-1"></div>
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-50 hidden items-center gap-3 bg-gray-900 dark:bg-gray-100 text-gray-100 dark:text-gray-800 rounded-lg shadow-lg px-4 py-2.5 text-sm"></div>
+<template id="logo-bolten"><svg viewBox="0 0 300 93.57" xmlns="http://www.w3.org/2000/svg" class="logo"> <path d="m58.01,31.94c-4.7-3.73-10.26-5.63-16.51-5.63-4.42,0-9.17.97-14.13,2.89-1.64.63-3.33,1.38-5.03,2.23l-.88.44,7.05-24.6-13.16-3.1-.16.56C7.89,30.21,3.89,44.19,3.62,45.16c-.69,2.55.5,5.22,2.97,6.64,1.17.67,2.37,1.01,3.56,1.01,2.66,0,4.89-1.65,6.51-2.85,10.34-7.66,18.42-11.39,24.7-11.39,2.95,0,5.53.86,7.66,2.55,1.5,1.19,6.06,4.81,2.92,13.69-4.08,11.57-17.83,22.42-26.22,23.19-.31.03-.61.04-.89.04-2.19,0-3.19-.9-4.02-2.24-.57-.93-.69-2.01-.36-3.23,1.32-4.76,9.36-10.49,14.44-13.18l.29-.16-6.63-10.68-.26.13c-8.62,4.45-18.7,12.34-21.17,21.16-1.15,4.11-.54,8.12,1.8,11.9,3.4,5.49,9.08,8.52,15.98,8.52.72,0,1.46-.03,2.2-.1,14.66-1.35,32.33-16.14,37.8-31.66,3.75-10.63,1.3-20.07-6.89-26.57Z"/> <path d="m289.33,33.57c-4.18-3.66-9.12-5.52-14.69-5.52-1.28,0-7.83.32-13.87,6.4l-.51-4.52-8.55-1.98-.23.97c-.09.34-9.18,34.49-14.75,57.22l-.08.32,12.21,2.86.08-.31c2.34-9.5,5.52-22,9.48-37.17,1.74-6.68,7.7-11.34,14.48-11.34.48,0,.96.02,1.43.07l.18.02c2.6.27,4.71.79,6.55,2.41.99.87,3.61,3.17,3.04,8.22-.07.58-.19,1.21-.39,1.98-3.6,13.82-6.52,25.3-8.68,34.12l-.08.32,12.21,2.86.08-.31c2.11-8.59,4.94-19.7,8.4-33.03h.02s.09-.33.09-.33c2.49-9.17.21-17.42-6.43-23.24Z"/> <path d="m129.17,49.77c.05-6.77-2.72-12.53-7.99-16.67-3.68-3.04-8.27-4.65-13.28-4.65-.76,0-1.53.04-2.31.11-14.58,1.31-31.73,15.85-36.7,31.12-3.24,9.94-1.11,18.84,5.98,25.06.29.25.58.5.88.74l.27.12h0c3.76,2.91,8.16,4.38,13.07,4.38h0c2.75,0,5.64-.47,8.58-1.41,15.3-4.87,29.95-21.92,31.37-36.48.08-.77.12-1.55.12-2.31Zm-12.87,1.07c-.94,9.73-11.88,22.13-22.5,25.51-1.66.53-3.22.8-4.64.8-4.11,0-6-2.19-6.8-3.12-.55-.63-1-1.29-1.34-1.93-1.04-2.3-1.02-5.14.06-8.46,3.45-10.6,15.92-21.45,25.66-22.32.4-.04.79-.05,1.16-.05.95,0,1.84.12,2.66.36l.18.06c.32.11.6.23.84.36.96.53,1.79,1.13,2.45,1.76.59.64,1.12,1.4,1.59,2.27.13.23.24.5.34.8.27.86.4,1.77.4,2.79,0,.37-.02.76-.06,1.16Z"/> <path d="m146.98,75.98l-.14-.3-2.53.7-3.39.94s-.1-.06-.12-.08c-.12-.12-.26-.34-.17-.69,4.98-21.45,16.98-66.55,17.11-67.01l.23-1-12.32-2.86-.23.98c-.12.45-12.13,45.56-17.11,67.02-1.08,4.66.32,9.41,3.75,12.69,2.42,2.32,5.57,3.6,8.86,3.6,1.16,0,2.32-.16,3.46-.47l3.14-.87,5.68-1.52-6.16-10.95-.05-.17Z"/> <path d="m229.2,68.46c-6.57,5.84-13.64,9.18-19.39,9.18-1.86,0-3.47-.36-4.8-1.06-3.31-1.77-4.42-5.47-4.54-5.89-1.64-5.9,2.5-14.79,10.28-22.13,5.66-5.34,11.3-7.77,14.15-7.77.44,0,.82.05,1.14.16.87.3,1.71,1.13,1.91,1.9.83,3.25-5.6,11.9-22.03,20.13l-.3.15,6.06,10.78.27-.14c20.31-10.29,30.76-22.99,27.97-33.97-1.23-4.84-5.02-8.88-9.88-10.54-1.59-.54-3.32-.82-5.14-.82-6.98,0-15.01,3.95-22.62,11.13-8.91,8.4-17.2,21.86-13.71,34.42.6,2.15,3.13,9.48,10.63,13.48,3.12,1.66,6.66,2.51,10.52,2.51,8.13,0,17.27-3.79,25.72-10.68l.21-.17-6.15-10.94-.3.26Z"/> <path d="m169.64,77.32s-.1-.06-.12-.08c-.12-.12-.26-.34-.17-.69,1.91-8.21,4.97-20.35,9.1-36.1l13.75.54,3.67-11.84h-14.44c2.63-9.88,4.6-17.12,4.62-17.2l.23-.99-12.3-2.85-.23.98c-.02.09-2.38,8.74-5.38,20.07h-11.44l-2.82,10.35,11.42.45c-3.83,14.62-6.68,25.98-8.49,33.75-1.08,4.65.32,9.39,3.74,12.66,2.42,2.31,5.56,3.59,8.84,3.59,1.16,0,2.32-.16,3.45-.47l16.5-4.59-6.37-11.33-13.57,3.77Z"/> </svg></template>
+
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>
+/* ───────── utilitários ───────── */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const ic = (n, c) => `<i data-lucide="${n}" class="${c || 'w-5 h-5'} shrink-0"></i>`;
+const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const brl = v => 'R$ ' + Number(v).toLocaleString('pt-BR', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+const ini = n => String(n || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(p => p[0]).join('').toUpperCase();
+function fone(d){ d = String(d).replace(/\D/g, ''); if (d.length === 13) return `+${d.slice(0,2)} ${d.slice(2,4)} ${d.slice(4,9)}-${d.slice(9)}`; if (d.length === 12) return `+${d.slice(0,2)} ${d.slice(2,4)} ${d.slice(4,8)}-${d.slice(8)}`; return d; }
+let seq = 100; function nid(p){ seq += 1; return (p || 'x') + seq; }
+function icons(){ if (window.lucide) lucide.createIcons(); }
+const av = (n, tam) => `<span class="${tam || 'w-9 h-9 text-xs'} rounded-full bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-200 font-semibold flex items-center justify-center shrink-0">${esc(n ? ini(n) : '?')}</span>`;
+const pTeste = d => `<span class="pilula bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Teste (${d} ${d === 1 ? 'dia restante' : 'dias restantes'})</span>`;
+const pVerde = t => `<span class="pilula bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">${t}</span>`;
+const pCinza = t => `<span class="pilula bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-200">${t}</span>`;
+
+/* ───────── dados de exemplo (inventados) ───────── */
+// Ícones e nomes de tipo como estão na plataforma (lidos em 16 e 17/11/2026)
+const TOOLS = {
+  redes:{nome:'Marketing', icon:'smartphone', tipo:'Gestão de Redes Sociais', min:10},
+  agente:{nome:'Agente de IA', icon:'bot', tipo:'Agente de IA', min:60},
+  whatsapp:{nome:'WhatsApp', icon:'message-circle', tipo:'WhatsApp'},
+  contatos:{nome:'Registro de contatos', icon:'clipboard-list', tipo:'Gestão de Contatos'},
+  conversoes:{nome:'Conversões', icon:'chart-bar', tipo:'Gestão de Conversões', min:20},
+  agenda:{nome:'Agenda', icon:'calendar', tipo:'Agenda'},
+  funil:{nome:'Funil de Vendas', icon:'trello', tipo:'Gestão de Oportunidades'},
+  produtos:{nome:'Produtos', icon:'package', tipo:'Gestão de Produtos'},
+  tarefas:{nome:'Tarefas', icon:'square-check-big', tipo:'Gestão de Tarefas'},
+  automacao:{nome:'Automação', icon:'settings', tipo:'Automação'},
+  cadencia:{nome:'Cadência', icon:'alarm-clock', tipo:'Cadência'}
+};
+const MIN_USUARIO = 20;
+const DOCS = 'https://bolten.gitbook.io/bolten-docs';
+const PADRAO = {
+  funcao:'Você é a assistente de atendimento da clínica no WhatsApp. Receba cada contato com cortesia e agilidade e ajude a pessoa a marcar um horário.',
+  empresa:'Clínica Sorriso, odontologia geral e estética. Atendemos de segunda a sexta, das 8h às 18h, na Rua das Acácias, 120.',
+  tom:'Frases curtas, linguagem acolhedora e profissional. Sem negrito, sem listas.',
+  base:'Use só o que está na base de conhecimento. Se a resposta não estiver lá, diga que vai confirmar com a equipe.',
+  incorretas:'Nunca invente preço, prazo ou condição. Na dúvida, registre a pergunta e passe para a equipe.',
+  humano:'Passe para a equipe quando a pessoa pedir um atendente, demonstrar irritação ou quando o horário desejado já estiver anotado.',
+  links:'Site: clinicasorriso.com.br · Localização: maps.app/clinicasorriso',
+  exemplos:'Cliente: Quero marcar uma avaliação.\nAssistente: Claro! Você prefere de manhã ou à tarde?'
+};
+const CAMPOS = [['funcao','Definição de Função'],['empresa','Sobre a Empresa, Produtos e Serviços'],['tom','Tom da Conversa'],['base','Orientações sobre a Base de Conhecimento'],['incorretas','Prevenção de Informações Incorretas'],['humano','Encaminhamento para Atendimento Humano'],['links','Links Úteis'],['exemplos','Exemplos de Conversa']];
+const DIAS = [['seg','SEG'],['ter','TER'],['qua','QUA'],['qui','QUI'],['sex','SEX'],['sab','SÁB'],['dom','DOM']];
+
+const S = {
+  area:'parceiro', page:'inicio', projNome:'Clínica Sorriso', cfgAberto:false,
+  marca:{nome:'Bolten', dominio:'boltcrm.app', cor:'#FF6828', modeloPadrao:'m1', aba:'dominio'},
+  receb:{etapa:0}, convidou:false,
+  modelos:[
+    {id:'m1', nome:'Clínicas', tools:['whatsapp','contatos','funil','agenda','agente','conversoes'], preco:{usuario:49, agente:149, conversoes:39, redes:29}, escuro:true, senha:'', criado:'17 de novembro de 2026'},
+    {id:'m2', nome:'Advocacia', tools:['whatsapp','contatos','funil','tarefas','agente'], preco:{usuario:59, agente:179, conversoes:39, redes:29}, escuro:true, senha:'', criado:'02 de setembro de 2026'},
+    {id:'m3', nome:'Imobiliárias', tools:['redes','whatsapp','contatos','conversoes','funil'], preco:{usuario:39, agente:99, conversoes:29, redes:19}, escuro:false, senha:'', criado:'20 de agosto de 2026'}
+  ],
+  modeloAberto:'m1', modeloAba:'cli', usuariosEx:3,
+  clientes:[
+    {id:'p1', nome:'Clínica Sorriso', modelo:'m1', criado:'02/09/26', usuarios:4, status:'ativo', cobranca:'70/30'},
+    {id:'p2', nome:'Odonto Prime', modelo:'m1', criado:'11/11/26', usuarios:2, status:'teste', dias:2, cobranca:'70/30'},
+    {id:'p3', nome:'Moura & Lima Advogados', modelo:'m2', criado:'20/08/26', usuarios:6, status:'ativo', cobranca:'Repasse'},
+    {id:'p4', nome:'Imobiliária Horizonte', modelo:'m3', criado:'13/11/26', usuarios:3, status:'teste', dias:4, cobranca:'70/30'},
+    {id:'p5', nome:'Studio Bella Estética', modelo:'m1', criado:'05/10/26', usuarios:2, status:'ativo', cobranca:'70/30'},
+    {id:'p6', nome:'Castro Advocacia', modelo:'m2', criado:'14/07/26', usuarios:1, status:'inativo', cobranca:'Repasse'},
+    {id:'p7', nome:'Lar Doce Imóveis', modelo:'m3', criado:'15/11/26', usuarios:5, status:'teste', dias:6, cobranca:'70/30'},
+    {id:'p8', nome:'Instituto Vida Plena', modelo:'m1', criado:'28/09/26', usuarios:3, status:'ativo', cobranca:'70/30'}
+  ],
+  cliBusca:'',
+  chaves:[{id:'k1', nome:'Integração n8n', dono:'Rafael Nunes', criado:'17 de abril de 2026, 09:48'}],
+  projTools:['redes','agente','whatsapp','contatos','conversoes','agenda','funil','tarefas','produtos','automacao','cadencia'],
+  tarefas:[
+    {id:'t1', contato:'c1', titulo:'Confirmar avaliação', desc:'Ligar para confirmar quinta à tarde', resp:'Carla Mendes', quando:'20 de novembro, 14:00', status:'Pendente'},
+    {id:'t2', contato:'c2', titulo:'Enviar proposta', desc:'Tratamento em 6x', resp:'Bruno Lima', quando:'17 de novembro, 18:00', status:'Pendente'},
+    {id:'t3', contato:'c3', titulo:'Retorno da proposta', desc:'', resp:'Bruno Lima', quando:'21 de novembro, 10:00', status:'Pendente'},
+    {id:'t4', contato:'c5', titulo:'Remarcar limpeza', desc:'Feito por telefone', resp:'Carla Mendes', quando:'14 de novembro, 10:30', status:'Concluída'}],
+  produtos:[{id:'pr1', nome:'Avaliação', preco:0}, {id:'pr2', nome:'Clareamento', preco:1200}, {id:'pr3', nome:'Limpeza', preco:250}, {id:'pr4', nome:'Implante', preco:3800}],
+  respostas:[{id:'r1', atalho:'boasvindas', msg:'Olá! Aqui é da Clínica Sorriso. Como posso ajudar?', modelo:false}, {id:'r2', atalho:'endereco', msg:'Estamos na Rua das Acácias, 120. Tem estacionamento ao lado.', modelo:false}, {id:'r3', atalho:'retorno', msg:'Oi, tudo bem? Passando para saber se ficou alguma dúvida.', modelo:true}],
+  webhooks:[{id:'w1', nome:'n8n atendimento', quando:'12 de novembro, 10:57', ativo:true}],
+  metaads:[],
+  notifs:[{id:'nf1', contato:'c4', h:'Há 5 minutos'}, {id:'nf2', contato:'c1', h:'Há 2 horas'}, {id:'nf3', contato:'c6', h:'Há 4 dias'}],
+  projAba:'info', projAberto:'p1', registro:null,
+  numeros:[{id:'n1', num:'5511952134951', apelido:'Recepção'}, {id:'n2', num:'5511936204338', apelido:'Comercial'}],
+  contatos:[
+    {id:'c1', nome:'Marina Duarte', fone:'5511987654321', email:'marina.duarte@email.com', criado:'16/11/2026'},
+    {id:'c2', nome:'João Pedro Alves', fone:'5511976543210', email:'', criado:'15/11/2026'},
+    {id:'c3', nome:'Luciana Prado', fone:'5521998761234', email:'luciana@pradoarquitetura.com.br', criado:'12/11/2026'},
+    {id:'c4', nome:'', fone:'5531991234567', email:'', criado:'16/11/2026'},
+    {id:'c5', nome:'Rodrigo Teixeira', fone:'5511965432109', email:'', criado:'08/11/2026'},
+    {id:'c6', nome:'Bianca Souza', fone:'5541999887766', email:'bia.souza@email.com', criado:'05/11/2026'},
+    {id:'c7', nome:'Felipe Andrade', fone:'5511954321098', email:'', criado:'02/11/2026'},
+    {id:'c8', nome:'Helena Castro', fone:'5519998123456', email:'helena.castro@email.com', criado:'14/11/2026'}
+  ],
+  conversas:[
+    {id:'v1', contato:'c1', numero:'n1', dono:'ia', nao:2, dia:'17/11/2026', msgs:[{de:'c', t:'Oi, vocês fazem clareamento?', h:'09:02'}, {de:'ia', t:'Fazemos, sim! Você prefere vir de manhã ou à tarde para a avaliação?', h:'09:02'}, {de:'c', t:'À tarde', h:'09:10'}, {de:'c', t:'Pode ser quinta?', h:'09:11'}]},
+    {id:'v2', contato:'c2', numero:'n1', dono:'eu', nao:0, dia:'17/11/2026', msgs:[{de:'c', t:'Consegue parcelar o tratamento em 6x?', h:'08:30'}, {de:'eu', t:'Consigo, João. Te mando a proposta ainda hoje.', h:'08:42'}]},
+    {id:'v3', contato:'c3', numero:'n1', dono:'eu', nao:1, dia:'17/11/2026', msgs:[{de:'eu', t:'Luciana, segue a proposta do plano empresarial.', h:'08:10'}, {de:'c', t:'Recebi. Vou ver com meu sócio e te retorno.', h:'08:41'}]},
+    {id:'v4', contato:'c4', numero:'n1', dono:'ia', nao:3, dia:'16/11/2026', msgs:[{de:'c', t:'Boa tarde', h:'15:15'}, {de:'ia', t:'Boa tarde! Como posso ajudar?', h:'15:15'}, {de:'c', t:'Qual o valor da consulta?', h:'15:20'}]},
+    {id:'v5', contato:'c5', numero:'n1', dono:'outro', nao:0, dia:'14/11/2026', janela:true, msgs:[{de:'c', t:'Preciso remarcar minha limpeza', h:'10:02'}, {de:'eu', t:'Remarcado para terça, 14h.', h:'10:30'}]},
+    {id:'v6', contato:'c6', numero:'n2', dono:'ia', nao:0, dia:'13/11/2026', msgs:[{de:'c', t:'Vocês atendem sábado?', h:'18:20'}, {de:'ia', t:'Aos sábados não. De segunda a sexta, das 8h às 18h.', h:'18:20'}]}
+  ],
+  waBusca:'', waNumero:'n1', waAba:'tudo', waSel:'v1',
+  etapas:['Novo lead','Em atendimento','Proposta enviada','Fechado'],
+  cards:[
+    {id:'k1', contato:'c1', etapa:0, valor:450, prio:'Alta', resp:'Carla Mendes', obs:''},
+    {id:'k2', contato:'c8', etapa:0, valor:0, prio:'', resp:'', obs:''},
+    {id:'k3', contato:'c2', etapa:1, valor:1800, prio:'Média', resp:'Carla Mendes', obs:'Quer parcelar em 6x'},
+    {id:'k4', contato:'c5', etapa:1, valor:0, prio:'Baixa', resp:'Bruno Lima', obs:''},
+    {id:'k5', contato:'c3', etapa:2, valor:3200, prio:'Alta', resp:'Bruno Lima', obs:''},
+    {id:'k6', contato:'c7', etapa:3, valor:900, prio:'', resp:'Bruno Lima', obs:''}
+  ],
+  fuBusca:'', fuVisao:'quadro', fuAdd:null, arrasta:null,
+  ctBusca:'', ctOrdem:{col:'nome', dir:1},
+  agente:{ativo:true, numeros:['n1'], notificar:false, pausar:true, tipo:'estruturado', sujo:false,
+    horarios:{seg:['08:00','18:00'], ter:['08:00','18:00'], qua:['08:00','18:00'], qui:['08:00','18:00'], sex:['08:00','18:00'], sab:null, dom:null},
+    arquivos:[['tabela-de-procedimentos.pdf','300 KB'],['perguntas-frequentes.pdf','200 KB'],['convenios-aceitos.pdf','80 KB']], campos:Object.assign({}, PADRAO),
+    teste:[{de:'ia', t:'Escreva como se fosse um cliente. Eu respondo com as instruções salvas.'}]},
+  conv:{conectado:false, busca:'', linhas:[
+    {lead:'Marina Duarte', fone:'5511987654321', origem:'Campanha Clareamento', data:'16/11/2026'},
+    {lead:'Helena Castro', fone:'5519998123456', origem:'Campanha Clareamento', data:'14/11/2026'},
+    {lead:'Felipe Andrade', fone:'5511954321098', origem:'Anúncio Implante', data:'08/11/2026'},
+    {lead:'Bianca Souza', fone:'5541999887766', origem:'Anúncio Implante', data:'30/10/2026'},
+    {lead:'Rodrigo Teixeira', fone:'5511965432109', origem:'Campanha Check-up', data:'22/10/2026'}]},
+  agenda:{calendario:null, eventos:[{d:1, h:9, t:'Marina Duarte · Avaliação'}, {d:2, h:14, t:'Rodrigo Teixeira · Limpeza'}, {d:4, h:15, t:'Helena Castro · Avaliação'}]},
+  posts:[
+    {id:'s1', titulo:'Antes e depois do clareamento', conta:'clinicasorriso@Instagram', status:'Publicado', dia:12},
+    {id:'s2', titulo:'Story de dúvidas sobre aparelho', conta:'clinicasorriso@Instagram', status:'Publicado', dia:14},
+    {id:'s3', titulo:'Condição especial de dezembro', conta:'clinicasorriso@Instagram', status:'Agendado', dia:24}],
+  novoPost:{canal:'Post', legenda:'', quando:'agora', data:'2026-11-20'},
+  usuarios:[
+    {id:'u1', nome:'Carla Mendes', email:'carla@clinicasorriso.com.br', grupos:['Recepção'], ativo:true, voce:true},
+    {id:'u2', nome:'Bruno Lima', email:'bruno@clinicasorriso.com.br', grupos:['Comercial'], ativo:true},
+    {id:'u3', nome:'Paula Reis', email:'paula@clinicasorriso.com.br', grupos:[], ativo:true},
+    {id:'u4', nome:'Tiago Rocha', email:'tiago@clinicasorriso.com.br', grupos:['Recepção'], ativo:false}],
+  grupos:['Recepção','Comercial'], integ:{webhooks:false, meta:false, api:true}, cfgAba:'ferramentas',
+  painel:null
+};
+
+/* ───────── apoio ───────── */
+function ct(id){ return S.contatos.find(c => c.id === id); }
+function nomeDe(c){ return c && c.nome ? c.nome : 'Sem nome'; }
+function modelo(id){ return S.modelos.find(m => m.id === id); }
+function cardDe(cid){ return S.cards.find(k => k.contato === cid); }
+function valorCliente(c){ const m = modelo(c.modelo); if (!m) return 0; let v = c.usuarios * m.preco.usuario; m.tools.forEach(t => { if (TOOLS[t].min) v += m.preco[t]; }); return v; }
+function escuro(){ return document.documentElement.classList.contains('dark'); }
+function toggleTheme(){ document.documentElement.classList.toggle('dark'); renderAll(); }
+function setArea(a){ S.area = a; S.page = a === 'parceiro' ? 'inicio' : S.projTools.filter(t => PAGES[t])[0]; fecharPainel(); renderAll(); }
+function switchPage(p){ S.page = p; S.perfil = false; fecharPainel(); renderAll(); $('page').scrollTop = 0; }
+
+/* ───────── menu lateral (como na plataforma) ───────── */
+const NAV_P = [['inicio','Dashboard','layout-dashboard'],['clientes','Clientes','users'],['docs','Documentação','book-text'],['marca','Minha marca','palette'],['chaves','Chaves de API','unplug'],['pagamentos','Pagamentos','credit-card']];
+function item(id, nome, icone, ativo, extra, acao){
+  return `<li class="group flex items-center pl-4 pr-3 py-2 rounded-lg mb-0.5 ${ativo ? 'bg-stone-300/60 dark:bg-gray-700/80' : ''}"><button data-page-btn="${id}" onclick="${acao || `switchPage('${id}')`}" class="flex items-center grow min-w-0 text-left ${ativo ? 'text-gray-800 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}">${ic(icone, 'w-5 h-5 ' + (ativo ? 'text-personalized-primary' : ''))}<span class="text-sm ml-4 truncate ${ativo ? 'font-bold' : 'font-medium'}">${esc(nome)}</span>${extra || ''}</button></li>`;
+}
+function drawSide(){
+  const PAI = {modelo:'inicio', projeto:'clientes', ctcampos:'contatos', furel:'funil', fucfg:'funil', wanovo:'whatsapp', redesdash:'redes', redesperfis:'redes', redeslista:'redes', webhooks:'config', metaads:'config', apiproj:'config'};
+  const P = S.area === 'parceiro', atual = PAI[S.page] || S.page, nome = P ? 'Rafael Nunes' : 'Carla Mendes';
+  const nao = S.conversas.reduce((a, v) => a + v.nao, 0);
+  let nav;
+  if (S.page === 'projetos') nav = '';
+  else if (P) nav = NAV_P.map(i => item(i[0], i[1], i[2], atual === i[0], i[0] === 'docs' ? ic('external-link', 'w-3.5 h-3.5 ml-2 opacity-60') : '', i[0] === 'docs' ? `window.open('${DOCS}','_blank')` : '')).join('');
+  else {
+    nav = S.projTools.filter(t => PAGES[t]).map(t => item(t, TOOLS[t].nome, TOOLS[t].icon, atual === t, t === 'whatsapp' && nao ? `<span class="ml-auto text-[11px] font-semibold text-white bg-personalized-primary rounded-full min-w-[20px] h-5 px-1.5 flex items-center justify-center">${nao}</span>` : '')).join('');
+    const sub = [['ferramentas','Adicionar ferramenta'],['usuarios','Gestão de acesso'],['integracoes','Integrações']];
+    nav += `<li class="my-3 border-t border-gray-300 dark:border-gray-700"></li><li class="text-center"><button onclick="S.cfgAberto=!S.cfgAberto;drawSide();icons()" class="inline-flex items-center gap-1 text-sm ${atual === 'config' ? 'font-bold text-gray-800 dark:text-gray-100' : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}">Configurações ${ic(S.cfgAberto || atual === 'config' ? 'chevron-up' : 'chevron-down', 'w-4 h-4')}</button></li>`;
+    const sb = 'text-[13px] py-1 text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200';
+    if (S.cfgAberto || atual === 'config') nav += sub.map(s => `<li class="text-center"><button onclick="${s[0] === 'ferramentas' ? 'novaFerramentaModal()' : `S.cfgAba='${s[0]}';switchPage('config')`}" class="${atual === 'config' && S.cfgAba === s[0] ? 'text-[13px] py-1 font-semibold text-gray-800 dark:text-gray-100' : sb}">${s[1]}</button></li>`).join('') + `<li class="text-center"><button onclick="abrirProjeto('p1')" class="${sb}">Configurações do parceiro</button></li><li class="text-center"><button onclick="embreve()" class="${sb}">Ver tutorial</button></li>`;
+  }
+  $('side').innerHTML = `<div class="flex items-center mt-6 mb-3 px-2 text-gray-900 dark:text-white">${$('logo-bolten').innerHTML}</div>
+    <ul class="mt-3 grow overflow-y-auto no-scrollbar">${nav}</ul>
+    <div class="foot mb-3 flex items-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl px-2 py-1.5">
+      <button class="who flex items-center gap-2 grow min-w-0 text-left" title="Perfil, área e projetos" onclick="menuArea(event)">${av(nome, 'w-7 h-7 text-[11px]')}<span class="text-xs font-semibold text-gray-800 dark:text-gray-100 truncate">${nome}</span>${ic('chevron-right', 'w-4 h-4 ml-auto text-gray-400')}</button>
+      ${P ? '' : `<span class="w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1.5"></span><button class="sino relative text-gray-400 hover:text-gray-600" title="Notificações" onclick="abrirNotificacoes(event)">${ic('bell', 'w-4 h-4')}${S.notifs.length ? '<span class="absolute -top-0.5 -right-0.5 w-1.5 h-1.5 rounded-full bg-red-500"></span>' : ''}</button>`}</div>`;
+}
+// Menu do perfil igual ao da plataforma, com o modo escuro à mão
+function menuArea(e){
+  const P = S.area === 'parceiro';
+  abrirMenu(e, [{cab:P ? 'Rafael Nunes' : 'Carla Mendes', sub:P ? 'rafael@agencianunes.com.br' : 'carla@clinicasorriso.com.br'}, {sep:1}, {i:'user', t:'Perfil', f:abrirPerfil}, {sep:1}, {i:'share-2', t:'Área do Parceiro', f:() => setArea('parceiro')}, {i:'folder', t:'Meus projetos', f:() => { S.area = 'parceiro'; switchPage('projetos'); }}, {sep:1}, {i:'unplug', t:'Chaves de API', f:() => { setArea('parceiro'); switchPage('chaves'); }}, {i:'book-text', t:'Documentação & FAQ', f:() => window.open(DOCS, '_blank')}, {sep:1}, {i:'log-out', t:'Sair', f:embreve}], true);
+}
+
+/* ───────── peças de página ───────── */
+function titulo(t, acoes, voltar){ return `<div class="flex justify-between items-center mb-6"><div class="flex items-center gap-3">${voltar ? `<button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="Voltar" onclick="switchPage('${voltar}')">${ic('arrow-left')}</button>` : ''}<h1 class="h1">${t}</h1><span id="salvo" class="hidden items-center gap-1 text-xs text-green-600 dark:text-green-400 ml-2">${ic('check', 'w-3.5 h-3.5')}Salvo</span></div>${acoes ? `<div class="flex items-center gap-2">${acoes}</div>` : ''}</div>`; }
+function aviso(){ if (S.area !== 'parceiro' || S.receb.etapa >= 3) return '';
+  return `<div class="mb-8 rounded-lg px-4 py-3 bg-amber-100 text-amber-900 border border-amber-200 dark:bg-amber-700 dark:text-amber-50 dark:border-transparent"><div class="flex items-center gap-2 font-semibold">${ic('circle-alert', 'w-4 h-4')}Complete seu cadastro para receber</div><div class="flex items-end gap-4"><p class="text-xs mt-1 grow">Para receber pagamentos dos seus clientes, é necessário completar o cadastro dos seus dados de recebimento. <b>Sem este cadastro, seus clientes não conseguirão efetuar pagamentos pelos projetos.</b></p><button class="btn btn-sec btn-sm" onclick="switchPage('pagamentos')">Completar cadastro</button></div></div>`; }
+function vazio(icone, t, sub, acoes){ return `<div class="flex flex-col items-center text-center py-12"><span class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 mb-4">${ic(icone)}</span><div class="text-lg font-bold text-gray-800 dark:text-gray-100">${t}</div><p class="text-sm mt-1 max-w-md">${sub}</p>${acoes ? `<div class="mt-6 flex gap-2">${acoes}</div>` : ''}</div>`; }
+let tSalvo = null;
+function flashSalvo(){ const e = $('salvo'); if (!e) return; e.classList.remove('hidden'); e.classList.add('inline-flex'); clearTimeout(tSalvo); tSalvo = setTimeout(() => { e.classList.add('hidden'); e.classList.remove('inline-flex'); }, 1600); }
+function renderAll(){ drawSide(); $('page').className = 'grow bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl h-full max-h-full relative ' + (S.page === 'whatsapp' ? 'p-6 overflow-hidden' : 'p-8 overflow-y-auto'); (PAGES[S.page] || PAGES.inicio)(); drawPainel(); icons(); }
+
+/* ───────── aviso, janela, menu ───────── */
+let tToast = null, desfazer = null;
+function showToast(msg, undo){ desfazer = undo || null; $('toast').innerHTML = `${ic('circle-check', 'w-4 h-4 text-green-400 dark:text-green-600')}<span>${esc(msg)}</span>${undo ? `<button class="font-semibold underline" onclick="fazerDesfazer()">Desfazer</button>` : ''}`; $('toast').classList.remove('hidden'); $('toast').classList.add('flex'); icons(); clearTimeout(tToast); tToast = setTimeout(() => { $('toast').classList.add('hidden'); $('toast').classList.remove('flex'); }, undo ? 5000 : 2400); }
+function fazerDesfazer(){ if (desfazer) desfazer(); desfazer = null; $('toast').classList.add('hidden'); renderAll(); }
+function embreve(){ showToast('Fora desta versão do mockup'); }
+function openModal(t, corpo, rodape, larga){
+  $('modal').innerHTML = `<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full ${larga === 'xl' ? 'max-w-5xl' : larga ? 'max-w-3xl' : 'max-w-lg'} max-h-[84vh] flex flex-col overflow-hidden border border-gray-200 dark:border-gray-700"><div class="flex items-center px-5 py-3 border-b border-gray-200 dark:border-gray-700"><div class="font-semibold text-gray-800 dark:text-gray-100 grow">${t}</div><button class="text-gray-400 hover:text-gray-600" title="Fechar" onclick="closeModal()">${ic('x', 'w-4 h-4')}</button></div><div class="px-5 py-4 overflow-auto">${corpo}</div>${rodape ? `<div class="flex justify-end gap-2 px-5 py-4 border-t border-gray-200 dark:border-gray-700">${rodape}</div>` : ''}</div>`;
+  $('modal').classList.remove('hidden'); $('modal').classList.add('flex'); icons(); const f = $('modal').querySelector('input:not([type=checkbox]):not([type=radio]),textarea'); if (f) f.focus();
+}
+function abrirJanela(html){ $('modal').innerHTML = html; $('modal').classList.remove('hidden'); $('modal').classList.add('flex'); icons(); }
+function closeModal(){ S.registro = null; $('modal').classList.add('hidden'); $('modal').classList.remove('flex'); $('modal').innerHTML = ''; }
+function foraModal(e){ if (e.target.id === 'modal') closeModal(); }
+function copiar(txt, msg){ try { navigator.clipboard.writeText(txt).catch(() => {}); } catch (e) {} showToast(msg); }
+let ctxItens = [];
+function abrirMenu(e, itens, acima){
+  e.stopPropagation(); ctxItens = itens; const m = $('ctx');
+  m.innerHTML = itens.map((o, i) => o.sep ? '<div class="border-t border-gray-200 dark:border-gray-600 my-1"></div>' : o.cab ? `<div class="px-3 pt-2 pb-1"><div class="font-semibold text-gray-800 dark:text-gray-100">${o.cab}</div><div class="text-xs italic">${o.sub}</div></div>` : o.g ? `<div class="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase text-gray-400">${o.g}</div>` : `<button onclick="rodarMenu(${i})" class="flex items-center gap-2 w-full px-3 py-1.5 text-left text-sm ${o.d ? 'text-red-500' : 'text-gray-700 dark:text-gray-200'} hover:bg-gray-100 dark:hover:bg-gray-600">${ic(o.i, 'w-4 h-4')}${esc(o.t)}${o.k ? `<span class="ml-auto pl-4">${o.k}</span>` : ''}</button>`).join('');
+  m.classList.remove('hidden'); icons();
+  m.style.bottom = 'auto';
+  const r = e.currentTarget.getBoundingClientRect(), w = m.offsetWidth, h = m.offsetHeight;
+  m.style.left = Math.max(8, Math.min(window.innerWidth - w - 8, r.left)) + 'px';
+  m.style.top = (acima || r.bottom + 4 + h > window.innerHeight ? Math.max(8, r.top - h - 6) : r.bottom + 4) + 'px';
+}
+function fecharMenu(){ $('ctx').classList.add('hidden'); }
+function rodarMenu(i){ const o = ctxItens[i]; fecharMenu(); if (o && o.f) o.f(); }
+document.addEventListener('click', () => fecharMenu());
+
+/* ═════════ PARCEIRO ═════════ */
+const PAGES = {};
+
+// Dashboard: os mesmos cartões de modelo de hoje. Ajuste: os clientes do modelo aparecem no cartão, em tabela.
+PAGES.inicio = function(){
+  $('page').innerHTML = aviso() + titulo('Modelos', `<button class="btn btn-sec" onclick="setArea('cliente')">Acessar projeto demonstração</button><button class="btn btn-primary" onclick="novoModelo()">${ic('plus', 'w-4 h-4')}Modelo</button>`) +
+    S.modelos.map(m => { const cs = S.clientes.filter(c => c.modelo === m.id);
+      return `<div class="caixa mb-8"><div class="flex items-center gap-4 px-6 pt-6"><h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 grow">${esc(m.nome)}</h2>
+        <button class="btn btn-ghost" onclick="setArea('cliente')">Acessar visão de edição ${ic('eye', 'w-4 h-4')}</button><button class="btn btn-ghost" onclick="abrirModelo('${m.id}')">Configurações ${ic('settings', 'w-4 h-4')}</button><button class="btn btn-sec" onclick="convidar(event,'${m.id}')">${ic('link', 'w-4 h-4')}Convidar</button></div>
+        <div class="grid grid-cols-[190px_1fr] gap-6 px-6 pt-5 pb-6"><div><div class="text-xs font-semibold uppercase text-gray-400 mb-2">Ferramentas</div><ul class="bg-gray-200/70 dark:bg-gray-700 rounded-lg p-1.5">${m.tools.map(t => `<li class="flex items-center gap-2 px-2 py-2 text-[13px] text-gray-700 dark:text-gray-200">${ic(TOOLS[t].icon, 'w-4 h-4')}${TOOLS[t].nome}</li>`).join('')}</ul></div>
+        <div><div class="text-xs font-semibold uppercase text-gray-400 mb-2">Clientes</div>${cs.length ? `<div class="tabela"><table><thead><tr><th>Cliente</th><th>Usuários</th><th>Valor mensal</th><th>Status</th></tr></thead><tbody>${cs.map(c => `<tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40" onclick="entrarProjeto('${c.id}')"><td class="font-semibold text-gray-800 dark:text-gray-100">${esc(c.nome)}</td><td>${c.usuarios}</td><td>${brl(valorCliente(c))}</td><td>${stCli(c)}</td></tr>`).join('')}</tbody></table></div>` : vazio('package', 'Ainda não há projetos usando este modelo', 'Envie um link para seu projeto para seus clientes. Assim que se inscreverem, eles serão listados aqui!')}</div></div></div>`; }).join('');
+};
+function stCli(c){ return c.status === 'ativo' ? pVerde('Ativo') : c.status === 'teste' ? pTeste(c.dias) : pCinza('Inativo'); }
+function convidar(e, id){ e.stopPropagation(); const m = modelo(id); S.convidou = true; copiar('https://' + S.marca.dominio + '/convite/' + norm(m.nome).replace(/\s+/g, '-'), 'Link de convite do modelo ' + m.nome + ' copiado'); }
+function novoModelo(){
+  const marc = ['whatsapp','contatos','funil','agente'];
+  openModal('Novo modelo', `<div class="mb-4"><label class="lbl" for="nm-nome">Nome do modelo <span class="text-red-500">*</span></label><input class="form-input" id="nm-nome" placeholder="Ex.: Clínicas"></div>
+    <div class="lbl">Ferramentas</div><div class="grid grid-cols-2 gap-2">${Object.keys(TOOLS).map(k => `<label class="flex items-center gap-2 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2 cursor-pointer"><input type="checkbox" class="chk" id="nm-${k}" ${marc.includes(k) ? 'checked' : ''}>${ic(TOOLS[k].icon, 'w-4 h-4')}<span class="text-gray-800 dark:text-gray-100">${TOOLS[k].nome}</span></label>`).join('')}</div>
+    <p class="text-xs mt-3">O preço começa no mínimo (${brl(MIN_USUARIO)} por usuário). Você ajusta depois em Precificação.</p>`,
+    `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarModelo()">Criar modelo</button>`);
+}
+function criarModelo(){
+  const nome = $('nm-nome').value.trim(); if (!nome) { $('nm-nome').focus(); showToast('Dê um nome ao modelo'); return; }
+  const m = {id:nid('m'), nome:nome, tools:Object.keys(TOOLS).filter(k => $('nm-' + k).checked), preco:{usuario:MIN_USUARIO, agente:60, conversoes:20, redes:10}, escuro:true, senha:'', criado:'17 de novembro de 2026'};
+  S.modelos.unshift(m); closeModal(); abrirModelo(m.id); showToast('Modelo ' + nome + ' criado');
+}
+function abrirModelo(id){ S.modeloAberto = id; S.modeloAba = 'cli'; switchPage('modelo'); }
+
+// Edição do modelo: a mesma tela com menu lateral. Ajustes: ordem Clientes, Ferramentas, Precificação, Informações,
+// Configurações; "Componentes" vira "Ferramentas"; conta de exemplo embaixo dos preços; data em português.
+PAGES.modelo = function(){
+  const m = modelo(S.modeloAberto); if (!m) { switchPage('inicio'); return; }
+  const a = S.modeloAba, n = S.clientes.filter(c => c.modelo === m.id).length;
+  const abas = [['cli','Clientes','users', n],['tools','Ferramentas','boxes', m.tools.length],['preco','Precificação','circle-dollar-sign'],['info','Informações','info'],['cfg','Configurações','settings']];
+  $('page').innerHTML = aviso() + titulo(esc(m.nome), `<button class="btn btn-sec" onclick="convidar(event,'${m.id}')">${ic('link', 'w-4 h-4')}Convidar</button>`, 'inicio') +
+    `<div class="caixa flex min-h-[360px]"><div class="w-52 shrink-0 border-r border-gray-200 dark:border-gray-700/60 p-3"><div class="text-[11px] font-semibold uppercase text-gray-400 px-2.5 mb-2">Geral</div>${abas.map(x => `<button onclick="abaModelo('${x[0]}')" class="flex items-center gap-2 w-full px-2.5 py-2 rounded-lg mb-0.5 text-left text-[13px] ${a === x[0] ? 'bg-white dark:bg-gray-700 font-semibold text-gray-800 dark:text-gray-100' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}">${ic(x[2], 'w-4 h-4 ' + (a === x[0] ? 'text-personalized-primary' : ''))}${x[1]}${x[3] !== undefined ? `<span class="text-[11px] font-semibold bg-gray-400 dark:bg-gray-500 text-white rounded px-1.5">${x[3]}</span>` : ''}</button>`).join('')}</div><div class="grow min-w-0 p-6" id="mod-form"></div></div>`;
+  drawModForm();
+};
+function abaModelo(a){ S.modeloAba = a; renderAll(); }
+function drawModForm(){
+  const m = modelo(S.modeloAberto), a = S.modeloAba; let h = '';
+  if (a === 'cli') { const cs = S.clientes.filter(c => c.modelo === m.id);
+    h = `<h2 class="h2 mb-5">Clientes</h2>` + (cs.length ? `<div class="tabela"><table><thead><tr><th>Cliente</th><th>Data de criação</th><th>Valor mensal</th><th>Status</th><th>Ações</th></tr></thead><tbody>${cs.map(c => `<tr><td class="font-semibold text-gray-800 dark:text-gray-100">${esc(c.nome)}</td><td>${c.criado}</td><td>${brl(valorCliente(c))}</td><td>${stCli(c)}</td><td><button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="Entrar no projeto" onclick="entrarProjeto('${c.id}')">${ic('log-in', 'w-4 h-4')}</button></td></tr>`).join('')}</tbody></table></div>`
+      : vazio('package', 'Ainda não há projetos usando este modelo', 'Envie um link para seu projeto para seus clientes. Assim que se inscreverem, eles serão listados aqui!', `<button class="btn btn-sec" onclick="convidar(event,'${m.id}')">${ic('link', 'w-4 h-4')}Convidar</button>`)); }
+  if (a === 'tools') h = `<div class="flex items-center mb-5"><h2 class="h2 grow">Ferramentas</h2><button class="btn btn-sec" onclick="menuTools(event)">${ic('plus', 'w-4 h-4')}Ferramenta</button></div><div class="tabela"><table><thead><tr><th class="w-8"></th><th>Nome</th><th>Tipo</th><th>Ações</th></tr></thead><tbody>${m.tools.map((t, i) => `<tr><td class="text-gray-400">${ic('grip-vertical', 'w-4 h-4')}</td><td class="text-gray-800 dark:text-gray-100">${TOOLS[t].nome}</td><td>${TOOLS[t].tipo}</td><td><div class="flex gap-3"><button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100 disabled:opacity-30" title="Subir na ordem do menu" ${i === 0 ? 'disabled' : ''} onclick="moverTool(${i},-1)">${ic('arrow-up', 'w-4 h-4')}</button><button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="Editar" onclick="embreve()">${ic('square-pen', 'w-4 h-4')}</button><button class="text-red-500" title="Tirar do modelo" onclick="tirarTool('${t}')">${ic('trash-2', 'w-4 h-4')}</button></div></td></tr>`).join('')}</tbody></table></div><p class="text-xs mt-3">A ordem desta lista é a ordem do menu do cliente.</p>`;
+  if (a === 'preco') { const pagas = m.tools.filter(t => TOOLS[t].min);
+    h = `<h2 class="h2 mb-5">Precificação</h2><div class="grid grid-cols-2 gap-x-10 gap-y-5 max-w-2xl">${[['usuario','Preço por usuário do CRM', MIN_USUARIO]].concat(pagas.map(t => [t, 'Preço - ' + TOOLS[t].nome, TOOLS[t].min])).map(p => `<div><label class="lbl" for="pr-${p[0]}"><span class="text-red-500">*</span> ${p[1]} (mín. R$${p[2]})</label><div class="flex items-center gap-2"><span>R$</span><input class="form-input w-36" id="pr-${p[0]}" type="number" min="${p[2]}" value="${m.preco[p[0]]}" oninput="editPreco('${p[0]}',this.value)"></div><div class="text-xs text-red-500 mt-1 hidden" id="aj-${p[0]}">Abaixo do mínimo de R$ ${p[2]},00.</div></div>`).join('')}</div>
+      <div class="mt-6 rounded-lg bg-white dark:bg-gray-700/50 border border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center gap-3 max-w-2xl" id="pr-exemplo"></div>
+      <div class="flex justify-end mt-6 pt-4 border-t border-gray-200 dark:border-gray-700"><button class="btn btn-primary" onclick="definirPreco()">Definir Preço</button></div>`; }
+  if (a === 'info') h = `<h2 class="h2 mb-5">Informações</h2><div class="flex justify-center gap-4">${[['Logo no Modo Claro','bg-stone-100 text-gray-900'],['Logo no Modo Escuro','bg-gray-800 text-white']].map(l => `<div class="text-center"><div class="text-sm mb-2">${l[0]}</div><button onclick="embreve()" class="w-36 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 ${l[1]} flex flex-col items-center justify-center gap-2">${$('logo-bolten').innerHTML.replace('class="logo"', 'class="logo" style="width:76px"')}<span class="text-xs opacity-60">Editar logo</span></button></div>`).join('')}</div>
+    <p class="text-center text-sm mt-3">Criado em ${m.criado}</p><div class="border-t border-gray-200 dark:border-gray-700 my-5"></div>
+    <div class="max-w-md"><label class="lbl" for="mo-nome"><span class="text-red-500">*</span> Nome do modelo</label><input class="form-input" id="mo-nome" value="${esc(m.nome)}" oninput="editModelo(this.value)"><p class="text-xs mt-1">Só você vê. Salva sozinho.</p></div>`;
+  if (a === 'cfg') h = `<h2 class="h2 mb-5">Configurações</h2><div class="space-y-5 max-w-md"><label class="flex items-center gap-2 text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" ${m.escuro ? 'checked' : ''} onchange="togModelo()">Permitir modo escuro</label>
+    <div class="flex items-center gap-6">${['Cor no Modo Claro','Cor no Modo Escuro'].map(c => `<label class="flex items-center gap-2"><input type="color" value="#FF6828" class="w-8 h-8 rounded border border-gray-200 dark:border-gray-700 bg-transparent" onchange="flashSalvo()">${c}</label>`).join('')}</div>
+    <div><label class="lbl" for="mo-senha">Configurar senha (opcional)</label><input class="form-input" id="mo-senha" placeholder="Sem senha" value="${esc(m.senha)}" oninput="modelo(S.modeloAberto).senha=this.value;flashSalvo()"><p class="text-xs mt-1">Quem se cadastra pelo convite precisa informar a senha.</p></div></div>`;
+  $('mod-form').innerHTML = h; if (a === 'preco') drawExemplo(); icons();
+}
+function menuTools(e){ const m = modelo(S.modeloAberto); const fora = Object.keys(TOOLS).filter(k => !m.tools.includes(k)); if (!fora.length) { showToast('O modelo já tem todas as ferramentas'); return; } abrirMenu(e, fora.map(k => ({i:TOOLS[k].icon, t:TOOLS[k].nome, f:() => { m.tools.push(k); drawModForm(); showToast(TOOLS[k].nome + ' entrou no modelo'); }}))); }
+function moverTool(i, d){ const t = modelo(S.modeloAberto).tools; const x = t[i]; t[i] = t[i + d]; t[i + d] = x; drawModForm(); flashSalvo(); }
+function tirarTool(k){ const m = modelo(S.modeloAberto), antes = m.tools.slice(); m.tools = m.tools.filter(t => t !== k); drawModForm(); showToast(TOOLS[k].nome + ' saiu do modelo', () => { m.tools = antes; }); }
+function editModelo(v){ modelo(S.modeloAberto).nome = v; const h = document.querySelector('#page h1'); if (h) h.textContent = v; flashSalvo(); }
+function togModelo(){ const m = modelo(S.modeloAberto); m.escuro = !m.escuro; flashSalvo(); }
+function editPreco(k, v){ const m = modelo(S.modeloAberto); m.preco[k] = Number(v) || 0; const min = k === 'usuario' ? MIN_USUARIO : TOOLS[k].min; $('aj-' + k).classList.toggle('hidden', m.preco[k] >= min); drawExemplo(); }
+function drawExemplo(){ const m = modelo(S.modeloAberto), pagas = m.tools.filter(t => TOOLS[t].min), tot = S.usuariosEx * m.preco.usuario + pagas.reduce((a, t) => a + m.preco[t], 0);
+  $('pr-exemplo').innerHTML = `${ic('calculator', 'w-4 h-4 text-gray-400')}<span class="grow">Exemplo: com <button class="font-semibold underline" onclick="S.usuariosEx=S.usuariosEx%6+1;drawExemplo()">${S.usuariosEx} ${S.usuariosEx === 1 ? 'usuário' : 'usuários'}</button>, o cliente paga <b class="text-gray-800 dark:text-gray-100">${brl(tot)}</b> por mês e você recebe <b class="text-green-600 dark:text-green-400">${brl(tot * .7)}</b> (70%).</span>`; icons(); }
+function definirPreco(){ const m = modelo(S.modeloAberto); const baixo = Object.keys(m.preco).some(k => (k === 'usuario' ? m.preco[k] < MIN_USUARIO : m.tools.includes(k) && m.preco[k] < TOOLS[k].min)); if (baixo) { showToast('Algum preço está abaixo do mínimo'); return; } showToast('Preço definido. Vale para clientes novos.'); }
+
+// Clientes: a mesma tabela. Ajustes: busca à vista, coluna Modelo, status em português.
+PAGES.clientes = function(){
+  $('page').innerHTML = aviso() + titulo('Clientes', `<div class="relative w-72">${ic('search', 'w-4 h-4 absolute left-3 top-2.5 text-gray-400')}<input class="form-input pl-9" id="cli-busca" placeholder="Buscar cliente..." value="${esc(S.cliBusca)}" oninput="S.cliBusca=this.value;drawCli()"></div>`) + `<div id="cli-lista"></div>`;
+  drawCli();
+};
+function drawCli(){
+  const q = norm(S.cliBusca), ls = S.clientes.filter(c => !q || norm(c.nome).includes(q));
+  $('cli-lista').innerHTML = ls.length ? `<div class="tabela"><table><thead><tr><th>Cliente</th><th>Modelo</th><th>Estratégia de cobrança</th><th>Data de criação</th><th>Valor mensal</th><th>Status</th><th>Ações</th></tr></thead><tbody>${ls.map(c => `<tr><td class="font-semibold text-gray-800 dark:text-gray-100">${esc(c.nome)}</td><td>${esc(modelo(c.modelo).nome)}</td><td>${c.cobranca}</td><td>${c.criado}</td><td>${brl(valorCliente(c))}</td><td>${stCli(c)}</td><td><div class="flex gap-3"><button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="Entrar no projeto" onclick="entrarProjeto('${c.id}')">${ic('log-in', 'w-4 h-4')}</button><button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="Configurações do projeto" onclick="abrirProjeto('${c.id}')">${ic('settings', 'w-4 h-4')}</button><button class="text-red-500" title="Excluir projeto" onclick="pedirExclusao('${c.id}')">${ic('trash-2', 'w-4 h-4')}</button></div></td></tr>`).join('')}</tbody></table></div>`
+    : vazio('search', 'Nenhum cliente encontrado', 'Confira o nome que você digitou.');
+  icons();
+}
+function entrarProjeto(id){ const c = S.clientes.find(x => x.id === id); S.projNome = c.nome; setArea('cliente'); showToast('Você entrou no projeto ' + c.nome); }
+function pedirExclusao(id){ const c = S.clientes.find(x => x.id === id);
+  openModal('Excluir projeto', `<p class="mb-4">Isso apaga o projeto <b class="text-gray-800 dark:text-gray-100">${esc(c.nome)}</b> e todos os dados dele. Digite o nome do projeto para confirmar.</p><input class="form-input" id="ex-nome" oninput="conferirExclusao('${id}')">`,
+    `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn bg-red-500 text-white hover:bg-red-600 disabled:opacity-40" id="ex-btn" disabled onclick="excluirProjeto('${id}')">Excluir projeto</button>`); }
+function conferirExclusao(id){ const c = S.clientes.find(x => x.id === id); $('ex-btn').disabled = $('ex-nome').value.trim() !== c.nome; }
+function excluirProjeto(id){ const c = S.clientes.find(x => x.id === id); S.clientes = S.clientes.filter(x => x.id !== id); closeModal(); renderAll(); showToast('Projeto ' + c.nome + ' excluído'); }
+
+// Minha marca: as mesmas três abas. Ajuste: status do domínio à vista.
+PAGES.marca = function(){
+  const a = S.marca.aba, abas = [['dominio','Domínio customizado'],['solicitacao','Solicitação de domínio'],['identidade','Identidade visual']];
+  let h = '';
+  if (a === 'dominio') h = `<div class="flex items-center gap-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900/30 px-3 py-3 mb-4"><span class="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center">${ic('globe', 'w-4 h-4')}</span><div class="grow"><a class="font-semibold text-gray-800 dark:text-gray-100 underline" href="https://${esc(S.marca.dominio)}" target="_blank" rel="noreferrer">${esc(S.marca.dominio)}</a><div class="text-xs">Subdomínio customizado</div></div>${pVerde('Ativo')}</div>
+    <div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-3">Selecione o modelo que será usado ao cadastrar novos clientes no seu domínio</div><select class="form-input" onchange="S.marca.modeloPadrao=this.value">${S.modelos.map(m => `<option value="${m.id}" ${S.marca.modeloPadrao === m.id ? 'selected' : ''}>${esc(m.nome)}</option>`).join('')}</select><div class="flex justify-end mt-4"><button class="btn btn-sec" onclick="showToast('Modelo padrão salvo')">Salvar</button></div></div>`;
+  if (a === 'solicitacao') h = `<div class="max-w-lg"><label class="lbl" for="ma-dom">Domínio que você quer usar</label><input class="form-input" id="ma-dom" placeholder="app.suamarca.com.br"><p class="text-xs mt-1">Depois do pedido, mostramos os registros DNS para configurar.</p><div class="flex justify-end mt-4"><button class="btn btn-primary" onclick="showToast('Pedido de domínio enviado')">Solicitar domínio</button></div></div>`;
+  if (a === 'identidade') h = `<div class="grid grid-cols-2 gap-6 max-w-2xl"><div><label class="lbl" for="ma-nome">Nome da marca</label><input class="form-input" id="ma-nome" value="${esc(S.marca.nome)}" oninput="S.marca.nome=this.value;flashSalvo()"></div><div><label class="lbl">Cor principal</label><label class="flex items-center gap-2"><input type="color" value="${S.marca.cor}" class="w-9 h-9 rounded border border-gray-200 dark:border-gray-700 bg-transparent" oninput="S.marca.cor=this.value;flashSalvo()">${S.marca.cor.toUpperCase()}</label></div><div class="col-span-2"><label class="lbl">Logo e ícone do navegador</label><button class="w-full rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 py-6 text-gray-500" onclick="embreve()">Arraste e solte os arquivos ou <u>Clique aqui</u></button></div></div>`;
+  $('page').innerHTML = aviso() + titulo('Minha marca') + `<div class="caixa p-6"><div class="flex gap-5 mb-5 text-sm">${abas.map(x => `<button onclick="S.marca.aba='${x[0]}';renderAll()" class="pb-1 ${a === x[0] ? 'text-personalized-primary border-b-2 border-personalized-primary font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}">${x[1]}</button>`).join('')}</div>${h}</div>`;
+};
+
+PAGES.chaves = function(){
+  $('page').innerHTML = aviso() + titulo('Chaves de API', `<button class="btn btn-sec" onclick="novaChave()">${ic('plus', 'w-4 h-4')}Chave de API</button>`) +
+    (S.chaves.length ? `<div class="tabela"><table><thead><tr><th>Nome</th><th>Usuário dono</th><th>Criado em</th><th>Ações</th></tr></thead><tbody>${S.chaves.map(k => `<tr><td>${esc(k.nome)}</td><td>${esc(k.dono)}</td><td>${k.criado}</td><td><button class="text-gray-500 hover:text-red-500" title="Excluir chave" onclick="excluirChave('${k.id}')">${ic('trash-2', 'w-4 h-4')}</button></td></tr>`).join('')}</tbody></table></div>`
+      : vazio('key-round', 'Nenhuma chave criada', 'Crie uma chave para ligar a plataforma a outros sistemas, como o n8n.'));
+};
+function novaChave(){ openModal('Nova chave de API', `<label class="lbl" for="ch-nome">Nome da chave</label><input class="form-input" id="ch-nome" placeholder="Ex.: Integração com o site">`, `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarChave()">Criar chave</button>`); }
+function criarChave(){ const n = $('ch-nome').value.trim() || 'Chave sem nome'; S.chaves.push({id:nid('k'), nome:n, dono:'Rafael Nunes', criado:'17 de novembro de 2026, 10:40'}); renderAll();
+  openModal('Chave criada', `<p class="mb-3">Copie agora. Por segurança, ela não aparece de novo.</p><div class="flex items-center gap-2"><input class="form-input font-mono text-xs" readonly value="blt_live_8f3k2m9x4q7w1z5c"><button class="btn btn-sec" onclick="copiar('blt_live_8f3k2m9x4q7w1z5c','Chave copiada')">${ic('copy', 'w-4 h-4')}Copiar</button></div>`, `<button class="btn btn-primary" onclick="closeModal()">Pronto</button>`); }
+function excluirChave(id){ const antes = S.chaves.slice(); S.chaves = S.chaves.filter(k => k.id !== id); renderAll(); showToast('Chave excluída', () => { S.chaves = antes; }); }
+
+PAGES.pagamentos = function(){
+  const e = S.receb.etapa, ps = [['Dados da empresa','CNPJ ou CPF, endereço e responsável.'],['Conta bancária','A conta em que você recebe a sua parte.'],['Verificação','Conferência dos dados enviados. Costuma levar um dia útil.']];
+  $('page').innerHTML = aviso() + titulo('Pagamentos') + `<div class="caixa p-6 max-w-3xl"><div class="flex items-center mb-1"><h2 class="h2 grow">Cadastro de recebimento</h2>${e >= 3 ? pVerde('Ativo') : `<span class="text-xs font-semibold">${Math.min(e, 3)} de 3</span>`}</div><p class="mb-5">No 70/30, o cliente paga pela plataforma e 70% vai para você.</p>
+    ${ps.map((p, i) => `<div class="flex items-start gap-3 py-3 ${i ? 'border-t border-gray-200 dark:border-gray-700' : ''}"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${i < e ? 'bg-green-500 text-white' : 'border border-gray-300 dark:border-gray-600'}">${i < e ? ic('check', 'w-3.5 h-3.5') : i + 1}</span><div class="grow"><div class="font-medium text-gray-800 dark:text-gray-100">${p[0]}</div><div class="text-xs">${p[1]}</div></div>${i === e ? `<button class="btn btn-primary" onclick="avancarReceb()">Continuar</button>` : ''}</div>`).join('')}</div>`;
+};
+function avancarReceb(){ S.receb.etapa += 1; renderAll(); showToast(S.receb.etapa >= 3 ? 'Recebimento ativo. Seus clientes já conseguem pagar.' : 'Etapa concluída'); }
+
+/* ═════════ CRM DO CLIENTE ═════════ */
+// WhatsApp: a mesma lista de hoje. Ajustes: a conversa abre ao lado, com a chave do agente e a etapa do funil no topo.
+function waFiltradas(){ const q = norm(S.waBusca), qd = S.waBusca.replace(/\D/g, '');
+  return S.conversas.filter(v => { const c = ct(v.contato); return v.numero === S.waNumero && (S.waAba === 'tudo' || v.dono === 'eu') && (!q || norm(nomeDe(c)).includes(q) || (qd && c.fone.includes(qd))); }); }
+PAGES.whatsapp = function(){
+  const n = S.numeros.find(x => x.id === S.waNumero);
+  $('page').innerHTML = `<div class="flex h-full gap-4"><div class="w-80 shrink-0 caixa flex flex-col min-h-0 p-3">
+      <div class="flex items-center gap-2 pb-3 border-b border-gray-200 dark:border-gray-700"><button class="inline-flex items-center gap-1.5 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100 px-2 py-1 text-[13px]" onclick="menuNumero(event)">${ic('smartphone', 'w-4 h-4')}${fone(n.num)}${ic('chevron-down', 'w-3.5 h-3.5')}</button><span class="grow"></span><button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="Números e mensagens" onclick="menuWa(event)">${ic('settings', 'w-4 h-4')}</button></div>
+      <div class="relative mt-3">${ic('search', 'w-4 h-4 absolute right-3 top-2.5 text-gray-400')}<input class="form-input pr-9 text-[13px]" id="wa-busca" placeholder="Pesquisar por nome ou número" value="${esc(S.waBusca)}" oninput="S.waBusca=this.value;drawWaLista()"></div>
+      <div class="flex gap-1.5 mt-2 mb-1">${[['tudo','Tudo'],['minhas','Minhas']].map(x => `<button onclick="S.waAba='${x[0]}';renderAll()" class="px-2.5 py-0.5 rounded-full text-xs border ${S.waAba === x[0] ? 'bg-gray-700 dark:bg-gray-600 text-white border-transparent font-semibold' : 'border-gray-300 dark:border-gray-600'}">${x[1]}</button>`).join('')}</div>
+      <div class="grow overflow-y-auto -mx-1" id="wa-lista"></div></div>
+    <div class="grow min-w-0 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 flex flex-col" id="wa-conv"></div></div>`;
+  drawWaLista(); drawWaConv();
+};
+function menuNumero(e){ abrirMenu(e, S.numeros.map(n => ({i:'smartphone', t:fone(n.num) + ' · ' + n.apelido, k:S.waNumero === n.id ? '✓' : '', f:() => { S.waNumero = n.id; S.waSel = (S.conversas.find(v => v.numero === n.id) || {}).id; renderAll(); }}))); }
+function drawWaLista(){
+  const ls = waFiltradas();
+  $('wa-lista').innerHTML = ls.length ? ls.map(v => { const c = ct(v.contato), u = v.msgs[v.msgs.length - 1];
+    return `<button onclick="abrirConversa('${v.id}')" class="flex gap-2.5 w-full text-left px-2 py-2.5 rounded-lg ${S.waSel === v.id ? 'bg-white dark:bg-gray-700/70' : 'hover:bg-white/60 dark:hover:bg-gray-700/40'}">${av(c.nome)}<span class="grow min-w-0"><span class="flex items-baseline gap-2"><b class="grow truncate text-[13px] text-gray-800 dark:text-gray-100">${esc(c.nome || fone(c.fone))}</b><span class="text-[11px] text-gray-400">${v.dia}</span></span><span class="flex items-center gap-1 text-xs">${v.dono === 'ia' ? ic('bot', 'w-3.5 h-3.5 text-violet-500') : ''}<span class="grow truncate">${esc(u.t)}</span>${v.nao ? `<span class="text-[10px] font-bold text-white bg-personalized-primary rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center">${v.nao}</span>` : ''}</span></span></button>`; }).join('')
+    : `<p class="text-center text-xs py-6">Nenhuma conversa aqui.</p>`;
+  icons();
+}
+function abrirConversa(id){ S.waSel = id; const v = S.conversas.find(x => x.id === id); if (v) v.nao = 0; drawSide(); drawWaLista(); drawWaConv(); icons(); }
+function drawWaConv(){
+  const v = S.conversas.find(x => x.id === S.waSel && x.numero === S.waNumero), el = $('wa-conv');
+  if (!v) { el.innerHTML = `<div class="m-auto">${vazio('package', 'Olá, selecione uma conversa', 'Selecione uma conversa para começar a conversar com o cliente')}</div>`; icons(); return; }
+  const c = ct(v.contato), k = cardDe(c.id);
+  el.innerHTML = `<div class="flex items-center gap-3 px-4 py-2.5 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">${av(c.nome)}<div class="grow min-w-0"><button class="font-semibold text-gray-800 dark:text-gray-100 hover:underline" title="Abrir o contato" onclick="openPainel('${c.id}')">${esc(nomeDe(c))}</button><div class="text-xs">${fone(c.fone)}</div></div>
+      <span class="flex items-center gap-2 text-[13px] text-gray-800 dark:text-gray-100">${ic('sparkles', 'w-4 h-4 text-violet-500')}Agente<button title="Agente de IA nesta conversa" onclick="togAgenteConversa('${v.id}')" class="relative w-9 h-5 rounded-full transition ${v.dono === 'ia' ? 'bg-violet-500' : 'bg-gray-300 dark:bg-gray-600'}"><span class="absolute top-0.5 ${v.dono === 'ia' ? 'left-[18px]' : 'left-0.5'} w-4 h-4 rounded-full bg-white shadow transition-all"></span></button></span>
+      <button class="btn btn-sec btn-sm" onclick="menuEtapa(event,'${c.id}')">${ic('trello', 'w-4 h-4')}${k ? esc(S.etapas[k.etapa]) : 'Funil de Vendas'}${ic('chevron-down', 'w-3.5 h-3.5')}</button>
+      <button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="Mais ações" onclick="abrirMenu(event,[{i:'user',t:'Abrir o contato',f:()=>openPainel('${c.id}')},{i:'archive',t:'Arquivar conversa',f:embreve}])">${ic('ellipsis-vertical', 'w-5 h-5')}</button></div>
+    ${v.janela ? `<div class="px-4 py-2 text-xs bg-amber-50 text-amber-900 border-b border-amber-200 dark:bg-[#2b2a1e] dark:text-amber-100 dark:border-transparent"><b class="text-amber-700 dark:text-amber-300">Janela de 24 horas encerrada:</b> você só pode enviar mensagens de modelo. A janela reabre quando o contato responder. <button class="font-semibold underline ml-1" onclick="embreve()">Ver modelos</button></div>` : ''}
+    <div class="wa-fundo grow overflow-y-auto px-[7%] py-5 flex flex-col gap-2" id="wa-m"><span class="self-center text-[11px] bg-white dark:bg-gray-800 rounded-md px-2.5 py-0.5 shadow-sm mb-2">${v.dia}</span>${v.msgs.map(m => `<div class="max-w-[70%] ${m.de === 'c' ? 'self-start bal-in rounded-lg rounded-tl-none text-gray-800 dark:text-gray-100' : 'self-end bal-out rounded-lg rounded-tr-none'} shadow-sm px-3 py-1.5 text-[13.5px]">${m.de === 'ia' ? `<div class="flex items-center gap-1 text-[10px] font-bold uppercase tracking-wide text-violet-600 dark:text-white/90">${ic('sparkles', 'w-3 h-3')}Agente</div>` : ''}${esc(m.t)}<div class="text-[10px] text-right opacity-60 mt-0.5">${m.h}</div></div>`).join('')}</div>
+    <div class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700"><button class="text-gray-500" title="Anexar" onclick="embreve()">${ic('paperclip', 'w-5 h-5')}</button><textarea id="wa-txt" rows="1" class="form-input resize-none rounded-full" placeholder="${v.janela ? 'Digite / para usar um modelo' : 'Escreva uma mensagem ou / para um modelo'}" onkeydown="teclaMsg(event)"></textarea><button class="w-9 h-9 rounded-full bg-green-500 dark:bg-[#00A884] text-white flex items-center justify-center shrink-0" title="Enviar" onclick="enviarMsg()">${ic('send-horizontal', 'w-4 h-4')}</button></div>`;
+  icons(); const m = $('wa-m'); m.scrollTop = m.scrollHeight;
+}
+function menuEtapa(e, cid){ const k = cardDe(cid); abrirMenu(e, [{g:'Funil de Vendas'}].concat(S.etapas.map((t, i) => ({i:'trello', t:t, k:k && k.etapa === i ? '✓' : '', f:() => moverEtapa(cid, String(i))})))); }
+function teclaMsg(e){ if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarMsg(); } }
+function enviarMsg(){ const t = $('wa-txt').value.trim(); if (!t) return; const v = S.conversas.find(x => x.id === S.waSel); v.msgs.push({de:'eu', t:t, h:'Agora'}); if (v.dono !== 'eu' && S.agente.pausar) v.dono = 'eu'; drawWaLista(); drawWaConv(); }
+function togAgenteConversa(id){ const v = S.conversas.find(x => x.id === id), antes = v.dono; v.dono = v.dono === 'ia' ? 'eu' : 'ia'; drawWaLista(); drawWaConv(); showToast(v.dono === 'ia' ? 'O agente voltou a responder esta conversa' : 'O agente parou de responder nesta conversa', () => { v.dono = antes; }); }
+function abrirNumeros(){ openModal('Números de WhatsApp', `<div class="tabela"><table><thead><tr><th>Número</th><th>Nome</th><th>Status</th></tr></thead><tbody>${S.numeros.map(n => `<tr><td>${fone(n.num)}</td><td>${n.apelido}</td><td>${pVerde('Conectado')}</td></tr>`).join('')}</tbody></table></div>`, `<button class="btn btn-sec" onclick="embreve()">Conectar por QR Code</button><button class="btn btn-primary" onclick="embreve()">Conectar pela API oficial</button>`, true); }
+
+// Registro de contatos: a mesma barra e a mesma tabela. Ajustes: telefone formatado, "Sem nome" em vez do número repetido,
+// coluna da etapa do funil, busca ao digitar, ficha ao lado.
+PAGES.contatos = function(){
+  $('page').innerHTML = `<div class="flex items-center gap-2 mb-5"><select class="form-input w-28"><option>Todos</option></select><input class="form-input w-64" id="ct-busca" placeholder="Buscar por nome ou telefone..." value="${esc(S.ctBusca)}" oninput="S.ctBusca=this.value;drawCt()"><input class="form-input w-44" placeholder="Selecionar data" onfocus="embreve()"><span class="grow"></span><button class="btn btn-ghost" onclick="switchPage('ctcampos')">${ic('settings', 'w-4 h-4')}Configurar</button><button class="btn btn-primary" onclick="novoContato()">${ic('plus', 'w-4 h-4')}Contato</button><button class="text-gray-500 px-1" title="Mais ações" onclick="menuContatos(event)">${ic('ellipsis', 'w-5 h-5')}</button></div><div id="ct-lista"></div>`;
+  drawCt();
+};
+function menuContatos(e){ abrirMenu(e, [{i:'upload', t:'Importar planilha', f:embreve}, {i:'download', t:'Exportar planilha', f:embreve}]); }
+function ordemCt(col){ S.ctOrdem = {col:col, dir:S.ctOrdem.col === col ? -S.ctOrdem.dir : 1}; drawCt(); }
+function drawCt(){
+  const q = norm(S.ctBusca), qd = S.ctBusca.replace(/\D/g, ''), o = S.ctOrdem;
+  const ls = S.contatos.filter(c => !q || norm(c.nome).includes(q) || (qd && c.fone.includes(qd))).sort((a, b) => { const x = a[o.col], y = b[o.col]; if (!x || !y) return x ? -1 : y ? 1 : 0; return String(x).localeCompare(String(y), 'pt-BR') * o.dir; });
+  $('ct-lista').innerHTML = ls.length ? `<div class="tabela"><table><thead><tr><th class="cursor-pointer" onclick="ordemCt('nome')"><span class="inline-flex items-center gap-1">Nome ${ic('chevrons-up-down', 'w-3.5 h-3.5')}</span></th><th class="cursor-pointer" onclick="ordemCt('fone')"><span class="inline-flex items-center gap-1">Telefone ${ic('chevrons-up-down', 'w-3.5 h-3.5')}</span></th><th>Etapa no funil</th><th class="w-10"></th></tr></thead><tbody>${ls.map(c => { const k = cardDe(c.id);
+    return `<tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40" onclick="openPainel('${c.id}')"><td class="text-gray-800 dark:text-gray-100">${c.nome ? esc(c.nome) : '<span class="text-gray-400">Sem nome</span>'}</td><td>${fone(c.fone)}</td><td>${k ? pCinza(esc(S.etapas[k.etapa])) : '<span class="text-gray-400">-</span>'}</td><td>${ic('chevron-right', 'w-4 h-4')}</td></tr>`; }).join('')}</tbody></table></div>`
+    : vazio('search', 'Nenhum contato encontrado', 'Confira o que você digitou.');
+  icons();
+}
+function novoContato(){
+  openModal('Novo contato', `<div class="mb-4"><label class="lbl" for="nc-nome">Nome</label><input class="form-input" id="nc-nome" placeholder="Ex.: Ana Paula Ribeiro" onkeydown="enterCria(event)"></div><div><label class="lbl" for="nc-fone">Telefone</label><input class="form-input" id="nc-fone" placeholder="+55 11 99999-9999" onkeydown="enterCria(event)"></div>`,
+    `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarContato()">Criar contato</button>`);
+}
+function enterCria(e){ if (e.key === 'Enter') { e.preventDefault(); criarContato(); } }
+function criarContato(){
+  const nome = $('nc-nome').value.trim(); let f = $('nc-fone').value.replace(/\D/g, ''); if (!nome && !f) { $('nc-nome').focus(); showToast('Informe o nome ou o telefone'); return; }
+  if (f && f.length <= 11) f = '55' + f; const c = {id:nid('c'), nome:nome, fone:f, email:'', criado:'17/11/2026'}; S.contatos.unshift(c); closeModal(); renderAll(); showToast('Contato criado', () => { S.contatos = S.contatos.filter(x => x.id !== c.id); });
+}
+
+/* ficha do contato: abre ao lado, a partir do Registro de contatos, do Funil e do WhatsApp */
+// Na plataforma o registro abre numa janela com as abas Geral e Linha do tempo; o mockup segue essa janela.
+function openPainel(id){ abrirRegistro('contato', id); }
+function fecharPainel(){ if (S.registro) closeModal(); S.painel = null; }
+function drawPainel(){ const p = $('panel'); if (p) p.innerHTML = S.perfil ? htmlPerfil() : ''; }
+function drawPainelAntigo(){
+  const p = $('panel'), c = S.painel ? ct(S.painel) : null; if (!c) { p.innerHTML = ''; return; }
+  const k = cardDe(c.id), v = S.conversas.find(x => x.contato === c.id);
+  p.innerHTML = `<div class="absolute top-2 right-2 bottom-2 w-[380px] bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-r-xl shadow-xl z-10 flex flex-col"><div class="flex items-center gap-3 px-5 py-4 border-b border-gray-200 dark:border-gray-700">${av(c.nome)}<div class="grow min-w-0"><div class="font-semibold text-gray-800 dark:text-gray-100 truncate" id="pn-titulo">${esc(nomeDe(c))}</div><div class="text-xs">${fone(c.fone)}</div></div><span id="pn-salvo" class="hidden text-xs text-green-600">Salvo</span><button class="text-gray-400 hover:text-gray-600" title="Fechar" onclick="fecharPainel()">${ic('x', 'w-4 h-4')}</button></div>
+    <div class="grow overflow-y-auto p-5 space-y-4"><div class="flex gap-2">${v && S.page !== 'whatsapp' ? `<button class="btn btn-sec btn-sm" onclick="irConversa('${v.id}')">${ic('message-circle', 'w-4 h-4')}Abrir conversa</button>` : ''}<button class="btn btn-sec btn-sm text-red-500" onclick="excluirContato('${c.id}')">${ic('trash-2', 'w-4 h-4')}Excluir</button></div>
+    <div><label class="lbl" for="pn-nome">Nome</label><input class="form-input" id="pn-nome" value="${esc(c.nome)}" placeholder="Sem nome" oninput="editContato('nome',this.value)"></div>
+    <div><label class="lbl" for="pn-fone">Telefone</label><input class="form-input" id="pn-fone" value="${fone(c.fone)}" oninput="editContato('fone',this.value)"></div>
+    <div><label class="lbl" for="pn-email">E-mail</label><input class="form-input" id="pn-email" value="${esc(c.email)}" placeholder="nome@email.com" oninput="editContato('email',this.value)"></div>
+    <div><label class="lbl" for="pn-etapa">Etapa no Funil de Vendas</label><select class="form-input" id="pn-etapa" onchange="moverEtapa('${c.id}',this.value)"><option value="">Fora do funil</option>${S.etapas.map((e, i) => `<option value="${i}" ${k && k.etapa === i ? 'selected' : ''}>${esc(e)}</option>`).join('')}</select></div>
+    ${k ? `<div class="grid grid-cols-2 gap-3 rounded-lg bg-gray-100 dark:bg-gray-700/50 p-3 text-xs"><div><div class="font-semibold text-gray-800 dark:text-gray-100">Valor</div>${k.valor ? brl(k.valor) : '-'}</div><div><div class="font-semibold text-gray-800 dark:text-gray-100">Prioridade</div>${k.prio || '-'}</div><div class="col-span-2"><div class="font-semibold text-gray-800 dark:text-gray-100">Observação</div>${k.obs ? esc(k.obs) : '-'}</div></div>` : ''}</div></div>`;
+  icons();
+}
+function editContato(k, v){ const c = ct(S.painel); c[k] = k === 'fone' ? v.replace(/\D/g, '') : v; if (k === 'nome') $('pn-titulo').textContent = nomeDe(c); const s = $('pn-salvo'); s.classList.remove('hidden'); clearTimeout(tSalvo); tSalvo = setTimeout(() => s.classList.add('hidden'), 1500); if (S.page === 'contatos') drawCt(); if (S.page === 'funil') drawFunil(); if (S.page === 'whatsapp') drawWaLista(); }
+function moverEtapa(cid, val){
+  const antes = JSON.stringify(S.cards), k = cardDe(cid);
+  if (val === '') S.cards = S.cards.filter(x => x.contato !== cid); else if (k) k.etapa = Number(val); else S.cards.unshift({id:nid('k'), contato:cid, etapa:Number(val), valor:0, prio:'', resp:'', obs:''});
+  renderAll(); showToast(val === '' ? 'Contato saiu do funil' : 'Etapa: ' + S.etapas[Number(val)], () => { S.cards = JSON.parse(antes); });
+}
+function irConversa(vid){ const v = S.conversas.find(x => x.id === vid); S.waSel = vid; S.waNumero = v.numero; S.waAba = 'tudo'; S.waBusca = ''; v.nao = 0; switchPage('whatsapp'); }
+function excluirContato(id){ const a = S.contatos.slice(), b = S.cards.slice(), c = S.conversas.slice(); S.contatos = a.filter(x => x.id !== id); S.cards = b.filter(x => x.contato !== id); S.conversas = c.filter(x => x.contato !== id); fecharPainel(); renderAll(); showToast('Contato excluído', () => { S.contatos = a; S.cards = b; S.conversas = c; }); }
+
+// Funil de Vendas: o mesmo quadro. Ajustes: total em reais embaixo do nome da etapa e valor no card.
+PAGES.funil = function(){
+  $('page').innerHTML = `<div class="flex items-center gap-2 mb-3"><button class="btn btn-sec btn-sm" onclick="embreve()">${ic('plus', 'w-3.5 h-3.5')}Filtro</button><div class="relative">${ic('search', 'w-3.5 h-3.5 absolute left-2.5 top-2 text-gray-400')}<input class="form-input w-56 py-1.5 pl-8 text-xs" placeholder="Buscar card..." value="${esc(S.fuBusca)}" oninput="S.fuBusca=this.value;drawFunil()"></div></div>
+    <div class="flex items-center gap-2 mb-5"><button title="Quadro" onclick="visaoFu('quadro')" class="${S.fuVisao === 'quadro' ? 'text-personalized-primary' : 'text-gray-400'}">${ic('square-kanban', 'w-5 h-5')}</button><button title="Lista" onclick="visaoFu('lista')" class="${S.fuVisao === 'lista' ? 'text-personalized-primary' : 'text-gray-400'}">${ic('list', 'w-5 h-5')}</button><select class="form-input w-40 py-1.5 text-xs ml-2"><option>Data de criação</option><option>Valor</option></select><select class="form-input w-24 py-1.5 text-xs"><option>Desc</option><option>Asc</option></select><span class="grow"></span><button class="btn btn-ghost" onclick="switchPage('furel')">${ic('trending-up', 'w-4 h-4')}Relatório</button><button class="btn btn-ghost" onclick="switchPage('fucfg')">${ic('settings', 'w-4 h-4')}Configurar</button><button class="btn btn-sec" onclick="addCard(0)">${ic('circle-plus', 'w-4 h-4')}Adicionar</button><button class="text-gray-500 px-1" title="Mais ações" onclick="embreve()">${ic('ellipsis', 'w-5 h-5')}</button></div><div id="fu-corpo"></div>`;
+  drawFunil();
+};
+function visaoFu(v){ S.fuVisao = v; renderAll(); }
+function cardsFiltrados(){ const q = norm(S.fuBusca); return S.cards.filter(k => !q || norm(nomeDe(ct(k.contato))).includes(q) || norm(k.obs).includes(q)); }
+function cardHtml(k){ const c = ct(k.contato);
+  return `<div class="bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700/60 p-3 mb-2 cursor-grab text-xs" draggable="true" ondragstart="pegaCard('${k.id}')" onclick="abrirRegistro('card','${k.id}')"><div class="grid grid-cols-2 gap-x-3 gap-y-3"><div><div class="font-semibold text-gray-800 dark:text-gray-100">Contato</div>${esc(nomeDe(c))}</div><div><div class="font-semibold text-gray-800 dark:text-gray-100">Prioridade</div>${k.prio || '-'}</div><div><div class="font-semibold text-gray-800 dark:text-gray-100">Valor</div>${k.valor ? brl(k.valor) : '-'}</div><div><div class="font-semibold text-gray-800 dark:text-gray-100">Observação</div>${k.obs ? esc(k.obs) : '-'}</div></div><div class="flex justify-end mt-1 h-6">${k.resp ? av(k.resp, 'w-6 h-6 text-[9px]') : ''}</div></div>`; }
+function drawFunil(){
+  const ls = cardsFiltrados(), el = $('fu-corpo');
+  if (S.fuVisao === 'lista') {
+    el.innerHTML = `<div class="tabela"><table><thead><tr><th>Contato</th><th>Etapa</th><th>Prioridade</th><th>Valor</th><th>Responsável</th></tr></thead><tbody>${ls.map(k => { const c = ct(k.contato); return `<tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40" onclick="abrirRegistro('card','${k.id}')"><td class="text-gray-800 dark:text-gray-100">${esc(nomeDe(c))}</td><td>${pCinza(esc(S.etapas[k.etapa]))}</td><td>${k.prio || '-'}</td><td>${k.valor ? brl(k.valor) : '-'}</td><td>${k.resp || '-'}</td></tr>`; }).join('')}</tbody></table></div>`;
+  } else {
+    el.innerHTML = `<div class="flex gap-3 items-start overflow-x-auto pb-2">${S.etapas.map((e, i) => { const cs = ls.filter(k => k.etapa === i), soma = cs.reduce((a, k) => a + k.valor, 0);
+      return `<div class="w-64 shrink-0 bg-gray-100 dark:bg-gray-800 rounded-lg p-2" id="col-${i}" ondragover="sobreCol(event,${i})" ondragleave="saiCol(${i})" ondrop="soltaCard(event,${i})"><div class="flex items-center gap-2 px-1 pb-2 mb-2 border-b border-gray-200 dark:border-gray-700"><div class="grow min-w-0"><div class="flex items-center gap-1.5"><b class="text-[13px] text-gray-800 dark:text-gray-100 truncate">${esc(e)}</b><span class="text-[11px] font-semibold bg-gray-400 dark:bg-gray-500 text-white rounded px-1">${cs.length}</span></div><div class="text-[11px] mt-0.5">${brl(soma)}</div></div><button class="text-personalized-primary" title="Novo card nesta etapa" onclick="addCard(${i})">${ic('circle-plus', 'w-6 h-6')}</button></div>${cs.map(cardHtml).join('')}
+        ${S.fuAdd === i ? `<input class="form-input text-xs mb-2" id="fu-novo" placeholder="Nome do contato e Enter" onkeydown="teclaCard(event,${i})">` : ''}<button class="w-full rounded-lg border border-dashed border-gray-300 dark:border-gray-600 py-2 text-[11px] font-semibold uppercase text-gray-400 hover:text-gray-600 flex flex-col items-center gap-1" onclick="addCard(${i})">${ic('circle-plus', 'w-4 h-4')}Adicionar</button></div>`; }).join('')}</div>`;
+  }
+  icons(); const n = $('fu-novo'); if (n) n.focus();
+}
+function addCard(i){ S.fuVisao = 'quadro'; S.fuAdd = i; if (S.page !== 'funil') { switchPage('funil'); return; } drawFunil(); }
+function teclaCard(e, i){
+  if (e.key === 'Escape') { S.fuAdd = null; drawFunil(); return; } if (e.key !== 'Enter') return;
+  const nome = e.target.value.trim(); if (!nome) return; let c = S.contatos.find(x => norm(x.nome) === norm(nome)); const novo = !c;
+  if (!c) { c = {id:nid('c'), nome:nome, fone:'', email:'', criado:'17/11/2026'}; S.contatos.unshift(c); }
+  const k = {id:nid('k'), contato:c.id, etapa:i, valor:0, prio:'', resp:'', obs:''}; S.cards.unshift(k); drawFunil();
+  showToast('Card criado em ' + S.etapas[i], () => { S.cards = S.cards.filter(x => x.id !== k.id); if (novo) S.contatos = S.contatos.filter(x => x.id !== c.id); });
+}
+function pegaCard(id){ S.arrasta = id; }
+function sobreCol(e, i){ e.preventDefault(); $('col-' + i).classList.add('ring-1', 'ring-orange-400'); }
+function saiCol(i){ $('col-' + i).classList.remove('ring-1', 'ring-orange-400'); }
+function soltaCard(e, i){ e.preventDefault(); const k = S.cards.find(x => x.id === S.arrasta); S.arrasta = null; if (!k || k.etapa === i) { drawFunil(); return; } const antes = k.etapa; k.etapa = i; drawFunil(); showToast(nomeDe(ct(k.contato)) + ' foi para ' + S.etapas[i], () => { k.etapa = antes; }); }
+
+// Agente de IA: as mesmas três caixas. Ajustes: um só botão de salvar (barra embaixo, só quando algo mudou),
+// botão Testar o agente no topo e "Ativo/Inativo" ao lado da chave.
+PAGES.agente = function(){
+  const a = S.agente;
+  $('page').innerHTML = titulo('Agente de IA', `<button class="btn btn-sec" onclick="abrirTeste()">${ic('message-square-text', 'w-4 h-4')}Testar o agente</button><button class="btn btn-sec" onclick="embreve()">${ic('wand-sparkles', 'w-4 h-4 text-green-500')}Construtor de Prompt${ic('external-link', 'w-3.5 h-3.5')}</button>`) +
+  `<div class="space-y-6 pb-4">
+    <div class="caixa p-6"><div class="flex items-center mb-4"><h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 grow">Configuração Geral</h2><span class="text-sm italic mr-3 ${a.ativo ? 'text-green-600 dark:text-green-400' : ''}">${a.ativo ? 'Ativo' : 'Inativo'}</span>${chave(a.ativo, "togAgente('ativo')", 'Ligar ou desligar o agente')}</div>
+      <div class="lbl font-normal">Ativo em</div>${S.numeros.map(n => `<label class="flex items-center gap-2 text-gray-800 dark:text-gray-100 mb-1"><input type="checkbox" class="chk" ${a.numeros.includes(n.id) ? 'checked' : ''} onchange="togNumero('${n.id}')">${fone(n.num)} <span class="text-xs text-gray-400">${n.apelido}</span></label>`).join('')}
+      <div class="mt-5 rounded-lg border border-gray-200 dark:border-gray-700 p-4"><div class="font-semibold text-gray-800 dark:text-gray-100 text-[13px]">Períodos para atendimento humano</div><p class="text-xs mt-1 mb-3">Dentro dos períodos configurados, o Agente de IA transfere a conversa para sua equipe sempre que o contato precisar. Fora deles, informa o próximo horário de atendimento e continua ajudando.</p><div class="grid grid-cols-7 gap-2" id="ag-horas"></div></div>
+      <label class="flex items-center gap-2 mt-5 text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" ${a.notificar ? 'checked' : ''} onchange="S.agente.notificar=this.checked;sujo()">Notificar escalonamento humano por e-mail</label>
+      <label class="flex items-center gap-2 mt-2 text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" ${a.pausar ? 'checked' : ''} onchange="S.agente.pausar=this.checked;sujo()">Desativar o Agente de IA quando sua equipe assumir a conversa</label></div>
+    <div class="caixa p-6"><h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Base de Conhecimento</h2><p class="mb-4">Carregue documentos para fornecer conhecimento específico ao Agente de IA.</p><div class="flex items-center gap-2 rounded-lg bg-gray-200/70 dark:bg-gray-700 px-3 py-2 text-xs italic mb-4">${ic('info', 'w-4 h-4')}As alterações na base de conhecimento só terão efeito em novas conversas. As conversas existentes continuarão usando a base de conhecimento anterior.</div><div id="ag-arqs"></div>
+      <div class="lbl font-normal mt-4">Carregar Novos Arquivos</div><button class="w-full rounded-lg bg-gray-200/70 dark:bg-gray-700 py-5 text-gray-700 dark:text-gray-200" onclick="addArquivo()">Arraste e solte os arquivos ou <u>Clique aqui</u></button></div>
+    <div class="caixa p-6"><div class="flex items-start mb-4"><div class="grow"><h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Configuração de Instruções</h2><p>Configure como seu Agente de IA responde aos usuários</p></div><button class="btn btn-sec" onclick="redefinir()">Redefinir Instruções</button></div>
+      <label class="lbl font-normal" for="ag-tipo">Tipo de Instrução</label><select class="form-input w-44 mb-5" id="ag-tipo" onchange="tipoAgente(this.value)"><option value="estruturado" ${a.tipo === 'estruturado' ? 'selected' : ''}>Estruturado</option><option value="livre" ${a.tipo === 'livre' ? 'selected' : ''}>Livre</option></select><div id="ag-instr"></div></div>
+  </div><div id="ag-barra"></div>`;
+  drawHoras(); drawArqs(); drawInstr(); drawBarra();
+};
+function chave(on, fn, t){ return `<button title="${t}" onclick="${fn}" class="relative w-11 h-6 rounded-full transition ${on ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'}"><span class="absolute top-0.5 ${on ? 'left-[22px]' : 'left-0.5'} w-5 h-5 rounded-full bg-white shadow transition-all"></span></button>`; }
+function sujo(){ S.agente.sujo = true; drawBarra(); }
+function drawBarra(){ const b = $('ag-barra'); if (!b) return; b.innerHTML = S.agente.sujo ? `<div class="sticky bottom-0 -mx-8 -mb-8 px-8 py-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex items-center gap-3"><span class="grow text-sm flex items-center gap-2">${ic('circle-dot', 'w-4 h-4 text-amber-500')}Você tem alterações não salvas.</span><button class="btn btn-sec" onclick="descartar()">Descartar</button><button class="btn btn-primary" onclick="salvarAgente()">Salvar alterações</button></div>` : ''; icons(); }
+function descartar(){ S.agente.campos = Object.assign({}, PADRAO); S.agente.sujo = false; renderAll(); showToast('Alterações descartadas'); }
+function salvarAgente(){ S.agente.sujo = false; drawBarra(); showToast('Agente de IA atualizado'); }
+function togAgente(k){ S.agente[k] = !S.agente[k]; renderAll(); showToast(S.agente.ativo ? 'Agente ativo' : 'Agente inativo'); }
+function tipoAgente(t){ S.agente.tipo = t; drawInstr(); sujo(); }
+function togNumero(id){ const a = S.agente; a.numeros = a.numeros.includes(id) ? a.numeros.filter(x => x !== id) : a.numeros.concat(id); sujo(); }
+function drawHoras(){
+  $('ag-horas').innerHTML = DIAS.map(d => { const h = S.agente.horarios[d[0]];
+    return `<div class="rounded-lg border p-2 text-center ${h ? 'border-sky-300 bg-sky-50 dark:border-sky-800 dark:bg-sky-950/60' : 'border-gray-200 dark:border-gray-700'}"><label class="flex items-center justify-center gap-1.5 text-xs font-semibold text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" ${h ? 'checked' : ''} onchange="togDia('${d[0]}')">${d[1]}</label>${h ? `<div class="flex items-center justify-center gap-1 mt-2"><input class="form-input px-1 py-1 text-xs text-center w-14" value="${h[0]}" onchange="horaDia('${d[0]}',0,this.value)">–<input class="form-input px-1 py-1 text-xs text-center w-14" value="${h[1]}" onchange="horaDia('${d[0]}',1,this.value)"></div>` : `<div class="text-[11px] text-gray-400 mt-2">Clique para definir o horário</div>`}</div>`; }).join('');
+}
+function togDia(d){ S.agente.horarios[d] = S.agente.horarios[d] ? null : ['08:00','18:00']; drawHoras(); sujo(); }
+function horaDia(d, i, v){ S.agente.horarios[d][i] = v; sujo(); }
+function drawArqs(){ $('ag-arqs').innerHTML = `<div class="rounded-lg border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900/30">${S.agente.arquivos.map((f, i) => `<div class="flex items-center gap-3 px-3 py-2.5 text-[13px]">${ic('file', 'w-4 h-4')}<span class="grow text-gray-800 dark:text-gray-200">${esc(f[0])}</span><span class="text-xs">${f[1]}</span><button class="text-red-500" title="Remover arquivo" onclick="tirarArquivo(${i})">${ic('trash-2', 'w-4 h-4')}</button></div>`).join('')}</div>`; icons(); }
+function addArquivo(){ S.agente.arquivos.push(['novo-arquivo-' + (S.agente.arquivos.length + 1) + '.pdf', '120 KB']); drawArqs(); showToast('Arquivo carregado. Vale para as próximas conversas.'); }
+function tirarArquivo(i){ const antes = S.agente.arquivos.slice(); S.agente.arquivos.splice(i, 1); drawArqs(); showToast('Arquivo removido', () => { S.agente.arquivos = antes; }); }
+function drawInstr(){
+  const a = S.agente;
+  $('ag-instr').innerHTML = a.tipo === 'livre' ? `<textarea class="form-input min-h-[220px]" placeholder="Escreva aqui todas as instruções do agente" oninput="sujo()"></textarea><div class="text-right text-xs mt-1">Máx 50000 caracteres</div>`
+    : CAMPOS.map(c => `<div class="mb-5"><label class="lbl font-normal flex items-center gap-1.5" for="cp-${c[0]}">${c[1]} ${ic('info', 'w-3.5 h-3.5 text-gray-400')}</label><button class="text-xs text-blue-500 inline-flex items-center gap-1 mb-1.5" onclick="usarPadrao('${c[0]}')">${ic('file-text', 'w-3.5 h-3.5')}Usar padrão e editar</button><textarea class="form-input min-h-[72px]" id="cp-${c[0]}" oninput="editCampo('${c[0]}',this.value)">${esc(a.campos[c[0]])}</textarea><div class="text-right text-xs mt-1">Máx 5000 caracteres</div></div>`).join('');
+  icons();
+}
+function editCampo(k, v){ S.agente.campos[k] = v; sujo(); }
+function usarPadrao(k){ S.agente.campos[k] = PADRAO[k]; $('cp-' + k).value = PADRAO[k]; sujo(); }
+function redefinir(){ const antes = Object.assign({}, S.agente.campos); S.agente.campos = Object.assign({}, PADRAO); drawInstr(); sujo(); showToast('Instruções de volta ao padrão', () => { S.agente.campos = antes; }); }
+function abrirTeste(){
+  openModal('Testar o agente', `<div class="wa-fundo rounded-lg h-80 overflow-y-auto p-3 flex flex-col gap-2" id="ag-msgs"></div><div class="flex gap-2 mt-3"><input class="form-input" id="ag-perg" placeholder="Pergunte como um cliente" onkeydown="teclaTeste(event)"><button class="btn btn-primary" onclick="perguntar()">Enviar</button></div><p class="text-xs mt-2">Usa as instruções e a base salvas. Nada é enviado para clientes.</p>`, '', false);
+  drawTeste();
+}
+function teclaTeste(e){ if (e.key === 'Enter') { e.preventDefault(); perguntar(); } }
+function drawTeste(){ const m = $('ag-msgs'); if (!m) return; m.innerHTML = S.agente.teste.map(x => `<div class="max-w-[85%] shadow-sm px-3 py-1.5 text-[13px] rounded-lg ${x.de === 'u' ? 'self-start bal-in rounded-tl-none text-gray-800 dark:text-gray-100' : 'self-end bal-out rounded-tr-none'}">${esc(x.t)}</div>`).join(''); m.scrollTop = m.scrollHeight; }
+function respostaTeste(p){
+  const a = S.agente, q = norm(p);
+  if (!a.ativo) return 'O agente está inativo. Ligue a chave em Configuração Geral para ele voltar a responder.';
+  if (/(atendente|humano|pessoa|alguem)/.test(q)) return 'Claro, vou chamar alguém da equipe. O atendimento da equipe é de segunda a sexta, das 08:00 às 18:00.';
+  if (/(preco|valor|quanto|custa)/.test(q)) return 'O valor depende do procedimento. Vou anotar a sua dúvida para a equipe confirmar com você, tudo bem?';
+  if (/(horario|agendar|marcar|consulta|avaliacao)/.test(q)) return 'Vamos marcar! Você prefere de manhã ou à tarde?';
+  return 'Olá! Sou a assistente de atendimento. ' + a.campos.empresa.split('.')[0] + '. Como posso ajudar?';
+}
+function perguntar(){ const i = $('ag-perg'), p = i.value.trim(); if (!p) return; S.agente.teste.push({de:'u', t:p}); i.value = ''; drawTeste(); setTimeout(() => { S.agente.teste.push({de:'ia', t:respostaTeste(p)}); drawTeste(); }, 500); }
+
+// Conversões: a mesma tela. Ajuste: o nome do menu passa a ser o mesmo do título (antes "Rastreio de Leads").
+PAGES.conversoes = function(){
+  const c = S.conv;
+  $('page').innerHTML = titulo('Conversões', `<button class="btn btn-sec" onclick="abaCfg('integracoes');switchPage('config')">Integrações com Meta Ads</button>`) +
+    `<div class="caixa p-4 flex items-center gap-2 mb-6"><input class="form-input grow" placeholder="Origem, nome do lead ou número de telefone" value="${esc(c.busca)}" oninput="buscaConv(this.value)"><input class="form-input w-36" value="18/10/2026"><input class="form-input w-36" value="17/11/2026"><button class="btn btn-sec" onclick="drawConv()">Buscar</button><button class="btn btn-sec" onclick="buscaConv('');renderAll()">Limpar filtros</button></div><div id="cv-lista"></div>`;
+  drawConv();
+};
+function buscaConv(v){ S.conv.busca = v; drawConv(); }
+function conectarMeta(){ S.conv.conectado = true; S.integ.meta = true; renderAll(); showToast('Meta Ads conectado (simulado no mockup)'); }
+function drawConv(){
+  const c = S.conv, q = norm(c.busca), ls = c.linhas.filter(l => !q || norm(l.lead).includes(q) || norm(l.origem).includes(q));
+  $('cv-lista').innerHTML = !c.conectado ? vazio('package', 'Você ainda não tem conversões', 'Nenhuma conversão registrada', `<button class="btn btn-sec" onclick="conectarMeta()">Configurar rastreamento de conversões</button>`)
+    : ls.length ? `<div class="tabela"><table><thead><tr><th>Lead</th><th>Telefone</th><th>Origem</th><th>Data</th></tr></thead><tbody>${ls.map(l => `<tr><td class="text-gray-800 dark:text-gray-100">${esc(l.lead)}</td><td>${fone(l.fone)}</td><td>${pCinza(esc(l.origem))}</td><td>${l.data}</td></tr>`).join('')}</tbody></table></div>` : vazio('search', 'Nenhuma conversão encontrada', 'Mude o período ou limpe a busca.');
+  icons();
+}
+
+// Agenda: a mesma tela vazia; depois de criar o calendário, a semana.
+PAGES.agenda = function(){
+  const a = S.agenda;
+  if (!a.calendario) { $('page').innerHTML = titulo('Agenda') + `<div class="flex flex-col items-center text-center pt-6">${ic('calendar-plus', 'w-7 h-7 text-gray-400')}<div class="text-lg font-bold text-gray-800 dark:text-gray-100 mt-4">Você ainda não tem calendários</div><p class="text-xs mt-1">Crie ou conecte um calendário para começar a criar agendamentos.</p><button class="btn btn-sec mt-5" onclick="criarCalendario()">Criar ou conectar calendário</button></div>`; return; }
+  const dias = [['dom.','15'],['seg.','16'],['ter.','17'],['qua.','18'],['qui.','19'],['sex.','20'],['sáb.','21']];
+  let g = `<div class="grid grid-cols-[56px_repeat(7,minmax(0,1fr))] text-xs"><div></div>${dias.map((d, i) => `<div class="text-center py-2 border-b border-gray-200 dark:border-gray-700 ${i === 2 ? 'font-bold text-personalized-primary' : ''}">${d[0]} ${d[1]}</div>`).join('')}`;
+  for (let hr = 8; hr <= 17; hr++) { g += `<div class="text-right pr-2 pt-1 text-gray-400">${String(hr).padStart(2, '0')}:00</div>`; for (let d = 0; d < 7; d++) { const ev = a.eventos.filter(e => e.d === d && e.h === hr); g += `<div class="h-11 border-b border-l border-gray-200 dark:border-gray-700/60 p-0.5 cursor-pointer hover:bg-white dark:hover:bg-gray-700/40 ${d === 2 ? 'bg-amber-50/60 dark:bg-stone-800/40' : ''}" title="Novo agendamento" onclick="novoEvento(${d},${hr})">${ev.map(e => `<div class="rounded bg-blue-500 text-white px-1.5 py-0.5 truncate">${esc(e.t)}</div>`).join('')}</div>`; } }
+  $('page').innerHTML = titulo('Agenda', `<button class="btn btn-primary" onclick="novoEvento(1,10)">${ic('plus', 'w-4 h-4')}Agendamento</button>`) + `<div class="caixa p-5"><div class="flex items-center gap-2 mb-4"><button class="btn btn-sec btn-sm" title="Semana anterior" onclick="embreve()">${ic('chevron-left', 'w-4 h-4')}</button><button class="btn btn-sec btn-sm" title="Próxima semana" onclick="embreve()">${ic('chevron-right', 'w-4 h-4')}</button><button class="btn btn-sec btn-sm" onclick="embreve()">Hoje</button><div class="grow text-center text-xl font-bold text-gray-500 dark:text-gray-400">15 – 21 de nov. de 2026</div><span class="text-xs">${esc(a.calendario)}</span></div>${g}</div></div>`;
+};
+function criarCalendario(){ openModal('Novo calendário', `<label class="lbl" for="ca-nome">Nome do calendário</label><input class="form-input" id="ca-nome" value="Atendimentos"><button class="btn btn-sec w-full mt-4" onclick="embreve()">Conectar Google Agenda</button>`, `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarCalendario()">Criar calendário</button>`); }
+function salvarCalendario(){ S.agenda.calendario = $('ca-nome').value.trim() || 'Atendimentos'; closeModal(); renderAll(); showToast('Calendário criado'); }
+function novoEvento(d, hr){ const dias = ['domingo, 15/11','segunda, 16/11','terça, 17/11','quarta, 18/11','quinta, 19/11','sexta, 20/11','sábado, 21/11'];
+  openModal('Novo agendamento', `<p class="mb-4">${dias[d]} às ${String(hr).padStart(2, '0')}:00</p><div class="mb-4"><label class="lbl" for="ev-ct">Contato</label><select class="form-input" id="ev-ct">${S.contatos.filter(c => c.nome).map(c => `<option>${esc(c.nome)}</option>`).join('')}</select></div><label class="lbl" for="ev-as">Assunto</label><input class="form-input" id="ev-as" placeholder="Ex.: Avaliação">`,
+    `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="salvarEvento(${d},${hr})">Agendar</button>`); }
+function salvarEvento(d, hr){ const e = {d:d, h:hr, t:$('ev-ct').value + ($('ev-as').value.trim() ? ' · ' + $('ev-as').value.trim() : '')}; S.agenda.eventos.push(e); closeModal(); renderAll(); showToast('Agendamento criado', () => { S.agenda.eventos = S.agenda.eventos.filter(x => x !== e); }); }
+
+// Marketing: a mesma tela de Redes Sociais. Ajuste: título igual ao nome do menu.
+PAGES.redes = function(){
+  let cal = `<div class="grid grid-cols-7 text-xs border-l border-t border-gray-200 dark:border-gray-700">` + ['dom.','seg.','ter.','qua.','qui.','sex.','sáb.'].map(d => `<div class="text-center py-1.5 font-semibold border-r border-b border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200">${d}</div>`).join('');
+  for (let d = 1; d <= 35; d++) { const dd = d <= 30 ? d : d - 30, ps = d <= 30 ? S.posts.filter(p => p.dia === d) : []; cal += `<div class="h-24 p-1.5 border-r border-b border-gray-200 dark:border-gray-700 ${d === 17 ? 'bg-amber-50/70 dark:bg-stone-800/50' : 'bg-white dark:bg-gray-950/40'} ${d > 30 ? 'opacity-40' : ''}"><div class="text-right text-gray-700 dark:text-gray-200">${dd}</div>${ps.map(p => `<div class="truncate rounded px-1 mt-1 text-white ${p.status === 'Publicado' ? 'bg-green-600' : 'bg-amber-500'}">${esc(p.titulo)}</div>`).join('')}</div>`; }
+  cal += '</div>';
+  $('page').innerHTML = titulo('Marketing', `<button class="btn btn-sec" onclick="switchPage('redesdash')">${ic('gauge', 'w-4 h-4')}Dashboard</button><button class="btn btn-sec" onclick="switchPage('redesperfis')">${ic('circle-user', 'w-4 h-4')}Ver Redes</button>`) +
+    `<div class="caixa p-5 mb-6"><div class="flex items-center mb-4"><h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 grow">Publicações</h2><button class="btn btn-sec" onclick="novaPublicacao()">${ic('plus', 'w-4 h-4')}Publicação</button></div><div class="flex gap-4 flex-wrap">${S.posts.map(p => `<div class="w-72 h-32 flex rounded-lg overflow-hidden bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700"><div class="w-24 bg-stone-200 dark:bg-stone-300 flex items-center justify-center text-stone-500">${ic('image', 'w-6 h-6')}</div><div class="p-3 flex flex-col grow min-w-0"><div class="font-semibold text-gray-800 dark:text-gray-100 truncate">${esc(p.titulo)}</div><div class="text-xs truncate">${p.conta}</div><div class="mt-auto self-end">${p.status === 'Publicado' ? `<span class="pilula bg-green-700 text-white">Publicado</span>` : `<span class="pilula bg-amber-500 text-white">Agendado · ${p.dia}/11</span>`}</div></div></div>`).join('')}</div><div class="flex justify-end mt-4"><button class="btn btn-sec" onclick="switchPage('redeslista')">Ver todas</button></div></div>
+    <div class="caixa p-5"><div class="flex items-center gap-2 mb-4"><button class="btn btn-sec btn-sm" title="Mês anterior" onclick="embreve()">${ic('chevron-left', 'w-4 h-4')}</button><button class="btn btn-sec btn-sm" title="Próximo mês" onclick="embreve()">${ic('chevron-right', 'w-4 h-4')}</button><button class="btn btn-sec btn-sm" onclick="embreve()">Hoje</button><div class="grow text-center text-xl font-bold text-gray-500 dark:text-gray-400">novembro de 2026</div><div class="inline-flex rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 text-xs"><button class="px-3 py-1.5 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100" onclick="embreve()">Mês</button><button class="px-3 py-1.5" onclick="embreve()">Semana</button><button class="px-3 py-1.5" onclick="embreve()">Dia</button></div></div>${cal}</div>`;
+};
+function novaPublicacao(){
+  // Mesma janela da plataforma (Título, Perfil e Canal, Agendamento, mídia e legenda, celular ao lado).
+  // Ajustes: "Nova publicação" no lugar de "Novo(a) Publicação" e a legenda aparece no celular.
+  const n = S.novoPost, sec = 'rounded-lg bg-gray-100 dark:bg-gray-700/60 p-4';
+  openModal('Nova publicação', `<div class="grid grid-cols-[1fr_250px] gap-5"><div class="space-y-3">
+      <div class="${sec}"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-2">Título</div><label class="text-xs" for="np-tit"><span class="text-red-500">*</span> Descrição interna curta (não aparece na publicação)</label><input class="form-input mt-1" id="np-tit" placeholder="Ex.: Antes e depois do clareamento"></div>
+      <div class="grid grid-cols-2 gap-3"><div class="${sec}"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-2">Perfil e Canal</div><div class="grid grid-cols-2 gap-2"><div><div class="text-xs mb-1">Perfil</div><select class="form-input px-2 text-xs"><option>clinicasorriso@Instagram</option></select></div><div><div class="text-xs mb-1">Canal</div><select class="form-input px-2 text-xs" onchange="canalPost(this.value)">${['Post','Reel','Story'].map(c => `<option ${n.canal === c ? 'selected' : ''}>${c}</option>`).join('')}</select></div></div></div>
+        <div class="${sec}"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-2">Agendamento</div><div class="grid grid-cols-[auto_1fr] gap-3 items-end"><div><div class="text-xs mb-1">Publicar agora?</div><span id="np-agora">${chave(n.quando === 'agora', "quandoPost(S.novoPost.quando==='agora'?'agendar':'agora')", 'Publicar agora')}</span></div><div><div class="text-xs mb-1"><span class="text-red-500">*</span> Data de publicação</div><input class="form-input px-2 text-xs" type="date" id="np-data" value="${n.data}" onchange="S.novoPost.data=this.value"></div></div></div></div>
+      <div class="${sec}"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-2" id="np-canal-t">${n.canal}</div><div class="text-xs mb-1"><span class="text-red-500">*</span> <span id="np-midia">${n.canal === 'Reel' ? 'Vídeo (MP4 ou MOV)' : 'Imagem ou vídeo (JPG, PNG ou MP4)'}</span></div><button class="w-full rounded-lg bg-white dark:bg-gray-800 py-6 text-gray-700 dark:text-gray-200" onclick="embreve()">Arraste e solte os arquivos ou <u>Clique aqui</u></button><label class="text-xs block mt-3 mb-1" for="np-leg">Legenda</label><textarea class="form-input min-h-[70px]" id="np-leg" placeholder="Escreva a legenda" oninput="legPost(this.value)">${esc(n.legenda)}</textarea></div>
+    </div><div class="rounded-[28px] border-[6px] border-gray-900 dark:border-gray-950 bg-gray-900 overflow-hidden flex flex-col"><div class="h-5 flex justify-center items-center"><span class="w-16 h-1.5 rounded-full bg-gray-700"></span></div><div class="aspect-[4/5] bg-stone-300 flex items-center justify-center text-stone-500">${ic('image', 'w-8 h-8')}</div><div class="bg-white dark:bg-gray-800 grow p-2.5 text-xs text-gray-800 dark:text-gray-100"><b>clinicasorriso</b> <span id="np-previa"></span></div></div></div>`,
+    `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn btn-sec" onclick="closeModal();showToast('Rascunho salvo')">Salvar rascunho</button><button class="btn btn-primary" id="np-btn" onclick="publicar()">Publicar agora</button>`, 'xl');
+  legPost(n.legenda); quandoPost(n.quando);
+}
+function canalPost(c){ S.novoPost.canal = c; $('np-canal-t').textContent = c; $('np-midia').textContent = c === 'Reel' ? 'Vídeo (MP4 ou MOV)' : 'Imagem ou vídeo (JPG, PNG ou MP4)'; }
+function legPost(v){ S.novoPost.legenda = v; $('np-previa').textContent = v || 'A legenda aparece aqui.'; }
+function quandoPost(q){ S.novoPost.quando = q; $('np-agora').innerHTML = chave(q === 'agora', "quandoPost(S.novoPost.quando==='agora'?'agendar':'agora')", 'Publicar agora'); $('np-data').disabled = q === 'agora'; $('np-data').classList.toggle('opacity-40', q === 'agora'); $('np-btn').textContent = q === 'agora' ? 'Publicar agora' : 'Agendar publicação'; }
+function publicar(){ const n = S.novoPost, ag = n.quando === 'agendar', dia = ag ? Number(n.data.slice(8, 10)) || 20 : 17;
+  const p = {id:nid('s'), titulo:(n.legenda.trim().split('\n')[0] || 'Publicação sem legenda').slice(0, 40), conta:'clinicasorriso@Instagram', status:ag ? 'Agendado' : 'Publicado', dia:dia}; S.posts.push(p); S.novoPost = {canal:'Post', legenda:'', quando:'agora', data:'2026-11-20'}; closeModal(); renderAll();
+  showToast(ag ? 'Publicação agendada para ' + dia + '/11' : 'Publicado', ag ? () => { S.posts = S.posts.filter(x => x.id !== p.id); } : null); }
+
+// Configurações (menu de baixo): Adicionar ferramenta, Gestão de acesso e Integrações, como hoje.
+PAGES.config = function(){
+  const a = S.cfgAba; let h = '';
+  if (a === 'ferramentas') { S.cfgAba = 'usuarios'; PAGES.config(); setTimeout(novaFerramentaModal, 0); return; }
+  if (a === 'usuarios') h = titulo('Gestão de acesso') + `<div class="caixa p-6 mb-6"><div class="flex items-start mb-4"><div class="grow"><h2 class="h2">Usuários</h2><p class="mt-1">Gerencie os acessos ao seu projeto.</p></div><button class="btn btn-sec" onclick="novoUsuario()">${ic('plus', 'w-4 h-4')}Usuário</button></div><div class="flex items-center gap-2 rounded-lg bg-gray-200/70 dark:bg-gray-700 px-3 py-2 text-xs mb-4">${ic('credit-card', 'w-4 h-4')}Ativar usuários aumenta o valor da assinatura deste projeto.</div>
+    <div class="tabela"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Grupos</th><th>Licença</th></tr></thead><tbody>${S.usuarios.map(u => `<tr><td>${esc(u.nome)}</td><td>${esc(u.email)}</td><td>${u.grupos.map(g => `<span class="pilula bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300 mr-1">${esc(g)}</span>`).join('') || '-'}</td><td>${u.voce ? `<span class="pilula bg-green-600 text-white text-[13px] px-3 py-1">Ativo (Você)</span>` : u.convite ? `<span class="pilula bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Convite enviado</span>` : `<button class="btn btn-sec btn-sm" onclick="togLicenca('${u.id}')">${ic(u.ativo ? 'circle-check' : 'circle', 'w-3.5 h-3.5')}${u.ativo ? 'Ativo' : 'Inativo'}</button>`}</td></tr>`).join('')}</tbody></table></div></div>
+    <div class="caixa p-6"><div class="flex items-start mb-4"><div class="grow"><h2 class="h2">Grupos de usuários</h2><p class="mt-1">Gerencie os grupos de usuários.</p></div><button class="btn btn-sec" onclick="novoGrupo()">${ic('plus', 'w-4 h-4')}Grupo</button></div><div class="tabela"><table><thead><tr><th>Nome</th><th>Usuários</th></tr></thead><tbody>${S.grupos.map(g => `<tr><td>${esc(g)}</td><td>${S.usuarios.filter(u => u.grupos.includes(g)).length}</td></tr>`).join('')}</tbody></table></div></div>`;
+  if (a === 'integracoes') h = titulo('Integrações', `<button class="btn btn-sm border-personalized-primary text-personalized-primary shadow-none" onclick="window.open('${DOCS}','_blank')">Acessar Documentação</button>`) + `<div class="grid grid-cols-3 gap-6 max-w-3xl">${[['webhooks','Webhooks','paperclip'],['meta','Meta Ads','infinity'],['api','API','plug']].map(i => `<button onclick="switchPage('${i[0] === 'meta' ? 'metaads' : i[0] === 'api' ? 'apiproj' : 'webhooks'}')" class="caixa h-36 flex flex-col items-center justify-center gap-3 hover:ring-1 hover:ring-gray-300 dark:hover:ring-gray-600 relative">${ic(i[2], 'w-12 h-12 ' + (i[0] === 'meta' ? 'text-blue-600' : 'text-gray-400'))}<span class="text-gray-700 dark:text-gray-200">${i[1]}</span>${S.integ[i[0]] ? `<span class="absolute top-3 right-3">${pVerde('Conectado')}</span>` : ''}</button>`).join('')}</div>`;
+  $('page').innerHTML = h;
+};
+function abaCfg(a){ S.cfgAba = a; renderAll(); }
+function novaFerramenta(e){ const fora = Object.keys(TOOLS).filter(k => !S.projTools.includes(k)); if (!fora.length) { showToast('Este projeto já tem todas as ferramentas'); return; } abrirMenu(e, fora.map(k => ({i:TOOLS[k].icon, t:TOOLS[k].nome, f:() => criarFerramenta(k)}))); }
+function criarFerramenta(k){ S.projTools.push(k); renderAll(); showToast(TOOLS[k].nome + ' adicionada', () => { S.projTools = S.projTools.filter(t => t !== k); }); }
+function tirarFerramenta(k){ const antes = S.projTools.slice(); S.projTools = S.projTools.filter(t => t !== k); renderAll(); showToast(TOOLS[k].nome + ' removida', () => { S.projTools = antes; }); }
+function togLicenca(id){ const u = S.usuarios.find(x => x.id === id); u.ativo = !u.ativo; renderAll(); showToast(u.ativo ? 'Licença ativada' : 'Licença desativada'); }
+function novoUsuario(){ openModal('Novo usuário', `<label class="lbl" for="nu-email">E-mail</label><input class="form-input" id="nu-email" placeholder="pessoa@empresa.com.br" onkeydown="enterUsuario(event)"><p class="text-xs mt-1">A pessoa recebe um convite por e-mail para entrar neste projeto.</p>`, `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarUsuario()">Enviar convite</button>`); }
+function enterUsuario(e){ if (e.key === 'Enter') { e.preventDefault(); criarUsuario(); } }
+function criarUsuario(){ const e = $('nu-email').value.trim(); if (!e.includes('@')) { $('nu-email').focus(); showToast('Informe um e-mail válido'); return; } const u = {id:nid('u'), nome:'-', email:e, grupos:[], ativo:true, convite:true}; S.usuarios.push(u); closeModal(); renderAll(); showToast('Convite enviado para ' + e, () => { S.usuarios = S.usuarios.filter(x => x.id !== u.id); }); }
+function novoGrupo(){ openModal('Novo grupo', `<label class="lbl" for="ng-nome">Nome do grupo</label><input class="form-input" id="ng-nome" placeholder="Ex.: Suporte" onkeydown="enterGrupo(event)">`, `<button class="btn btn-sec" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarGrupo()">Criar grupo</button>`); }
+function enterGrupo(e){ if (e.key === 'Enter') { e.preventDefault(); criarGrupo(); } }
+function criarGrupo(){ const n = $('ng-nome').value.trim(); if (!n) { $('ng-nome').focus(); return; } S.grupos.push(n); closeModal(); renderAll(); showToast('Grupo ' + n + ' criado'); }
+function togInteg(k){ S.integ[k] = !S.integ[k]; if (k === 'meta') S.conv.conectado = S.integ.meta; renderAll(); showToast(S.integ[k] ? 'Conectado (simulado no mockup)' : 'Desconectado'); }
+
+/* ═════════ TELAS QUE FALTAVAM (levantadas na plataforma em 17/11/2026) ═════════ */
+const CAIXA2 = 'rounded-lg bg-gray-100 dark:bg-gray-700/50 p-4';
+const linkVoltar = (p, t) => `<button class="btn btn-ghost px-0 mb-4" onclick="switchPage('${p}')">${ic('arrow-left', 'w-4 h-4')}${t || 'Voltar'}</button>`;
+const topoSalvar = (voltar, msg) => `<div class="flex justify-end gap-2 mb-2"><button class="btn btn-ghost" onclick="switchPage('${voltar}')">Voltar</button><button class="btn btn-primary" onclick="switchPage('${voltar}');showToast('${msg}')">Salvar</button></div>`;
+
+// Janela de registro (contato, card, tarefa, produto): abas Geral e Linha do tempo, Arquivar, Atribuição e Anexar, como na plataforma.
+// Ajustes: no contato, a etapa do funil e o atalho para a conversa ficam na coluna da direita.
+S.coments = {};
+function abrirRegistro(tipo, id){ S.registro = {tipo:tipo, id:id, aba:'geral'}; drawRegistro(); }
+function regDados(){ const r = S.registro;
+  if (r.tipo === 'contato') { const c = ct(r.id); return {c:c, nome:nomeDe(c), btn:'Atualizar Registro', resp:null, criado:[['Nome', nomeDe(c)], ['Telefone', fone(c.fone)], ['E-mail', c.email || '-']]}; }
+  if (r.tipo === 'card') { const k = S.cards.find(x => x.id === r.id), c = ct(k.contato); return {k:k, c:c, nome:nomeDe(c), btn:'Atualizar Registro', resp:k.resp, criado:[['Contato', nomeDe(c)], ['Etapa', S.etapas[k.etapa]], ['Valor', k.valor ? brl(k.valor) : '-']]}; }
+  if (r.tipo === 'tarefa') { const t = S.tarefas.find(x => x.id === r.id), c = ct(t.contato); return {t:t, c:c, nome:t.titulo, btn:'Atualizar Tarefa', resp:t.resp, criado:[['Título', t.titulo], ['Contato', nomeDe(c)], ['Agendado para', t.quando]]}; }
+  const p = S.produtos.find(x => x.id === r.id); return {p:p, nome:p.nome, btn:'Atualizar Registro', resp:null, criado:[['Nome', p.nome], ['Preço', brl(p.preco)]]};
+}
+function campo(rot, id, valor, obrig, extra){ return `<div class="${extra || ''}"><label class="text-[13px] font-medium text-gray-800 dark:text-gray-100" for="${id}">${obrig ? '<span class="text-red-500">*</span> ' : ''}${rot}</label><input class="form-input mt-1" id="${id}" value="${esc(valor)}"></div>`; }
+function sel(rot, id, ops, valor, extra){ return `<div class="${extra || ''}"><label class="text-[13px] font-medium text-gray-800 dark:text-gray-100" for="${id}">${rot}</label><select class="form-input mt-1" id="${id}">${ops.map(o => `<option value="${esc(o[0])}" ${String(o[0]) === String(valor) ? 'selected' : ''}>${esc(o[1])}</option>`).join('')}</select></div>`; }
+function drawRegistro(){
+  const r = S.registro, d = regDados(), aba = (k, t) => `<button onclick="S.registro.aba='${k}';drawRegistro()" class="pb-2 -mb-px border-b-2 text-[15px] ${r.aba === k ? 'border-personalized-primary text-personalized-primary' : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'}">${t}</button>`;
+  let corpo = '';
+  if (r.aba === 'geral') {
+    let f = '';
+    if (r.tipo === 'contato') f = campo('Nome', 'rg-nome', d.c.nome, true) + campo('E-mail', 'rg-email', d.c.email) + campo('Telefone', 'rg-fone', fone(d.c.fone));
+    if (r.tipo === 'card') f = sel('Contato', 'rg-ct', S.contatos.map(c => [c.id, nomeDe(c)]), d.k.contato) + sel('Etapa', 'rg-etapa', S.etapas.map((e, i) => [i, e]), d.k.etapa) + sel('Prioridade', 'rg-prio', [['', '-'], ['Baixa', 'Baixa'], ['Média', 'Média'], ['Alta', 'Alta']], d.k.prio) + campo('Valor (R$)', 'rg-valor', d.k.valor || '') + `<div class="col-span-2"><label class="text-[13px] font-medium text-gray-800 dark:text-gray-100" for="rg-obs">Observação</label><textarea class="form-input mt-1 min-h-[64px]" id="rg-obs">${esc(d.k.obs)}</textarea></div>`;
+    if (r.tipo === 'tarefa') f = campo('Título', 'rg-tit', d.t.titulo, true) + sel('Status', 'rg-st', [['Pendente', 'Pendente'], ['Concluída', 'Concluída']], d.t.status) + campo('Agendado para', 'rg-quando', d.t.quando) + sel('Contato', 'rg-ct', [['', '-']].concat(S.contatos.map(c => [c.id, nomeDe(c)])), d.t.contato) + `<div class="col-span-2"><label class="text-[13px] font-medium text-gray-800 dark:text-gray-100" for="rg-desc">Descrição</label><textarea class="form-input mt-1 min-h-[64px]" id="rg-desc">${esc(d.t.desc)}</textarea></div>`;
+    if (r.tipo === 'produto') f = campo('Nome', 'rg-nome', d.p.nome, true) + campo('Preço (R$)', 'rg-preco', d.p.preco);
+    const lado = (d.resp !== null && d.resp !== undefined ? `<div class="mb-5">${sel('Atribuição', 'rg-resp', [['', '-']].concat(S.usuarios.filter(u => u.nome !== '-').map(u => [u.nome, u.nome])), d.resp)}</div>` : '') +
+      (r.tipo === 'contato' ? (() => { const k = cardDe(d.c.id), v = S.conversas.find(x => x.contato === d.c.id); return `<div class="mb-5">${sel('Etapa no Funil de Vendas', 'rg-etapa-ct', [['', 'Fora do funil']].concat(S.etapas.map((e, i) => [i, e])), k ? k.etapa : '')}</div>${v ? `<button class="btn btn-sec btn-sm mb-3 w-full" onclick="irConversa('${v.id}')">${ic('message-circle', 'w-4 h-4')}Abrir conversa</button>` : ''}`; })() : '') +
+      `<div class="text-[15px] text-gray-800 dark:text-gray-100 mb-2">Ações</div><button class="btn btn-sec btn-sm" onclick="embreve()">${ic('paperclip', 'w-4 h-4')}Anexar</button>`;
+    corpo = `<div class="grid grid-cols-[1fr_240px] gap-0"><div class="pr-5"><div class="${CAIXA2}"><div class="flex items-center mb-3"><b class="grow text-gray-800 dark:text-gray-100 text-[13px]">Informações gerais</b>${ic('chevron-up', 'w-4 h-4')}</div><div class="grid grid-cols-2 gap-x-4 gap-y-3">${f}</div><div class="flex justify-center mt-5"><button class="btn btn-primary" onclick="atualizarRegistro()">${d.btn}</button></div></div></div><div class="pl-5 border-l border-gray-200 dark:border-gray-700">${lado}</div></div>`;
+  } else {
+    const chave = r.tipo + r.id, cs = S.coments[chave] || [];
+    const bt = ['bold','italic','strikethrough','link','heading','quote','code','list','list-ordered','indent-decrease','indent-increase'];
+    corpo = `<div class="${CAIXA2} p-3"><div class="flex items-center gap-1 mb-2"><span class="inline-flex gap-0.5 bg-white dark:bg-gray-800 rounded-md px-1 py-0.5">${bt.map(b => `<button class="p-1 text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="${b}" onclick="embreve()">${ic(b, 'w-3.5 h-3.5')}</button>`).join('')}</span><span class="grow"></span><span class="inline-flex gap-0.5 bg-white dark:bg-gray-800 rounded-md px-1 py-0.5"><button class="p-1 text-gray-500" title="Desfazer" onclick="embreve()">${ic('undo-2', 'w-3.5 h-3.5')}</button><button class="p-1 text-gray-500" title="Refazer" onclick="embreve()">${ic('redo-2', 'w-3.5 h-3.5')}</button></span></div><textarea class="form-input min-h-[70px]" id="rg-com" placeholder="Novo comentário"></textarea><div class="flex justify-end mt-2"><button class="btn btn-primary btn-sm" onclick="comentar()">Comentar</button></div></div>
+      ${cs.map(m => `<div class="mt-4"><div class="flex items-center gap-2 mb-2">${av('Carla Mendes', 'w-8 h-8 text-[11px]')}<div><div class="text-[13px] font-semibold text-gray-800 dark:text-gray-100">Carla Mendes</div><div class="text-[11px]">17/11/2026 · agora</div></div></div><div class="${CAIXA2} text-[13px] text-gray-800 dark:text-gray-100">${esc(m)}</div></div>`).join('')}
+      <div class="mt-4"><div class="flex items-center gap-2 mb-2">${av('Carla Mendes', 'w-8 h-8 text-[11px]')}<div><div class="text-[13px] font-semibold text-gray-800 dark:text-gray-100">Carla Mendes</div><div class="text-[11px]">15/11/2026 · 14:58</div></div></div><div class="${CAIXA2} text-[13px] text-gray-800 dark:text-gray-100"><b>Criado com os campos:</b>${d.criado.map(x => `<div>${x[0]}: <b>${esc(x[1])}</b></div>`).join('')}</div></div>`;
+  }
+  abrirJanela(`<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-4xl max-h-[84vh] flex flex-col overflow-hidden border border-gray-200 dark:border-gray-700"><div class="flex items-end gap-5 px-5 pt-3 border-b border-gray-200 dark:border-gray-700">${aba('geral', 'Geral')}${aba('linha', 'Linha do tempo')}<span class="grow"></span><span class="pb-2 flex items-center gap-2"><span class="text-xs text-gray-400 mr-1 max-w-[220px] truncate">${esc(d.nome)}</span><button class="btn btn-sec btn-sm" onclick="arquivarRegistro()">Arquivar</button><button class="text-gray-400 hover:text-gray-600" title="Fechar" onclick="closeModal()">${ic('x', 'w-5 h-5')}</button></span></div><div class="p-5 overflow-auto">${corpo}</div></div>`);
+}
+function atualizarRegistro(){
+  const r = S.registro, d = regDados(), v = id => $(id) ? $(id).value : '';
+  if (r.tipo === 'contato') { if (!v('rg-nome').trim()) { showToast('O nome é obrigatório'); return; } d.c.nome = v('rg-nome').trim(); d.c.email = v('rg-email').trim(); d.c.fone = v('rg-fone').replace(/\D/g, '') || d.c.fone; const e = v('rg-etapa-ct'), k = cardDe(d.c.id); if (e === '' && k) S.cards = S.cards.filter(x => x !== k); else if (e !== '' && k) k.etapa = Number(e); else if (e !== '') S.cards.unshift({id:nid('k'), contato:d.c.id, etapa:Number(e), valor:0, prio:'', resp:'', obs:''}); }
+  if (r.tipo === 'card') Object.assign(d.k, {contato:v('rg-ct'), etapa:Number(v('rg-etapa')), prio:v('rg-prio'), valor:Number(String(v('rg-valor')).replace(/\./g, '').replace(',', '.')) || 0, obs:v('rg-obs'), resp:v('rg-resp')});
+  if (r.tipo === 'tarefa') { if (!v('rg-tit').trim()) { showToast('O título é obrigatório'); return; } Object.assign(d.t, {titulo:v('rg-tit').trim(), status:v('rg-st'), quando:v('rg-quando'), contato:v('rg-ct'), desc:v('rg-desc'), resp:v('rg-resp')}); }
+  if (r.tipo === 'produto') Object.assign(d.p, {nome:v('rg-nome').trim() || d.p.nome, preco:Number(String(v('rg-preco')).replace(',', '.')) || 0});
+  closeModal(); renderAll(); showToast('Registro atualizado');
+}
+function comentar(){ const t = $('rg-com').value.trim(); if (!t) return; const k = S.registro.tipo + S.registro.id; (S.coments[k] = S.coments[k] || []).unshift(t); drawRegistro(); }
+function arquivarRegistro(){ const r = S.registro; closeModal(); if (r.tipo === 'contato') { excluirContato(r.id); return; } const lista = {card:'cards', tarefa:'tarefas', produto:'produtos'}[r.tipo], antes = S[lista].slice(); S[lista] = S[lista].filter(x => x.id !== r.id); renderAll(); showToast('Registro arquivado', () => { S[lista] = antes; }); }
+
+// Registro de contatos > Configurar: "Editar campos", igual à plataforma. Ajuste: opções de valor só abrem no tipo Lista.
+S.camposCt = [['Nome','Nome',''],['E-mail','E-mail',''],['Telefone','Telefone',''],['Origem','Lista','Instagram, Indicação, Google']];
+PAGES.ctcampos = function(){
+  const tipos = ['Nome','Texto','E-mail','Telefone','Número','Data','Lista'];
+  $('page').innerHTML = topoSalvar('contatos', 'Campos salvos') + `<h2 class="h2 mb-3">Editar campos</h2>` + S.camposCt.map((c, i) => `<div class="caixa flex items-end gap-3 px-3 py-3 mb-3">${ic('grip-vertical', 'w-4 h-4 text-gray-400 mb-2.5')}<div class="w-56"><div class="text-xs mb-1"><span class="text-red-500">*</span> Nome</div><input class="form-input" value="${esc(c[0])}" oninput="S.camposCt[${i}][0]=this.value"></div><div class="w-40"><div class="text-xs mb-1"><span class="text-red-500">*</span> Tipo</div><select class="form-input" onchange="S.camposCt[${i}][1]=this.value;renderAll()">${tipos.map(t => `<option ${t === c[1] ? 'selected' : ''}>${t}</option>`).join('')}</select></div><div class="w-72 ${c[1] === 'Lista' ? '' : 'opacity-40'}"><div class="text-xs mb-1">Opções de valor</div><input class="form-input" value="${esc(c[2])}" ${c[1] === 'Lista' ? '' : 'disabled'} placeholder="Separe por vírgula"></div><span class="grow"></span><button class="text-red-500 mb-2.5" title="Remover campo" onclick="S.camposCt.splice(${i},1);renderAll()">${ic('x', 'w-4 h-4')}</button></div>`).join('') +
+    `<div class="flex justify-center"><button class="btn btn-sec w-24" title="Novo campo" onclick="S.camposCt.push(['','Texto',''])">${ic('plus', 'w-4 h-4')}</button></div>`;
+};
+
+// Funil de Vendas > Relatório: o mesmo painel. Ajustes: lead time explicado e números em português.
+PAGES.furel = function(){
+  const n = S.etapas.map((e, i) => S.cards.filter(k => k.etapa >= i).length), max = Math.max(1, n[0]), w = 1000, h = 230, col = w / n.length;
+  const ys = n.map(x => (x / max) * 100);
+  let topo = `M0,${115 - ys[0]}`, base = '';
+  ys.forEach((y, i) => { const x0 = i * col, x1 = (i + 1) * col, yn = ys[i + 1] !== undefined ? ys[i + 1] : y; topo += ` L${x0 + col * .35},${115 - y} C${x0 + col * .7},${115 - y} ${x1 - col * .1},${115 - yn} ${x1},${115 - yn}`; });
+  [...ys].reverse().forEach((y, j) => { const i = ys.length - 1 - j, x0 = i * col, x1 = (i + 1) * col, yn = ys[i + 1] !== undefined ? ys[i + 1] : y; base += ` L${x1},${115 + yn} C${x1 - col * .1},${115 + yn} ${x0 + col * .7},${115 + y} ${x0 + col * .35},${115 + y}`; });
+  const ticket = S.cards.filter(k => k.valor).reduce((a, k, _, l) => a + k.valor / l.length, 0);
+  $('page').innerHTML = titulo('Relatório', '', 'funil') + `<div class="rounded-lg px-4 py-2 mb-4 text-xs italic flex items-center gap-2 bg-gradient-to-r from-rose-100 to-amber-50 text-rose-900 dark:from-rose-900/60 dark:to-stone-700 dark:text-rose-100">${ic('flask-conical', 'w-4 h-4')}Painel experimental! Estamos lançando o básico e entendendo como podemos melhorar esta funcionalidade.</div>
+    <div class="caixa p-4"><div class="relative"><div class="grid" style="grid-template-columns:repeat(${n.length},1fr)">${S.etapas.map((e, i) => `<div class="${i ? 'border-l border-gray-300 dark:border-gray-600' : ''} pl-3 pb-2"><div class="text-2xl font-semibold text-gray-800 dark:text-gray-100">${n[i]}</div><div class="text-xs font-semibold text-green-600 dark:text-green-400">${esc(e)}</div><div class="text-xs text-violet-600 dark:text-violet-300">${Math.round(n[i] / max * 100)}%</div></div>`).join('')}</div>
+      <svg viewBox="0 0 ${w} ${h}" class="w-full h-56 block" preserveAspectRatio="none"><defs><linearGradient id="gf" x1="0" x2="1"><stop offset="0" stop-color="#dcfce7"/><stop offset="1" stop-color="#4ade80"/></linearGradient></defs>${n.map((_, i) => i ? `<line x1="${i * col}" x2="${i * col}" y1="0" y2="${h}" stroke="currentColor" class="text-gray-300 dark:text-gray-600" stroke-width="1.5"/>` : '').join('')}<path d="${topo}${base} L0,${115 + ys[0]} Z" fill="url(#gf)" opacity=".9"/></svg></div></div>
+    <div class="grid grid-cols-3 gap-4 mt-4">${[['Lead time', '3 dias', 'Tempo médio do primeiro contato até Fechado'], ['Último card criado em', '17 de novembro, 09:02', ''], ['Ticket médio', brl(ticket), 'Média do valor dos cards com valor']].map(k => `<div class="caixa p-4"><div class="text-sm flex items-center gap-1">${k[0]}${k[2] ? `<span title="${k[2]}">${ic('info', 'w-3.5 h-3.5')}</span>` : ''}</div><div class="text-xl font-semibold text-gray-800 dark:text-gray-100 mt-1">${k[1]}</div></div>`).join('')}</div>`;
+};
+
+// Funil de Vendas > Configurar: a mesma edição. Ajustes: nomes das etapas inteiros (antes cortados) e nomes de campo em português.
+S.camposFu = [['Contato','Contato','',true,true],['Prioridade','Lista','Baixa, Média, Alta',true,true],['Valor','Moeda','',true,true],['Observação','Texto','',true,false]];
+PAGES.fucfg = function(){
+  const tipos = ['Contato','Texto','Número','Moeda','Data','Lista'];
+  $('page').innerHTML = topoSalvar('funil', 'Funil salvo') +
+    `<h2 class="h2 mb-3">Etapas</h2><div class="flex flex-wrap gap-2 items-center mb-6">${S.etapas.map((e, i) => `<div class="caixa flex items-center gap-1.5 px-2 py-1.5">${ic('grip-vertical', 'w-4 h-4 text-gray-400')}<input class="form-input w-40 py-1.5" value="${esc(e)}" oninput="S.etapas[${i}]=this.value"><button class="text-red-500" title="Remover etapa" onclick="S.etapas.splice(${i},1);renderAll()">${ic('x', 'w-4 h-4')}</button></div>`).join('')}<button class="btn btn-sec" title="Nova etapa" onclick="S.etapas.push('Nova etapa');renderAll()">${ic('plus', 'w-4 h-4')}</button></div>
+    <h2 class="h2 mb-2">Links com outras ferramentas</h2><div class="flex gap-6 mb-6">${['Tarefas','Produtos','Registro de contatos'].map(t => `<label class="flex items-center gap-2 text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" checked>${t}</label>`).join('')}</div>
+    <h2 class="h2 mb-2">Campos especiais</h2><div class="flex gap-4 mb-6">${sel('Etapa de ganho', 'fc-ganho', S.etapas.map(e => [e, e]), 'Fechado', 'w-56')}${sel('Etapa de perda', 'fc-perda', [['', '-']].concat(S.etapas.map(e => [e, e])), '', 'w-56')}</div>
+    <h2 class="h2 mb-2">Campos</h2>` + S.camposFu.map((c, i) => `<div class="caixa px-3 py-3 mb-3"><div class="flex items-end gap-3">${ic('grip-vertical', 'w-4 h-4 text-gray-400 mb-2.5')}<div class="w-56"><div class="text-xs mb-1"><span class="text-red-500">*</span> Nome</div><input class="form-input" value="${esc(c[0])}"></div><div class="w-40"><div class="text-xs mb-1"><span class="text-red-500">*</span> Tipo</div><select class="form-input">${tipos.map(t => `<option ${t === c[1] ? 'selected' : ''}>${t}</option>`).join('')}</select></div>${c[1] === 'Lista' ? `<div class="flex items-center gap-1.5 mb-1.5">${c[2].split(', ').map(o => `<span class="pilula bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 border border-gray-200 dark:border-gray-600">${o} ${ic('x', 'w-3 h-3 ml-1')}</span>`).join('')}</div>` : ''}<span class="grow"></span><button class="text-red-500 mb-2.5" title="Remover campo" onclick="S.camposFu.splice(${i},1);renderAll()">${ic('x', 'w-4 h-4')}</button></div><div class="flex gap-6 mt-3 ml-7 text-[13px]"><label class="flex items-center gap-2"><input type="checkbox" class="chk" ${c[3] ? 'checked' : ''}>Mostrar no quadro</label><label class="flex items-center gap-2"><input type="checkbox" class="chk" ${c[4] ? 'checked' : ''}>Mostrar na lista</label></div></div>`).join('') +
+    `<div class="flex justify-center"><button class="btn btn-sec w-24" title="Novo campo" onclick="S.camposFu.push(['','Texto','',true,true]);renderAll()">${ic('plus', 'w-4 h-4')}</button></div>`;
+};
+
+// Tarefas: a mesma barra de filtros e a mesma tabela. Ajustes: nome do contato em vez de vazio e status em pílula.
+PAGES.tarefas = function(){
+  $('page').innerHTML = `<div class="flex items-center gap-2 mb-5"><input class="form-input w-48" placeholder="Buscar" value="${esc(S.taBusca || '')}" oninput="S.taBusca=this.value;drawTa()"><select class="form-input w-44" onchange="S.taSt=this.value;drawTa()"><option value="">Filtrar por status</option><option>Pendente</option><option>Concluída</option></select><select class="form-input w-48" onchange="S.taResp=this.value;drawTa()"><option value="">Filtrar por responsável</option>${S.usuarios.filter(u => u.nome !== '-').map(u => `<option>${u.nome}</option>`).join('')}</select><input class="form-input w-40" placeholder="Agendado para" onfocus="embreve()"><button class="btn btn-ghost" onclick="S.taResp='Carla Mendes';drawTa()">Minhas tarefas</button><span class="grow"></span><button class="btn btn-primary" onclick="novaTarefa()">${ic('plus', 'w-4 h-4')}Tarefa</button><button class="text-gray-500 px-1" title="Mais ações" onclick="embreve()">${ic('ellipsis', 'w-5 h-5')}</button></div><div id="ta-lista"></div>`;
+  drawTa();
+};
+function drawTa(){
+  const q = norm(S.taBusca), ls = S.tarefas.filter(t => (!q || norm(t.titulo + ' ' + t.desc + ' ' + nomeDe(ct(t.contato))).includes(q)) && (!S.taSt || t.status === S.taSt) && (!S.taResp || t.resp === S.taResp));
+  $('ta-lista').innerHTML = ls.length ? `<div class="tabela"><table><thead><tr><th>Contato</th><th>Título</th><th>Descrição</th><th>Atribuído a</th><th>Agendado para</th><th>Status</th><th class="w-10"></th></tr></thead><tbody>${ls.map(t => `<tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40" onclick="abrirRegistro('tarefa','${t.id}')"><td>${t.contato ? esc(nomeDe(ct(t.contato))) : '-'}</td><td class="text-gray-800 dark:text-gray-100">${esc(t.titulo)}</td><td class="max-w-[220px] truncate">${esc(t.desc) || '-'}</td><td><span class="inline-flex items-center gap-2">${av(t.resp, 'w-6 h-6 text-[9px]')}${esc(t.resp)}</span></td><td>${t.quando}</td><td>${t.status === 'Pendente' ? pTeste0('Pendente') : pVerde('Concluída')}</td><td>${ic('chevron-right', 'w-4 h-4')}</td></tr>`).join('')}</tbody></table></div>` : vazio('square-check-big', 'Nenhuma tarefa encontrada', 'Mude os filtros ou crie uma tarefa.');
+  icons();
+}
+const pTeste0 = t => `<span class="pilula bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">${t}</span>`;
+function novaTarefa(){ const t = {id:nid('t'), contato:'', titulo:'Nova tarefa', desc:'', resp:'Carla Mendes', quando:'18 de novembro, 09:00', status:'Pendente'}; S.tarefas.unshift(t); renderAll(); abrirRegistro('tarefa', t.id); }
+
+// Produtos: a mesma tabela. Ajuste: preço com centavos (R$ 1.200,00 em vez de R$1.200).
+PAGES.produtos = function(){
+  $('page').innerHTML = `<div class="flex items-center gap-2 mb-5"><span class="grow"></span><button class="btn btn-primary" onclick="novoProduto()">${ic('plus', 'w-4 h-4')}Produto</button><button class="text-gray-500 px-1" title="Mais ações" onclick="embreve()">${ic('ellipsis', 'w-5 h-5')}</button></div>` +
+    `<div class="tabela"><table><thead><tr><th>Nome</th><th>Preço</th><th class="w-10"></th></tr></thead><tbody>${S.produtos.map(p => `<tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40" onclick="abrirRegistro('produto','${p.id}')"><td class="text-gray-800 dark:text-gray-100">${esc(p.nome)}</td><td>${p.preco ? brl(p.preco) : 'Gratuito'}</td><td>${ic('chevron-right', 'w-4 h-4')}</td></tr>`).join('')}</tbody></table></div>`;
+};
+function novoProduto(){ const p = {id:nid('pr'), nome:'Novo produto', preco:0}; S.produtos.push(p); renderAll(); abrirRegistro('produto', p.id); }
+
+// Automação: o mesmo estado vazio (a criação não foi aberta na plataforma para não gerar uma automação de verdade).
+PAGES.automacao = function(){ $('page').innerHTML = vazio('package', 'Você ainda não tem automações', 'Para começar a usar esta ferramenta, crie uma nova automação.', `<button class="btn btn-sec" onclick="embreve()">${ic('plus', 'w-4 h-4')}Automação</button>`); };
+
+// Cadência: a mesma tabela. Ajustes: nome do contato no lugar do código, "Funil" no lugar de "Kanban" e tarefa ligada.
+PAGES.cadencia = function(){
+  const ult = ['17 de novembro, 13:50', '15 de novembro, 10:45', '14 de novembro, 13:11', '12 de novembro, 11:37', '10 de novembro, 14:00', '08 de novembro, 14:05'];
+  $('page').innerHTML = `<div class="flex items-center gap-2 rounded-lg bg-gray-200/70 dark:bg-gray-700 px-3 py-2 text-xs italic mb-6">${ic('info', 'w-4 h-4')}Esta ferramenta está em uma versão inicial. Caso tenha alguma dificuldade, dúvidas, feedbacks ou sugestões, fale com a gente!</div>
+    <h2 class="h2 mb-4">Entradas sem interação por mais de 1 dia</h2><div class="tabela"><table><thead><tr><th>Nome do módulo</th><th>Tipo do módulo</th><th>Última interação</th><th>Detalhes</th><th class="w-10"></th></tr></thead><tbody>${S.cards.map((k, i) => { const t = S.tarefas.find(x => x.contato === k.contato); return `<tr class="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40" onclick="abrirRegistro('card','${k.id}')"><td>Funil de Vendas</td><td>Funil</td><td>${ult[i % ult.length]}</td><td class="text-xs leading-5"><b class="text-gray-800 dark:text-gray-100">Etapa:</b> ${esc(S.etapas[k.etapa])}<br><b class="text-gray-800 dark:text-gray-100">Contato:</b> ${esc(nomeDe(ct(k.contato)))}<br><b class="text-gray-800 dark:text-gray-100">Tarefa:</b> ${t ? esc(t.titulo) : '-'}</td><td>${ic('chevron-right', 'w-4 h-4')}</td></tr>`; }).join('')}</tbody></table></div>`;
+};
+
+const NOVO = '<span class="pilula bg-white text-gray-800 border border-gray-200 dark:border-transparent px-2">Novo</span>';
+// WhatsApp > engrenagem: o mesmo menu (trocar de número, novo número, atribuição, respostas rápidas, modelos, reconectar, remover).
+function menuWa(e){
+  const outros = S.numeros.filter(n => n.id !== S.waNumero);
+  abrirMenu(e, [{g:'Trocar de número'}].concat(outros.map(n => ({i:'repeat', t:fone(n.num) + ' · ' + n.apelido, f:() => { S.waNumero = n.id; S.waSel = (S.conversas.find(v => v.numero === n.id) || {}).id; renderAll(); }})))
+    .concat([{sep:1}, {g:'Número'}, {i:'circle-plus', t:'Novo número', f:() => switchPage('wanovo')}, {i:'user-round-cog', t:'Atribuição automática', f:atribuicaoAuto}, {sep:1}, {g:'Mensagens'}, {i:'zap', t:'Respostas rápidas', f:respostasRapidas}, {i:'signature', t:'Assinatura da conversa', k:NOVO, f:embreve}, {i:'layout-template', t:'Ver modelos', k:NOVO, f:embreve}, {sep:1}, {i:'refresh-cw', t:'Reconectar', f:() => showToast('Número reconectado')}, {i:'trash-2', t:'Remover número', d:1, f:embreve}]));
+}
+function respostasRapidas(){
+  openModal('Respostas rápidas', `<div class="tabela"><table><thead><tr><th>Atalho</th><th>Mensagem</th><th>Ações</th></tr></thead><tbody>${S.respostas.map(r => `<tr><td class="text-gray-800 dark:text-gray-100">/${esc(r.atalho)} ${r.modelo ? pCinza('Modelo') : ''}</td><td class="max-w-[320px] truncate">${esc(r.msg)}</td><td><div class="flex gap-3"><button class="text-gray-500" title="Editar" onclick="embreve()">${ic('square-pen', 'w-4 h-4')}</button><button class="text-red-500" title="Excluir" onclick="S.respostas=S.respostas.filter(x=>x.id!=='${r.id}');respostasRapidas()">${ic('trash-2', 'w-4 h-4')}</button></div></td></tr>`).join('')}</tbody></table></div><p class="text-xs mt-3">Na conversa, digite / e o atalho para usar a resposta.</p>`,
+    `<button class="btn btn-primary" onclick="embreve()">${ic('plus', 'w-4 h-4')}Nova resposta rápida</button>`, true);
+}
+function atribuicaoAuto(){
+  openModal('Atribuição automática', `<p class="mb-4">Conversas sem responsável vão, em rodízio, para os usuários do grupo padrão deste número.</p><label class="lbl" for="aa-grupo">Grupo padrão</label><select class="form-input" id="aa-grupo" onchange="grupoAuto(this.value)"><option value="">Sem atribuição automática</option>${S.grupos.map(g => `<option>${esc(g)}</option>`).join('')}</select><div class="text-right mt-1"><button class="text-xs text-blue-500" onclick="closeModal();S.cfgAba='usuarios';switchPage('config')">Gerenciar grupos de usuários</button></div><label id="aa-ia-l" class="flex items-center gap-2 mt-4 opacity-40 text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" id="aa-ia" disabled>Deixar a IA escolher o grupo pela conversa</label><p class="text-xs mt-1">Escolha um grupo padrão para habilitar.</p>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="closeModal();showToast('Atribuição salva')">Salvar</button>`);
+}
+function qrSvg(){ let s = 7, r = ''; const n = 29, rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  const fixo = (x, y) => [[0, 0], [n - 7, 0], [0, n - 7]].some(([a, b]) => x >= a && x < a + 7 && y >= b && y < b + 7);
+  for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) { if (fixo(x, y)) continue; if (rnd() > .52) r += `<rect x="${x}" y="${y}" width="1" height="1"/>`; }
+  [[0, 0], [n - 7, 0], [0, n - 7]].forEach(([a, b]) => { r += `<rect x="${a}" y="${b}" width="7" height="7"/><rect x="${a + 1}" y="${b + 1}" width="5" height="5" fill="#fff"/><rect x="${a + 2}" y="${b + 2}" width="3" height="3"/>`; });
+  return `<svg viewBox="-1 -1 31 31" class="w-56 h-56 bg-white rounded" shape-rendering="crispEdges">${r}</svg>`; }
+// Novo número: a mesma tela de QR Code. Ajuste: o atalho para a API oficial vira botão à vista.
+PAGES.wanovo = function(){
+  $('page').innerHTML = linkVoltar('whatsapp') + `<div class="caixa grid grid-cols-2 overflow-hidden max-w-5xl mx-auto"><div class="p-8 flex flex-col"><h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 text-center mb-6">Conecte seu WhatsApp!</h2><p class="mb-4">Integre seus contatos e conversas do seu dispositivo para usar no seu CRM.</p><ol class="space-y-3 text-[15px]"><li>1. Abra o aplicativo do WhatsApp no celular</li><li>2. Toque em Menu ${ic('ellipsis-vertical', 'w-4 h-4 inline align-[-3px]')} no Android, ou Configurações ${ic('settings', 'w-4 h-4 inline align-[-3px]')} no iPhone</li><li>3. Toque em Dispositivos conectados e depois em Conectar dispositivo</li><li>4. Aponte o celular para a tela e leia o código</li></ol><span class="grow"></span><button class="btn btn-sec mt-8 self-start" onclick="embreve()">Usa a API oficial do WhatsApp Business? Conectar por aqui</button></div>
+    <div class="bg-gray-200/80 dark:bg-gray-700/60 p-8 flex flex-col items-center">${qrSvg()}<div class="w-56 h-1.5 rounded-full bg-gray-300 dark:bg-gray-600 mt-5 overflow-hidden"><div class="h-full w-4/5 bg-blue-500"></div></div><div class="text-xs mt-1">32 s</div><button class="text-sm text-blue-500 mt-3 inline-flex items-center gap-1" onclick="renderAll()">${ic('refresh-cw', 'w-4 h-4')}Recarregar QR Code</button><p class="text-xs mt-4 text-center">Ao ler o código, você concorda com o <u>Termo de Aceite</u>.</p><p class="text-xs mt-6">Não está conseguindo conectar pelo QR Code? <button class="underline" onclick="embreve()">Clique aqui</button></p></div></div>`;
+};
+
+// Marketing > Dashboard: "Relatórios e Insights". Ajustes: números em português (mil em vez de k) e Voltar como seta.
+PAGES.redesdash = function(){
+  const kpi = (t, v, d, ok) => `<div class="caixa p-4 text-center"><div class="flex justify-center items-center gap-1 text-sm">${t}${ic('info', 'w-3.5 h-3.5')}</div><div class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-1">${v}</div><div class="text-xs ${ok ? 'text-green-600 dark:text-green-400' : 'text-red-500'}">${ok ? '▲' : '▼'} ${d}</div></div>`;
+  const met = (t, v, d, ok) => `<div class="text-center"><div class="text-sm">${t}</div><div class="text-xl font-semibold text-gray-800 dark:text-gray-100">${v}</div><div class="text-xs ${ok ? 'text-green-600 dark:text-green-400' : 'text-red-500'}">${ok ? '▲' : '▼'} ${d}</div></div>`;
+  const bars = [3, 0, 5, 2, 0, 0, 8, 1, 0, 0, 2, 0, 0, 0, 1, 6, 0, 0, 3, 0, 0, 0, 4, 0, 2, 0, 0, 5, 1, 2];
+  $('page').innerHTML = titulo('Relatórios e Insights', `<input class="form-input w-56 text-xs" value="18/10/2026 - 17/11/2026" readonly>`, 'redes') +
+    `<div class="flex items-center gap-4 mb-5"><span class="w-16 h-16 rounded-full bg-white border border-gray-200 dark:border-gray-700 flex items-center justify-center font-bold text-gray-800">CS</span><div><div class="text-xl font-semibold text-gray-800 dark:text-gray-100">Instagram · clinicasorriso</div><div class="text-sm">131 publicações · 1.494 seguidores · seguindo 85</div></div></div>
+    <div class="grid grid-cols-[220px_1fr_300px] gap-4"><div class="space-y-4">${kpi('Alcance', '47 mil', '28,2%', false)}${kpi('Visualizações', '110 mil', '39,4%', false)}${kpi('Interações', '2,7 mil', '4,9%', false)}</div>
+      <div class="caixa p-4"><div class="text-sm mb-3">Interações</div><div class="grid grid-cols-3 gap-y-5"><div class="text-center text-xs">Baixo engajamento</div><div class="text-center text-xs">Médio engajamento</div><div class="text-center text-xs">Alto engajamento</div>${met('Curtidas', '1,6 mil', '32,1%', false)}${met('Comentários', '290', '731,4%', true)}${met('Compartilhamentos', '200', '132,1%', true)}<div></div>${met('Respostas', '27', '2.600%', true)}${met('Salvos', '390', '24,8%', true)}</div></div>
+      <div class="space-y-4">${[['Engajamento por alcance', '0%', '32,5%'], ['Engajamento por seguidores', '18%', ''], ['Alcance por seguidores', '3.139%', '']].map(k => `<div class="caixa p-4 text-center"><div class="text-sm flex justify-center items-center gap-1">${k[0]}${ic('info', 'w-3.5 h-3.5')}</div><div class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mt-1">${k[1]}</div>${k[2] ? `<div class="text-xs text-green-600 dark:text-green-400">▲ ${k[2]}</div>` : ''}</div>`).join('')}</div></div>
+    <div class="flex gap-5 text-sm mt-6 mb-3">${['Evolução de seguidores', 'Divisão de seguidores', 'Stories', 'Reels', 'Publicações'].map((t, i) => `<button class="pb-1 ${i === 0 ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-500' : 'text-gray-500'}" onclick="embreve()">${t}</button>`).join('')}</div>
+    <div class="caixa p-4"><div class="text-sm font-semibold text-gray-800 dark:text-gray-100 mb-3">Evolução de seguidores</div><svg viewBox="0 0 600 120" class="w-full h-40" preserveAspectRatio="none">${bars.map((b, i) => `<rect x="${i * 20 + 4}" y="${110 - b * 12}" width="12" height="${b * 12}" fill="#7dd3c0"/>`).join('')}<line x1="0" x2="600" y1="110" y2="110" stroke="currentColor" class="text-gray-300 dark:text-gray-600"/></svg></div>`;
+};
+// Marketing > Ver Redes. Ajuste: título "Perfis conectados" (o da plataforma repete "Redes Sociais").
+PAGES.redesperfis = function(){
+  $('page').innerHTML = titulo('Perfis conectados', '', 'redes') + `<div class="caixa p-6 text-center mb-5"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-3">Autorize seus perfis e gerencie o conteúdo produzido em um único lugar!</div><button class="btn btn-sec" onclick="embreve()">${ic('instagram', 'w-4 h-4')}Autorizar</button></div>
+    <div class="caixa p-4 w-96 flex items-center gap-4 relative"><span class="w-16 h-16 rounded-full bg-white border border-gray-200 dark:border-gray-700 flex items-center justify-center font-bold text-gray-800">CS</span><div><div class="text-lg font-semibold text-gray-800 dark:text-gray-100">clinicasorriso</div><div class="text-sm">@instagram</div></div><button class="absolute top-3 right-3 text-red-500" title="Remover perfil" onclick="embreve()">${ic('trash-2', 'w-4 h-4')}</button><button class="absolute bottom-3 right-3 text-xs inline-flex items-center gap-1" onclick="switchPage('redesdash')">${ic('gauge', 'w-3.5 h-3.5')}Dashboard</button></div>`;
+};
+// Marketing > Ver todas (desenhada no mesmo padrão; o botão não abriu na leitura da plataforma).
+PAGES.redeslista = function(){
+  $('page').innerHTML = titulo('Publicações', `<button class="btn btn-sec" onclick="novaPublicacao()">${ic('plus', 'w-4 h-4')}Publicação</button>`, 'redes') + `<div class="tabela"><table><thead><tr><th>Título</th><th>Perfil</th><th>Data</th><th>Status</th></tr></thead><tbody>${S.posts.slice().sort((a, b) => b.dia - a.dia).map(p => `<tr><td class="text-gray-800 dark:text-gray-100">${esc(p.titulo)}</td><td>${p.conta}</td><td>${p.dia}/11/2026</td><td>${p.status === 'Publicado' ? pVerde('Publicado') : pTeste0('Agendado')}</td></tr>`).join('')}</tbody></table></div>`;
+};
+
+// Configurações > Adicionar ferramenta: a mesma janela. Ajuste: "Nova ferramenta" no lugar de "Novo(a) Componente".
+function novaFerramentaModal(){ const fora = Object.keys(TOOLS).filter(k => !S.projTools.includes(k));
+  openModal('Nova ferramenta', `<div class="mb-4"><label class="lbl" for="nf-nome"><span class="text-red-500">*</span> Nome</label><input class="form-input" id="nf-nome" placeholder="Como aparece no menu"></div><div class="mb-4"><label class="lbl" for="nf-tipo"><span class="text-red-500">*</span> Tipo</label><select class="form-input" id="nf-tipo" onchange="tipoFerramenta(this)"><option value="">Selecione</option>${fora.map(k => `<option value="${k}" data-nome="${TOOLS[k].nome}">${TOOLS[k].tipo}</option>`).join('')}</select></div><div class="flex items-center gap-2 rounded-lg bg-gray-100 dark:bg-gray-700 px-3 py-2 text-xs">${ic('credit-card', 'w-4 h-4')}Adicionar ferramentas cobradas aumenta o valor da assinatura deste projeto.</div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarFerramentaModal()">${ic('plus', 'w-4 h-4')}Ferramenta</button>`); }
+function tipoFerramenta(s){ $('nf-nome').value = s.options[s.selectedIndex].dataset.nome || ''; }
+function grupoAuto(v){ $('aa-ia').disabled = !v; $('aa-ia-l').classList.toggle('opacity-40', !v); }
+function criarFerramentaModal(){ const k = $('nf-tipo').value; if (!k) { showToast('Escolha o tipo da ferramenta'); return; } closeModal(); criarFerramenta(k); }
+
+// Integrações > Webhooks e Meta Ads: as mesmas listas e janelas. Ajustes: seta de voltar e campos em português.
+PAGES.webhooks = function(){
+  $('page').innerHTML = titulo('Webhooks', `<button class="btn btn-sec" onclick="novoWebhook()">${ic('plus', 'w-4 h-4')}Webhook</button>`, 'config') + (S.webhooks.length ? `<div class="tabela"><table><thead><tr><th>Identificação</th><th>Atualizado em</th><th>Status</th><th>Ações</th></tr></thead><tbody>${S.webhooks.map(w => `<tr><td>${esc(w.nome)}</td><td>${w.quando}</td><td>${w.ativo ? pVerde('Ativo') : pCinza('Inativo')}</td><td><div class="flex gap-3"><button class="text-gray-500" title="Editar" onclick="novoWebhook()">${ic('square-pen', 'w-4 h-4')}</button><button class="text-red-500" title="Excluir" onclick="S.webhooks=S.webhooks.filter(x=>x.id!=='${w.id}');renderAll()">${ic('trash-2', 'w-4 h-4')}</button></div></td></tr>`).join('')}</tbody></table></div>` : vazio('package', 'Nenhum webhook criado', 'Avise outros sistemas quando algo acontecer neste projeto.'));
+};
+function novoWebhook(){
+  const box = (t, ops) => `<div class="${CAIXA2} bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700"><div class="text-[13px] font-semibold text-gray-800 dark:text-gray-100 mb-2"><span class="text-red-500">*</span> ${t}</div>${ops.map(o => `<label class="flex items-center gap-2 text-[13px] mb-1.5"><input type="checkbox" class="chk">${o}</label>`).join('')}</div>`;
+  openModal('Novo webhook', `<div class="${CAIXA2} mb-4"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-3">Configurações gerais</div><div class="grid grid-cols-2 gap-4"><div><label class="lbl" for="wh-nome"><span class="text-red-500">*</span> Identificação</label><input class="form-input" id="wh-nome" placeholder="Ex.: n8n atendimento"></div><div><label class="lbl" for="wh-auth">Autenticação</label><select class="form-input" id="wh-auth"><option>Sem autenticação</option><option>Token no cabeçalho</option><option>Usuário e senha</option></select></div><div class="col-span-2"><label class="lbl" for="wh-url"><span class="text-red-500">*</span> URL de destino (POST)</label><input class="form-input" id="wh-url" placeholder="https://"></div></div><label class="flex items-center gap-2 mt-4 text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" checked>Ativo</label></div>
+    <div class="${CAIXA2}"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-3">Eventos</div><div class="grid grid-cols-2 gap-4">${box('Funil de Vendas', ['Oportunidade ganha', 'Oportunidade perdida', 'Oportunidade mudou de etapa', 'Oportunidade criada'])}${box('Registro de contatos', ['Contato criado'])}</div></div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarWebhook()">${ic('plus', 'w-4 h-4')}Webhook</button>`, true); }
+function criarWebhook(){ const n = $('wh-nome').value.trim(); if (!n) { $('wh-nome').focus(); showToast('Dê um nome ao webhook'); return; } S.webhooks.unshift({id:nid('w'), nome:n, quando:'17 de novembro, 10:40', ativo:true}); closeModal(); renderAll(); showToast('Webhook criado'); }
+PAGES.metaads = function(){
+  $('page').innerHTML = titulo('Meta Ads', `<button class="btn btn-sec" onclick="novaMeta()">${ic('plus', 'w-4 h-4')}Nova integração</button>`, 'config') + (S.metaads.length ? `<div class="tabela"><table><thead><tr><th>Pixel</th><th>Evento</th><th>Status</th></tr></thead><tbody>${S.metaads.map(m => `<tr><td>${esc(m.pixel)}</td><td>${m.evento}</td><td>${pVerde('Ativo')}</td></tr>`).join('')}</tbody></table></div>` : vazio('package', 'Nenhuma integração com o Meta Ads', 'Depois de conectar o Meta Ads, as integrações aparecem aqui.', `<button class="btn btn-sec" onclick="novaMeta()">${ic('plus', 'w-4 h-4')}Nova integração</button>`));
+};
+function novaMeta(){
+  openModal('Nova integração com o Meta Ads', `<div class="${CAIXA2} mb-4"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-3">Configurações gerais</div><div class="grid grid-cols-2 gap-4"><div><label class="lbl" for="ma-px"><span class="text-red-500">*</span> Pixel ID</label><input class="form-input" id="ma-px" placeholder="Ex.: 1234567890"></div><div><label class="lbl" for="ma-tk"><span class="text-red-500">*</span> Token de acesso</label><input class="form-input" id="ma-tk"></div><div><label class="lbl" for="ma-ev"><span class="text-red-500">*</span> Tipo de evento</label><select class="form-input" id="ma-ev"><option>Lead</option><option>Contato</option><option>Compra</option></select></div><div class="rounded-lg border border-blue-300 bg-blue-50 dark:bg-blue-950/40 dark:border-blue-800 px-3 py-2 text-xs self-end flex gap-2">${ic('info', 'w-4 h-4 text-blue-500')}<div><b class="text-gray-800 dark:text-gray-100">Quando usar este evento?</b><br>Quando um cadastro é completado.</div></div></div><label class="flex items-center gap-2 mt-4 text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" checked>Ativo</label></div>
+    <div class="${CAIXA2}"><div class="font-semibold text-gray-800 dark:text-gray-100 mb-2">Configurações da ferramenta</div><ul class="list-disc pl-5 text-xs space-y-1"><li>As ferramentas do tipo Funil de Vendas só aparecem se houver uma etapa de ganho configurada.</li><li>Com o Funil de Vendas, o evento vai para a Meta quando o card chega à etapa de ganho.</li><li>Para disparar a partir de frases do WhatsApp, escolha a ferramenta Conversões.</li></ul></div>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarMeta()">Salvar</button>`, true); }
+function criarMeta(){ const p = $('ma-px').value.trim(); if (!p) { $('ma-px').focus(); showToast('Informe o Pixel ID'); return; } S.metaads.push({pixel:p, evento:$('ma-ev').value}); S.integ.meta = true; S.conv.conectado = true; closeModal(); renderAll(); showToast('Meta Ads conectado (simulado no mockup)'); }
+// Integrações > API. Ajuste: abre aqui mesmo, com as chaves deste projeto (hoje o cartão leva para a área do parceiro).
+PAGES.apiproj = function(){
+  $('page').innerHTML = titulo('API', `<button class="btn btn-sec" onclick="novaChave()">${ic('plus', 'w-4 h-4')}Chave de API</button>`, 'config') + `<div class="flex items-center gap-2 rounded-lg bg-gray-200/70 dark:bg-gray-700 px-3 py-2 text-xs mb-4">${ic('info', 'w-4 h-4')}Use estas chaves para ler e gravar dados deste projeto em outros sistemas. <button class="underline" onclick="window.open('${DOCS}','_blank')">Ver documentação</button></div><div class="tabela"><table><thead><tr><th>Nome</th><th>Usuário dono</th><th>Criado em</th><th>Ações</th></tr></thead><tbody>${S.chaves.map(k => `<tr><td>${esc(k.nome)}</td><td>${esc(k.dono)}</td><td>${k.criado}</td><td><button class="text-gray-500 hover:text-red-500" title="Excluir chave" onclick="excluirChave('${k.id}')">${ic('trash-2', 'w-4 h-4')}</button></td></tr>`).join('')}</tbody></table></div>`;
+};
+
+// Meus projetos ("Minha organização"): os mesmos cartões. Ajustes: "Modelos" no lugar de "Outros" e o card inteiro clicável.
+PAGES.projetos = function(){
+  const cartao = (nome, criado, tools, fn, cinza) => `<button onclick="${fn}" class="text-left block w-full"><div class="font-semibold text-gray-800 dark:text-gray-100">${esc(nome)}</div><div class="text-xs mb-2">${criado}</div><div class="rounded-lg ${cinza ? 'bg-gray-200/60 dark:bg-gray-700/40' : 'bg-white dark:bg-gray-800'} p-3 min-h-[150px] space-y-2 hover:ring-1 hover:ring-gray-300 dark:hover:ring-gray-600">${tools.length ? tools.map(t => `<div class="flex items-center gap-2 text-[13px] text-gray-700 dark:text-gray-200">${ic(TOOLS[t].icon, 'w-4 h-4')}${TOOLS[t].nome}</div>`).join('') : '<div class="text-gray-500">Sem ferramentas ainda</div>'}</div></button>`;
+  $('page').innerHTML = titulo('Minha organização') + `<div class="caixa p-5 grid grid-cols-4 gap-5 mb-8 items-start">${S.clientes.filter(c => c.status !== 'inativo').map(c => cartao(c.nome, 'Criado em ' + c.criado, modelo(c.modelo).tools, `entrarProjeto('${c.id}')`)).join('')}</div>
+    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Modelos</h2><div class="grid grid-cols-4 gap-5 px-5 items-start">${S.modelos.map(m => cartao(m.nome, 'Criado em ' + m.criado, m.tools, `setArea('cliente')`, true)).join('')}</div>`;
+};
+
+// Clientes > engrenagem: a mesma tela do projeto (Informações, Ferramentas, Cobrança, Acessos).
+// Ajustes: "Teste termina em 7 dias" no lugar de "Trial", telefone formatado e data em português.
+function abrirProjeto(id){ S.area = 'parceiro'; S.projAberto = id; S.projAba = 'info'; switchPage('projeto'); }
+PAGES.projeto = function(){
+  const c = S.clientes.find(x => x.id === S.projAberto) || S.clientes[0], m = modelo(c.modelo), a = S.projAba;
+  const abas = [['info','Informações','info'],['tools','Ferramentas','boxes', m.tools.length],['cobranca','Cobrança','circle-dollar-sign'],['acessos','Acessos','users', c.usuarios]];
+  const pagas = [['CRM', c.usuarios, m.preco.usuario]].concat(m.tools.filter(t => TOOLS[t].min).map(t => [TOOLS[t].nome, 1, m.preco[t]])), total = pagas.reduce((s, p) => s + p[1] * p[2], 0), teste = c.status === 'teste';
+  let h = '';
+  if (a === 'info') h = `<h2 class="h2 mb-5">Informações</h2><div class="flex justify-center gap-4">${[['Logo no Modo Claro','bg-stone-100 text-gray-900'],['Logo no Modo Escuro','bg-gray-800 text-white']].map(l => `<div class="text-center"><div class="text-sm mb-2">${l[0]}</div><button onclick="embreve()" class="w-36 h-24 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 ${l[1]} flex flex-col items-center justify-center gap-1"><span class="w-10 h-10 rounded-lg bg-gray-300 dark:bg-gray-600 flex items-center justify-center font-bold text-gray-700 dark:text-gray-100">${ini(c.nome)}</span><span class="text-xs opacity-60">Editar logo</span></button></div>`).join('')}</div><p class="text-center text-sm mt-3">Criado em ${c.criado} · modelo ${esc(m.nome)}</p><div class="border-t border-gray-200 dark:border-gray-700 my-5"></div><div class="grid grid-cols-2 gap-4 max-w-2xl"><label class="col-span-2 flex items-center gap-2 text-gray-800 dark:text-gray-100"><input type="checkbox" class="chk" checked>Permitir modo escuro</label><div><label class="lbl" for="pj-nome"><span class="text-red-500">*</span> Nome do projeto</label><input class="form-input" id="pj-nome" value="${esc(c.nome)}"></div><div><label class="lbl" for="pj-senha">Configurar senha (opcional)</label><input class="form-input" id="pj-senha" placeholder="Sem senha"></div></div><div class="flex justify-end mt-5"><button class="btn btn-primary" onclick="showToast('Projeto atualizado')">Salvar</button></div>`;
+  if (a === 'tools') h = `<div class="flex items-center mb-5"><h2 class="h2 grow">Ferramentas</h2><button class="btn btn-sec" onclick="embreve()">${ic('plus', 'w-4 h-4')}Ferramenta</button></div><div class="tabela"><table><thead><tr><th class="w-8"></th><th>Nome</th><th>Tipo</th><th>Ações</th></tr></thead><tbody>${m.tools.map(t => `<tr><td class="text-gray-400">${ic('grip-vertical', 'w-4 h-4')}</td><td class="text-gray-800 dark:text-gray-100">${TOOLS[t].nome}</td><td>${TOOLS[t].tipo}</td><td><div class="flex gap-3"><button class="text-gray-500" title="Editar" onclick="embreve()">${ic('square-pen', 'w-4 h-4')}</button><button class="text-red-500" title="Remover" onclick="embreve()">${ic('trash-2', 'w-4 h-4')}</button></div></td></tr>`).join('')}</tbody></table></div>`;
+  if (a === 'cobranca') h = `<h2 class="h2 mb-3">Inscrição</h2><div class="grid grid-cols-4 gap-4 mb-6">${[['Modelo de cobrança', c.cobranca], ['Fim do período de teste', teste ? '24 de novembro de 2026, 10:30' : '-'], ['Ativado em', teste ? '-' : '02 de setembro de 2026'], ['Renova em', teste ? '-' : '02 de dezembro de 2026']].map(x => `<div><div class="text-[13px] font-semibold text-gray-800 dark:text-gray-100">${x[0]}</div><div>${x[1]}</div></div>`).join('')}</div>
+    <h2 class="h2 mb-3">Resumo</h2>${pagas.map(p => `<div class="flex items-start py-2"><div class="grow"><div class="font-semibold text-gray-800 dark:text-gray-100">${p[0]}</div><div class="text-xs">Qtd. ${p[1]} × ${brl(p[2])} unid.</div></div>${teste ? `<span class="pilula bg-yellow-400 text-gray-900 mr-3">Teste termina em ${c.dias} dias</span>` : ''}<b class="text-gray-800 dark:text-gray-100 ${teste ? 'line-through opacity-60' : ''}">${brl(p[1] * p[2])}</b></div>`).join('')}
+    <div class="border-t border-gray-200 dark:border-gray-700 my-3"></div><div class="flex py-1"><b class="grow text-gray-800 dark:text-gray-100">Total a pagar (cliente)</b><b class="text-gray-800 dark:text-gray-100">${brl(teste ? 0 : total)}</b></div><div class="flex py-1"><div class="grow"><b class="text-gray-800 dark:text-gray-100">Sua parte</b><div class="text-xs">Mensal</div></div><b class="text-gray-800 dark:text-gray-100">${brl(teste ? 0 : total * .7)}*</b></div><p class="text-xs mt-2">* Valores sujeitos a taxa de transferência (TED) e taxa de adiantamento de recebíveis. Detalhes nos <u>Termos de Uso</u>.</p><button class="btn btn-sec mt-4" onclick="embreve()">Atualizar preço</button>
+    <h2 class="h2 mt-8 mb-3">Uso do Agente de IA</h2><div class="rounded-lg border border-gray-200 dark:border-gray-700 p-4"><div class="flex text-sm"><span class="grow">Conversas usadas no mês</span><b class="text-gray-800 dark:text-gray-100">128 de 1.000</b></div><div class="h-2 rounded-full bg-gray-200 dark:bg-gray-700 mt-2 overflow-hidden"><div class="h-full bg-green-500" style="width:12.8%"></div></div></div>`;
+  if (a === 'acessos') h = `<div class="flex items-center mb-4"><h2 class="h2 grow">Gestão de licenças</h2><button class="btn btn-sec" onclick="embreve()">${ic('plus', 'w-4 h-4')}Usuário</button></div><div class="flex items-center gap-2 rounded-lg bg-gray-200/70 dark:bg-gray-700 px-3 py-2 text-xs mb-4">${ic('credit-card', 'w-4 h-4')}Ativar usuários aumenta o valor da assinatura deste projeto.</div><div class="tabela"><table><thead><tr><th>Nome completo</th><th>E-mail</th><th>Telefone</th><th>Gestor</th><th>Licença</th></tr></thead><tbody>${S.usuarios.slice(0, Math.min(c.usuarios, 4)).map((u, i) => `<tr><td>${esc(u.nome)}</td><td>${esc(u.email)}</td><td>${fone('55119' + String(87650000 + i * 1111))}</td><td><button class="btn btn-sec btn-sm" onclick="embreve()">${ic(i === 0 ? 'circle-check' : 'circle', 'w-3.5 h-3.5')}${i === 0 ? 'Sim' : 'Não'}</button></td><td><button class="btn btn-sec btn-sm" onclick="embreve()">${ic('circle-check', 'w-3.5 h-3.5')}Ativo</button></td></tr>`).join('')}</tbody></table></div>`;
+  $('page').innerHTML = aviso() + titulo(esc(c.nome), `<button class="btn btn-sec" onclick="entrarProjeto('${c.id}')">Acessar</button>`, 'clientes') +
+    `<div class="caixa flex min-h-[360px]"><div class="w-52 shrink-0 border-r border-gray-200 dark:border-gray-700/60 p-3"><div class="text-[11px] font-semibold uppercase text-gray-400 px-2.5 mb-2">Geral</div>${abas.map(x => `<button onclick="S.projAba='${x[0]}';renderAll()" class="flex items-center gap-2 w-full px-2.5 py-2 rounded-lg mb-0.5 text-left text-[13px] ${a === x[0] ? 'bg-white dark:bg-gray-700 font-semibold text-gray-800 dark:text-gray-100' : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'}">${ic(x[2], 'w-4 h-4 ' + (a === x[0] ? 'text-personalized-primary' : ''))}${x[1]}${x[3] !== undefined ? `<span class="text-[11px] font-semibold bg-gray-400 dark:bg-gray-500 text-white rounded px-1.5">${x[3]}</span>` : ''}</button>`).join('')}</div><div class="grow min-w-0 p-6">${h}</div></div>`;
+};
+
+// Perfil: o mesmo painel lateral (nome, telefone, e-mail, tema). Ajuste: o tema muda na hora, sem precisar salvar.
+function abrirPerfil(){ S.perfil = true; drawPainel(); icons(); }
+function htmlPerfil(){ const P = S.area === 'parceiro', nome = P ? 'Rafael Nunes' : 'Carla Mendes', email = P ? 'rafael@agencianunes.com.br' : 'carla@clinicasorriso.com.br', esc2 = escuro();
+  return `<div class="absolute top-2 right-2 bottom-2 w-[440px] bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 rounded-r-xl shadow-xl z-10 flex flex-col"><div class="flex items-end px-5 pt-3 border-b border-gray-200 dark:border-gray-700"><span class="pb-2 border-b-2 border-personalized-primary text-gray-800 dark:text-gray-100 font-medium inline-flex items-center gap-1.5">${ic('user', 'w-4 h-4')}Perfil</span><span class="grow"></span><button class="pb-2 text-gray-400 hover:text-gray-600" title="Fechar" onclick="S.perfil=false;drawPainel()">${ic('x', 'w-5 h-5')}</button></div>
+    <div class="p-5 space-y-4"><div class="grid grid-cols-[1fr_200px] gap-3"><div><label class="lbl" for="pf-nome">Nome completo</label><input class="form-input" id="pf-nome" value="${nome}"></div><div><label class="lbl" for="pf-fone">Telefone</label><div class="flex gap-1.5"><select class="form-input w-20 px-2"><option>+55</option></select><input class="form-input" id="pf-fone" value="(11) 98765-4321"></div></div></div>
+    <div><label class="lbl" for="pf-email">E-mail</label><input class="form-input bg-gray-100 dark:bg-gray-700" id="pf-email" value="${email}" disabled></div>
+    <div><div class="lbl flex items-center gap-1">Tema ${ic('info', 'w-3.5 h-3.5 text-gray-400')}</div><div class="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 p-0.5 text-sm">${[['light','Claro','sun'],['dark','Escuro','moon']].map(t => `<button onclick="if(escuro()!==${t[0] === 'dark'})toggleTheme()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md ${(t[0] === 'dark') === esc2 ? 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-100' : 'text-gray-500'}">${ic(t[2], 'w-4 h-4')}${t[1]}</button>`).join('')}</div></div>
+    <div class="flex gap-2 pt-2"><button class="btn btn-primary" onclick="S.perfil=false;drawPainel();showToast('Perfil atualizado')">Salvar alterações</button><button class="btn btn-ghost" onclick="S.perfil=false;drawPainel()">Cancelar</button></div></div></div>`; }
+
+// Notificações (sino): a mesma lista. Ajuste: diz de quem é a conversa.
+function abrirNotificacoes(e){
+  e.stopPropagation(); const m = $('ctx');
+  m.innerHTML = `<div class="w-[340px] max-h-[440px] overflow-auto">${S.notifs.length ? S.notifs.map(n => `<div class="flex gap-3 px-3 py-3 border-b border-gray-200 dark:border-gray-600"><span class="relative w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center shrink-0">${ic('bot', 'w-5 h-5')}<span class="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-red-500"></span></span><div class="grow text-[13px] text-gray-700 dark:text-gray-200"><b>${esc(nomeDe(ct(n.contato)))}</b> precisa de um atendente humano. O Agente de IA passou a conversa.<div class="flex items-center mt-1"><button class="text-blue-500 font-medium" onclick="irConversa('${(S.conversas.find(v => v.contato === n.contato) || {}).id || 'v1'}')">Ir para conversa</button><span class="grow"></span><span class="text-xs text-gray-400">${n.h}</span></div></div><button class="text-gray-400 hover:text-gray-600 self-start" title="Dispensar" onclick="event.stopPropagation();S.notifs=S.notifs.filter(x=>x.id!=='${n.id}');abrirNotificacoes(event);drawSide();icons()">${ic('x', 'w-4 h-4')}</button></div>`).join('') : '<div class="p-4 text-center text-sm">Nenhuma notificação.</div>'}</div>`;
+  m.classList.remove('hidden'); icons();
+  const b = document.querySelector('.sino'), r = b ? b.getBoundingClientRect() : {left:240, top:700};
+  m.style.left = (r.left + 24) + 'px'; m.style.top = 'auto'; m.style.bottom = Math.max(8, window.innerHeight - r.bottom) + 'px';
+}
+
+/* ═════════ busca geral (Ctrl+K), sem botão na tela ═════════ */
+let palSel = 0, palOps = [];
+function palComandos(){
+  const ops = [], P = S.area === 'parceiro';
+  (P ? NAV_P.filter(i => i[0] !== 'docs') : S.projTools.filter(t => PAGES[t]).map(t => [t, TOOLS[t].nome, TOOLS[t].icon])).forEach(i => ops.push({g:'Ir para', t:i[1], i:i[2], f:() => switchPage(i[0])}));
+  if (P) S.clientes.forEach(c => ops.push({g:'Clientes', t:c.nome, i:'folder', f:() => entrarProjeto(c.id)})); else S.contatos.forEach(c => ops.push({g:'Contatos', t:nomeDe(c), i:'user', d:fone(c.fone), f:() => openPainel(c.id)}));
+  return ops;
+}
+function openPalette(){ $('palette').innerHTML = `<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-xl overflow-hidden border border-gray-200 dark:border-gray-700"><input class="w-full px-4 py-3 bg-transparent outline-none border-b border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-100" id="pal-in" placeholder="Buscar tela, cliente ou contato..." oninput="palSel=0;drawPal()" onkeydown="teclaPal(event)"><div class="max-h-80 overflow-auto p-1.5" id="pal-lista"></div></div>`; $('palette').classList.remove('hidden'); $('palette').classList.add('flex'); palSel = 0; drawPal(); $('pal-in').focus(); }
+function closePalette(){ $('palette').classList.add('hidden'); $('palette').classList.remove('flex'); $('palette').innerHTML = ''; }
+function foraPaleta(e){ if (e.target.id === 'palette') closePalette(); }
+function drawPal(){ const q = norm($('pal-in').value); palOps = palComandos().filter(o => (!q && o.g === 'Ir para') || (q && (norm(o.t).includes(q) || norm(o.d).includes(q)))); let g = '';
+  $('pal-lista').innerHTML = palOps.map((o, i) => (o.g !== g ? `<div class="px-3 pt-2 pb-1 text-[11px] font-semibold uppercase text-gray-400">${g = o.g}</div>` : '') + `<button onclick="rodarPal(${i})" class="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-left ${i === palSel ? 'bg-gray-100 dark:bg-gray-700' : ''} text-gray-800 dark:text-gray-100">${ic(o.i, 'w-4 h-4')}${esc(o.t)}${o.d ? `<span class="ml-auto text-xs text-gray-400">${esc(o.d)}</span>` : ''}</button>`).join('') || '<div class="px-3 py-2 text-xs">Nada encontrado</div>'; icons(); }
+function teclaPal(e){ if (e.key === 'ArrowDown') { e.preventDefault(); palSel = Math.min(palOps.length - 1, palSel + 1); drawPal(); } else if (e.key === 'ArrowUp') { e.preventDefault(); palSel = Math.max(0, palSel - 1); drawPal(); } else if (e.key === 'Enter') { e.preventDefault(); rodarPal(palSel); } }
+function rodarPal(i){ const o = palOps[i]; if (!o) return; closePalette(); o.f(); }
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); if ($('palette').classList.contains('flex')) closePalette(); else openPalette(); return; }
+  if (e.key === 'Escape') { fecharMenu(); if ($('palette').classList.contains('flex')) closePalette(); else if ($('modal').classList.contains('flex')) closeModal(); else if (S.painel) fecharPainel(); }
+});
+
+renderAll();
+</script>
+</body>
+</html>
