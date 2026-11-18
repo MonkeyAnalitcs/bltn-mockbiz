@@ -1002,7 +1002,10 @@ drawWaConv = function(){
   const chaveAg = el.querySelector('[title="Agente de IA nesta conversa"]'); if (chaveAg) chaveAg.parentElement.outerHTML = `<span class="inline-flex items-center gap-2 text-[13px]"><span class="text-gray-500">Quem responde</span><span class="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 p-0.5">${[['ia', 'Agente', 'sparkles'], ['eu', 'Você', 'user']].map(o => `<button onclick="quemResponde('${v.id}','${o[0]}')" class="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs ${(v.dono === 'ia') === (o[0] === 'ia') ? (o[0] === 'ia' ? 'bg-violet-500 text-white' : 'bg-gray-800 text-white dark:bg-gray-100 dark:text-gray-900') : 'text-gray-500'}">${ic(o[2], 'w-3.5 h-3.5')}${o[1]}</button>`).join('')}</span></span>`;
   const etapa = el.querySelector(`[onclick="menuEtapa(event,'${c.id}')"]`); if (etapa) etapa.remove();
   if (h !== undefined && h <= 6) el.firstElementChild.insertAdjacentHTML('afterend', `<div class="px-4 py-2 text-xs bg-amber-50 text-amber-900 border-b border-amber-200 dark:bg-[#2b2a1e] dark:text-amber-100 dark:border-transparent flex items-center gap-2">${ic('timer', 'w-4 h-4')}<span><b>A janela de 24 horas fecha em ${h} horas.</b> Depois disso, só mensagens de modelo até o contato responder.</span></div>`);
-  // painel do contato ao lado
+  // painel do contato ao lado (pode ser ocultado pelo botão no topo da conversa)
+  const mais = el.firstElementChild.querySelector('[title="Mais ações"]');
+  if (mais) mais.insertAdjacentHTML('beforebegin', `<button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100" title="${S.waOculto ? 'Mostrar o painel do contato' : 'Ocultar o painel do contato'}" onclick="togPainelWa()">${ic(S.waOculto ? 'panel-right-open' : 'panel-right-close', 'w-5 h-5')}</button>`);
+  if (S.waOculto) { icons(); return; }
   const corpo = document.createElement('div'); corpo.className = 'flex grow min-h-0';
   const msgs = $('wa-m'), comp = msgs.nextElementSibling, col = document.createElement('div'); col.className = 'flex flex-col grow min-w-0';
   msgs.parentElement.insertBefore(corpo, msgs); col.appendChild(msgs); col.appendChild(comp); corpo.appendChild(col);
@@ -1016,6 +1019,7 @@ drawWaConv = function(){
     <button class="btn btn-sec btn-sm w-full" onclick="openPainel('${c.id}')">Abrir ficha completa</button></aside>`);
   icons(); msgs.scrollTop = msgs.scrollHeight;
 };
+function togPainelWa(){ S.waOculto = !S.waOculto; drawWaConv(); }
 function quemResponde(id, quem){ const v = S.conversas.find(x => x.id === id); if (v.dono === quem || (quem === 'eu' && v.dono !== 'ia')) return; togAgenteConversa(id); }
 function valorWa(cid, v){ cardDe(cid).valor = Number(String(v).replace(/\./g, '').replace(',', '.')) || 0; flashSalvoWa(); }
 function flashSalvoWa(){ const e = $('wc-salvo'); if (!e) return; e.classList.remove('opacity-0'); setTimeout(() => e.classList.add('opacity-0'), 1500); }
@@ -1039,13 +1043,17 @@ function marcarSalvoReg(){ const e = $('rg-salvo'); if (!e) return; e.classList.
 const _pAgente = PAGES.agente;
 PAGES.agente = function(){
   _pAgente(); if (!S.ux) return;
-  const pg = $('page'), cont = pg.querySelector('.space-y-6'), bt = pg.querySelector('[onclick="abrirTeste()"]'); if (bt) bt.remove();
+  const pg = $('page'), cont = pg.querySelector('.space-y-6'), bt = pg.querySelector('[onclick="abrirTeste()"]');
+  if (S.agOculto) { if (bt) bt.outerHTML = `<button class="btn btn-sec" onclick="togTesteAg()">${ic('panel-right-open', 'w-4 h-4')}Testar o agente</button>`; icons(); return; }
+  if (bt) bt.remove();
   const grid = document.createElement('div'); grid.className = 'grid grid-cols-[minmax(0,1fr)_360px] gap-6 items-start';
   cont.parentElement.insertBefore(grid, cont); grid.appendChild(cont);
-  grid.insertAdjacentHTML('beforeend', `<div class="sticky top-0 caixa overflow-hidden flex flex-col h-[calc(100vh-150px)]"><div class="flex items-center gap-2 px-4 py-3 border-b border-gray-200 dark:border-gray-700"><span class="font-semibold text-gray-800 dark:text-gray-100 grow">Testar o agente</span><button class="text-xs text-blue-500" onclick="S.agente.teste=S.agente.teste.slice(0,1);drawTeste()">Recomeçar</button></div><div class="wa-fundo grow overflow-y-auto p-3 flex flex-col gap-2" id="ag-msgs"></div><div class="flex gap-2 p-3 border-t border-gray-200 dark:border-gray-700"><input class="form-input" id="ag-perg" placeholder="Pergunte como um cliente" onkeydown="teclaTeste(event)"><button class="btn btn-primary" onclick="perguntar()">${ic('send-horizontal', 'w-4 h-4')}</button></div><p class="text-[11px] px-3 pb-3">Responde com o que está nesta tela, inclusive o que você acabou de mudar.</p></div>`);
+  grid.insertAdjacentHTML('beforeend', `<div class="sticky top-0 caixa overflow-hidden flex flex-col h-[calc(100vh-150px)]"><div class="flex items-center gap-2 px-4 py-3 border-b border-gray-200 dark:border-gray-700"><span class="font-semibold text-gray-800 dark:text-gray-100 grow">Testar o agente</span><button class="text-xs text-blue-500" onclick="S.agente.teste=S.agente.teste.slice(0,1);drawTeste()">Recomeçar</button><button class="text-gray-500 hover:text-gray-800 dark:hover:text-gray-100 ml-2" title="Ocultar o teste" onclick="togTesteAg()">${ic('panel-right-close', 'w-4 h-4')}</button></div><div class="wa-fundo grow overflow-y-auto p-3 flex flex-col gap-2" id="ag-msgs"></div><div class="flex gap-2 p-3 border-t border-gray-200 dark:border-gray-700"><input class="form-input" id="ag-perg" placeholder="Pergunte como um cliente" onkeydown="teclaTeste(event)"><button class="btn btn-primary" onclick="perguntar()">${ic('send-horizontal', 'w-4 h-4')}</button></div><p class="text-[11px] px-3 pb-3">Responde com o que está nesta tela, inclusive o que você acabou de mudar.</p></div>`);
   const hs = $('ag-horas'); if (hs) hs.className = 'grid grid-cols-4 gap-2';
   drawTeste(); icons();
 };
+
+function togTesteAg(){ S.agOculto = !S.agOculto; renderAll(); }
 
 // Criar só depois de confirmar
 const _pAutomacao = PAGES.automacao;
