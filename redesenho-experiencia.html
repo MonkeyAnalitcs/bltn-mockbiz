@@ -50,8 +50,9 @@
   .no-scrollbar::-webkit-scrollbar{display:none}
 </style>
 </head>
-<body class="font-inter antialiased bg-stone-100 text-gray-600 flex h-screen overflow-hidden dark:bg-gray-800 dark:text-gray-400">
-<div class="flex h-screen w-full overflow-hidden min-w-[1180px]">
+<body class="font-inter antialiased bg-stone-100 text-gray-600 flex h-screen overflow-hidden flex-col dark:bg-gray-800 dark:text-gray-400">
+<div id="topo" class="shrink-0 min-w-[1180px]"></div>
+<div class="flex flex-1 min-h-0 w-full overflow-hidden min-w-[1180px]">
   <div id="side" class="flex flex-col w-64 shrink-0 bg-stone-100 dark:bg-gray-800 px-4"></div>
   <div class="relative flex flex-col flex-1 overflow-hidden p-2">
     <main id="page" class="p-8 grow bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl h-full max-h-full overflow-y-auto relative"></main>
@@ -250,7 +251,7 @@ function aviso(){ if (S.area !== 'parceiro' || S.receb.etapa >= 3) return '';
 function vazio(icone, t, sub, acoes){ return `<div class="flex flex-col items-center text-center py-12"><span class="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400 mb-4">${ic(icone)}</span><div class="text-lg font-bold text-gray-800 dark:text-gray-100">${t}</div><p class="text-sm mt-1 max-w-md">${sub}</p>${acoes ? `<div class="mt-6 flex gap-2">${acoes}</div>` : ''}</div>`; }
 let tSalvo = null;
 function flashSalvo(){ const e = $('salvo'); if (!e) return; e.classList.remove('hidden'); e.classList.add('inline-flex'); clearTimeout(tSalvo); tSalvo = setTimeout(() => { e.classList.add('hidden'); e.classList.remove('inline-flex'); }, 1600); }
-function renderAll(){ drawSide(); $('page').className = 'grow bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl h-full max-h-full relative ' + (S.page === 'whatsapp' ? 'p-6 overflow-hidden' : 'p-8 overflow-y-auto'); (PAGES[S.page] || PAGES.inicio)(); drawPainel(); icons(); }
+function renderAll(){ drawTopo(); drawSide(); $('page').className = 'grow bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl h-full max-h-full relative ' + (S.page === 'whatsapp' ? 'p-6 overflow-hidden' : 'p-8 overflow-y-auto'); (PAGES[S.page] || PAGES.inicio)(); drawPainel(); icons(); }
 
 /* ───────── aviso, janela, menu ───────── */
 let tToast = null, desfazer = null;
@@ -703,12 +704,13 @@ function drawRegistro(){
   }
   abrirJanela(`<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-4xl max-h-[84vh] flex flex-col overflow-hidden border border-gray-200 dark:border-gray-700"><div class="flex items-end gap-5 px-5 pt-3 border-b border-gray-200 dark:border-gray-700">${aba('geral', 'Geral')}${aba('linha', 'Linha do tempo')}<span class="grow"></span><span class="pb-2 flex items-center gap-2"><span class="text-xs text-gray-400 mr-1 max-w-[220px] truncate">${esc(d.nome)}</span><button class="btn btn-sec btn-sm" onclick="arquivarRegistro()">Arquivar</button><button class="text-gray-400 hover:text-gray-600" title="Fechar" onclick="closeModal()">${ic('x', 'w-5 h-5')}</button></span></div><div class="p-5 overflow-auto">${corpo}</div></div>`);
 }
-function atualizarRegistro(){
+function atualizarRegistro(silencioso){
   const r = S.registro, d = regDados(), v = id => $(id) ? $(id).value : '';
   if (r.tipo === 'contato') { if (!v('rg-nome').trim()) { showToast('O nome é obrigatório'); return; } d.c.nome = v('rg-nome').trim(); d.c.email = v('rg-email').trim(); d.c.fone = v('rg-fone').replace(/\D/g, '') || d.c.fone; const e = v('rg-etapa-ct'), k = cardDe(d.c.id); if (e === '' && k) S.cards = S.cards.filter(x => x !== k); else if (e !== '' && k) k.etapa = Number(e); else if (e !== '') S.cards.unshift({id:nid('k'), contato:d.c.id, etapa:Number(e), valor:0, prio:'', resp:'', obs:''}); }
   if (r.tipo === 'card') Object.assign(d.k, {contato:v('rg-ct'), etapa:Number(v('rg-etapa')), prio:v('rg-prio'), valor:Number(String(v('rg-valor')).replace(/\./g, '').replace(',', '.')) || 0, obs:v('rg-obs'), resp:v('rg-resp')});
   if (r.tipo === 'tarefa') { if (!v('rg-tit').trim()) { showToast('O título é obrigatório'); return; } Object.assign(d.t, {titulo:v('rg-tit').trim(), status:v('rg-st'), quando:v('rg-quando'), contato:v('rg-ct'), desc:v('rg-desc'), resp:v('rg-resp')}); }
   if (r.tipo === 'produto') Object.assign(d.p, {nome:v('rg-nome').trim() || d.p.nome, preco:Number(String(v('rg-preco')).replace(',', '.')) || 0});
+  if (silencioso) { renderAll(); marcarSalvoReg(); return; }
   closeModal(); renderAll(); showToast('Registro atualizado');
 }
 function comentar(){ const t = $('rg-com').value.trim(); if (!t) return; const k = S.registro.tipo + S.registro.id; (S.coments[k] = S.coments[k] || []).unshift(t); drawRegistro(); }
@@ -783,7 +785,7 @@ const NOVO = '<span class="pilula bg-white text-gray-800 border border-gray-200 
 function menuWa(e){
   const outros = S.numeros.filter(n => n.id !== S.waNumero);
   abrirMenu(e, [{g:'Trocar de número'}].concat(outros.map(n => ({i:'repeat', t:fone(n.num) + ' · ' + n.apelido, f:() => { S.waNumero = n.id; S.waSel = (S.conversas.find(v => v.numero === n.id) || {}).id; renderAll(); }})))
-    .concat([{sep:1}, {g:'Número'}, {i:'circle-plus', t:'Novo número', f:() => switchPage('wanovo')}, {i:'user-round-cog', t:'Atribuição automática', f:atribuicaoAuto}, {sep:1}, {g:'Mensagens'}, {i:'zap', t:'Respostas rápidas', f:respostasRapidas}, {i:'signature', t:'Assinatura da conversa', k:NOVO, f:embreve}, {i:'layout-template', t:'Ver modelos', k:NOVO, f:embreve}, {sep:1}, {i:'refresh-cw', t:'Reconectar', f:() => showToast('Número reconectado')}, {i:'trash-2', t:'Remover número', d:1, f:embreve}]));
+    .concat([{sep:1}, {g:'Número'}, {i:'circle-plus', t:'Novo número', f:() => S.ux ? escolherConexao() : switchPage('wanovo')}, {i:'user-round-cog', t:'Atribuição automática', f:atribuicaoAuto}, {sep:1}, {g:'Mensagens'}, {i:'zap', t:'Respostas rápidas', f:respostasRapidas}, {i:'signature', t:'Assinatura da conversa', k:NOVO, f:embreve}, {i:'layout-template', t:'Ver modelos', k:NOVO, f:embreve}, {sep:1}, {i:'refresh-cw', t:'Reconectar', f:() => showToast('Número reconectado')}, {i:'trash-2', t:'Remover número', d:1, f:embreve}]));
 }
 function respostasRapidas(){
   openModal('Respostas rápidas', `<div class="tabela"><table><thead><tr><th>Atalho</th><th>Mensagem</th><th>Ações</th></tr></thead><tbody>${S.respostas.map(r => `<tr><td class="text-gray-800 dark:text-gray-100">/${esc(r.atalho)} ${r.modelo ? pCinza('Modelo') : ''}</td><td class="max-w-[320px] truncate">${esc(r.msg)}</td><td><div class="flex gap-3"><button class="text-gray-500" title="Editar" onclick="embreve()">${ic('square-pen', 'w-4 h-4')}</button><button class="text-red-500" title="Excluir" onclick="S.respostas=S.respostas.filter(x=>x.id!=='${r.id}');respostasRapidas()">${ic('trash-2', 'w-4 h-4')}</button></div></td></tr>`).join('')}</tbody></table></div><p class="text-xs mt-3">Na conversa, digite / e o atalho para usar a resposta.</p>`,
@@ -921,6 +923,151 @@ document.addEventListener('keydown', e => {
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); if ($('palette').classList.contains('flex')) closePalette(); else openPalette(); return; }
   if (e.key === 'Escape') { fecharMenu(); if ($('palette').classList.contains('flex')) closePalette(); else if ($('modal').classList.contains('flex')) closeModal(); else if (S.painel) fecharPainel(); }
 });
+
+/* ═════════ ABA "AJUSTES FEITOS PELO CLAUDE": a mesma plataforma com mudanças de experiência ═════════
+   A primeira aba ("Telas ajustadas") fica como está. Esta liga S.ux e troca só o comportamento:
+   ativação guiada, conversa ligada ao CRM, salvar sozinho, agente com teste ao lado, criação com confirmação,
+   busca geral, seletor de projeto e aviso da janela de 24 horas. */
+S.ux = location.hash === '#claude';
+S.automacoes = [];
+const MUDANCAS = [
+  {t:'Ativação guiada do parceiro', d:'O aviso laranja vira uma lista de passos no Dashboard: o que já foi feito e o que falta para os clientes pagarem.', i:'list-checks', ver:() => { setArea('parceiro'); switchPage('inicio'); }},
+  {t:'Primeiros passos do cliente', d:'O projeto novo mostra um guia no menu (WhatsApp, agente, funil, equipe, Instagram) em vez de telas vazias soltas.', i:'rocket', ver:() => { setArea('cliente'); switchPage('whatsapp'); abrirPassos(); }},
+  {t:'Conversa ligada ao CRM', d:'Ao lado da conversa ficam etapa do funil, responsável, valor e tarefas do contato. No topo, quem responde: agente ou você.', i:'messages-square', ver:() => { setArea('cliente'); S.waNumero = 'n1'; S.waSel = 'v2'; switchPage('whatsapp'); }},
+  {t:'Salvar sozinho, em toda tela', d:'Fichas, agente e preços salvam ao editar, com "Salvo" no canto. Some o botão "Atualizar" no meio da tela.', i:'save', ver:() => { setArea('cliente'); switchPage('contatos'); openPainel('c2'); }},
+  {t:'Agente com teste ao lado', d:'O teste do agente fica fixo na tela de configuração e responde com o que acabou de ser mudado.', i:'bot', ver:() => { setArea('cliente'); switchPage('agente'); }},
+  {t:'Nada é criado sem confirmar', d:'"+ Automação" pede nome e gatilho antes de criar. "Novo número" pergunta como conectar antes de abrir a sessão.', i:'shield-check', ver:() => { setArea('cliente'); switchPage('automacao'); novaAutomacao(); }},
+  {t:'Busca geral e seletor de projeto', d:'No topo do menu: trocar de projeto ou voltar à área do parceiro sem passar pelo perfil, e buscar tela, contato ou cliente.', i:'search', ver:() => { setArea('cliente'); switchPage('contatos'); openPalette(); }},
+  {t:'Janela de 24 horas antes de fechar', d:'A lista de conversas mostra quanto falta para a janela fechar, e a conversa avisa quando faltam poucas horas.', i:'timer', ver:() => { setArea('cliente'); S.waNumero = 'n1'; S.waSel = 'v4'; switchPage('whatsapp'); }}
+];
+const JANELA = {v1:22, v2:19, v3:21, v4:3};
+
+function drawTopo(){
+  const aba = (on, fn, txt, icone) => `<button onclick="${fn}" class="inline-flex items-center gap-1.5 h-8 px-3 rounded-md text-[13px] ${on ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 font-semibold' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'}">${icone ? ic(icone, 'w-3.5 h-3.5') : ''}${txt}</button>`;
+  $('topo').innerHTML = `<div class="h-11 flex items-center gap-3 px-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700"><span class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">Redesenho Bolten</span><span class="w-px h-5 bg-gray-200 dark:bg-gray-700"></span><div class="inline-flex gap-1 rounded-lg bg-gray-100 dark:bg-gray-800 p-0.5">${aba(!S.ux, 'setModo(false)', 'Telas ajustadas')}${aba(S.ux, 'setModo(true)', 'Ajustes feitos pelo Claude', 'sparkles')}</div><span class="grow text-xs text-gray-400">${S.ux ? 'Mesma plataforma, com mudanças de experiência (fluxo, salvar, busca, avisos).' : 'A plataforma de hoje com ajustes pequenos de tela e texto.'}</span>${S.ux ? `<button class="btn btn-sec btn-sm" onclick="oQueMudou()">${ic('list', 'w-3.5 h-3.5')}O que mudou (${MUDANCAS.length})</button>` : ''}</div>`;
+}
+function setModo(ux){ S.ux = ux; try { history.replaceState(null, '', ux ? '#claude' : '#'); } catch (e) {} closeModal(); fecharMenu(); renderAll(); showToast(ux ? 'Ajustes feitos pelo Claude' : 'Telas ajustadas'); }
+function oQueMudou(){
+  openModal('O que mudou nesta aba', `<p class="mb-4">Mesmas telas da primeira aba. O que muda é o jeito de usar:</p>${MUDANCAS.map((m, i) => `<div class="flex items-start gap-3 py-3 ${i ? 'border-t border-gray-200 dark:border-gray-700' : ''}"><span class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center shrink-0">${ic(m.i, 'w-4 h-4')}</span><div class="grow"><div class="font-semibold text-gray-800 dark:text-gray-100">${i + 1}. ${m.t}</div><div class="text-[13px]">${m.d}</div></div><button class="btn btn-sec btn-sm" onclick="verMudanca(${i})">Ver</button></div>`).join('')}`, '', true);
+}
+function verMudanca(i){ closeModal(); MUDANCAS[i].ver(); }
+
+// Menu: seletor de projeto e busca no topo; guia de primeiros passos embaixo (só nesta aba)
+const _drawSide = drawSide;
+drawSide = function(){
+  _drawSide(); if (!S.ux || S.page === 'projetos') return;
+  const P = S.area === 'parceiro', logo = $('side').firstElementChild;
+  logo.insertAdjacentHTML('afterend', `<button class="seletor flex items-center gap-2 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-2.5 py-2 mb-2 text-left" onclick="menuProjetos(event)"><span class="w-7 h-7 rounded-md ${P ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900' : 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-100'} flex items-center justify-center text-[11px] font-bold shrink-0">${P ? ic('share-2', 'w-3.5 h-3.5') : ini(S.projNome)}</span><span class="grow min-w-0"><span class="block text-[11px] text-gray-400 leading-tight">${P ? 'Você está em' : 'Projeto'}</span><span class="block text-[13px] font-semibold text-gray-800 dark:text-gray-100 truncate">${P ? 'Área do parceiro' : esc(S.projNome)}</span></span>${ic('chevrons-up-down', 'w-4 h-4 text-gray-400')}</button>
+    <button class="flex items-center gap-2 w-full rounded-lg bg-stone-200/70 dark:bg-gray-700/60 px-2.5 py-2 text-[13px] text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-100" onclick="openPalette()">${ic('search', 'w-4 h-4')}<span class="grow text-left">Buscar</span><span class="text-[11px] border border-gray-300 dark:border-gray-600 rounded px-1">Ctrl K</span></button>`);
+  if (!P) { const pz = passosCliente(), feitos = pz.filter(p => p.ok).length; if (feitos < pz.length) $('side').querySelector('.foot').insertAdjacentHTML('beforebegin', `<button onclick="abrirPassos()" class="mb-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2.5 text-left"><span class="flex items-center gap-2 text-[13px] font-semibold text-gray-800 dark:text-gray-100">${ic('rocket', 'w-4 h-4 text-personalized-primary')}Primeiros passos<span class="ml-auto text-xs font-medium text-gray-400">${feitos} de ${pz.length}</span></span><span class="block h-1.5 rounded-full bg-gray-200 dark:bg-gray-700 mt-2 overflow-hidden"><span class="block h-full bg-personalized-primary" style="width:${feitos / pz.length * 100}%"></span></span></button>`); }
+  icons();
+};
+function menuProjetos(e){
+  abrirMenu(e, [{i:'share-2', t:'Área do parceiro', k:S.area === 'parceiro' ? '✓' : '', f:() => setArea('parceiro')}, {sep:1}, {g:'Projetos'}].concat(S.clientes.filter(c => c.status !== 'inativo').map(c => ({i:'folder', t:c.nome, k:S.area === 'cliente' && S.projNome === c.nome ? '✓' : '', f:() => entrarProjeto(c.id)}))).concat([{sep:1}, {i:'layout-grid', t:'Ver todos os projetos', f:() => { S.area = 'parceiro'; switchPage('projetos'); }}]));
+}
+function passosCliente(){ return [
+  {t:'Conectar o WhatsApp', d:'Os números conectados recebem as conversas.', ok:true, ir:() => switchPage('whatsapp')},
+  {t:'Ligar o Agente de IA', d:'Ele responde enquanto a equipe não assume.', ok:S.agente.ativo, ir:() => switchPage('agente')},
+  {t:'Ajustar as etapas do funil', d:'Use as etapas do seu jeito de vender.', ok:!!S.passoFunil, ir:() => { S.passoFunil = true; switchPage('fucfg'); }},
+  {t:'Convidar a equipe', d:'Cada pessoa entra com o próprio acesso.', ok:S.usuarios.some(u => u.convite), ir:() => { S.cfgAba = 'usuarios'; switchPage('config'); novoUsuario(); }},
+  {t:'Conectar o Instagram', d:'Para publicar e ver os números no Marketing.', ok:!!S.passoInsta, ir:() => { S.passoInsta = true; switchPage('redesperfis'); }}]; }
+function abrirPassos(){ const pz = passosCliente(), feitos = pz.filter(p => p.ok).length;
+  openModal('Primeiros passos', `<div class="flex items-center gap-3 mb-4"><div class="grow h-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden"><div class="h-full bg-personalized-primary" style="width:${feitos / pz.length * 100}%"></div></div><span class="text-xs font-semibold">${feitos} de ${pz.length}</span></div>${pz.map((p, i) => `<div class="flex items-center gap-3 py-3 ${i ? 'border-t border-gray-200 dark:border-gray-700' : ''}"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${p.ok ? 'bg-green-500 text-white' : 'border border-gray-300 dark:border-gray-600'}">${p.ok ? ic('check', 'w-3.5 h-3.5') : i + 1}</span><div class="grow"><div class="font-medium ${p.ok ? 'text-gray-400 line-through' : 'text-gray-800 dark:text-gray-100'}">${p.t}</div><div class="text-xs">${p.d}</div></div>${p.ok ? '' : `<button class="btn btn-primary btn-sm" onclick="irPasso(${i})">Fazer agora</button>`}</div>`).join('')}`, '');
+}
+function irPasso(i){ closeModal(); passosCliente()[i].ir(); }
+
+// Parceiro: o aviso vira lista de ativação no Dashboard e uma linha discreta nas outras telas
+const _aviso = aviso;
+aviso = function(){
+  if (!S.ux || S.area !== 'parceiro') return _aviso();
+  const at = [{t:'Conectar o domínio', ok:true}, {t:'Enviar logo e cores', ok:true}, {t:'Completar o cadastro de recebimento', ok:S.receb.etapa >= 3, ir:"switchPage('pagamentos')", bt:'Completar'}, {t:'Criar o primeiro modelo', ok:S.modelos.length > 0}, {t:'Enviar o primeiro convite', ok:S.convidou, ir:"convidar(event,'m1');renderAll()", bt:'Copiar convite'}], feitos = at.filter(a => a.ok).length;
+  if (feitos === at.length) return '';
+  if (S.page !== 'inicio') return `<div class="mb-6 flex items-center gap-2 text-[13px] rounded-lg bg-amber-50 dark:bg-amber-900/30 text-amber-900 dark:text-amber-100 px-3 py-2">${ic('circle-alert', 'w-4 h-4')}Faltam ${at.length - feitos} passos para os seus clientes pagarem.<button class="font-semibold underline" onclick="switchPage('inicio')">Ver passos</button></div>`;
+  return `<div class="caixa p-5 mb-8"><div class="flex items-center gap-3 mb-3"><span class="w-9 h-9 rounded-lg bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 flex items-center justify-center">${ic('rocket', 'w-4 h-4')}</span><div class="grow"><div class="font-semibold text-gray-800 dark:text-gray-100">Ative a sua plataforma</div><div class="text-xs">Sem estes passos, seus clientes não conseguem pagar pelos projetos.</div></div><span class="text-sm font-semibold">${feitos} de ${at.length}</span></div><div class="h-1.5 rounded-full bg-gray-200 dark:bg-gray-700 mb-3 overflow-hidden"><div class="h-full bg-green-500" style="width:${feitos / at.length * 100}%"></div></div><div class="grid grid-cols-5 gap-3">${at.map((a, i) => `<div class="rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-3 flex flex-col"><span class="w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mb-2 ${a.ok ? 'bg-green-500 text-white' : 'border border-gray-300 dark:border-gray-600'}">${a.ok ? ic('check', 'w-3.5 h-3.5') : i + 1}</span><div class="text-[13px] font-medium ${a.ok ? 'text-gray-400' : 'text-gray-800 dark:text-gray-100'} grow">${a.t}</div>${a.ok ? '' : `<button class="btn btn-primary btn-sm mt-2" onclick="${a.ir}">${a.bt}</button>`}</div>`).join('')}</div></div>`;
+};
+
+// WhatsApp: prazo da janela na lista e painel do contato ao lado da conversa
+const _drawWaLista = drawWaLista;
+drawWaLista = function(){
+  _drawWaLista(); if (!S.ux) return;
+  waFiltradas().forEach(v => { const b = document.querySelector(`#wa-lista button[onclick="abrirConversa('${v.id}')"] .text-\\[11px\\]`); if (!b) return; const h = JANELA[v.id];
+    b.insertAdjacentHTML('afterend', h === undefined ? `<span class="ml-1 text-[10px] rounded px-1 bg-gray-200 dark:bg-gray-700 text-gray-500" title="A janela de 24 horas fechou">fechada</span>` : h <= 6 ? `<span class="ml-1 text-[10px] rounded px-1 bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200" title="Tempo até a janela de 24 horas fechar">${h} h</span>` : ''); });
+};
+const _drawWaConv = drawWaConv;
+drawWaConv = function(){
+  _drawWaConv(); if (!S.ux) return;
+  const v = S.conversas.find(x => x.id === S.waSel && x.numero === S.waNumero); if (!v) return;
+  const el = $('wa-conv'), c = ct(v.contato), k = cardDe(c.id), h = JANELA[v.id];
+  // topo: "quem responde" no lugar da chave
+  const chaveAg = el.querySelector('[title="Agente de IA nesta conversa"]'); if (chaveAg) chaveAg.parentElement.outerHTML = `<span class="inline-flex items-center gap-2 text-[13px]"><span class="text-gray-500">Quem responde</span><span class="inline-flex rounded-lg border border-gray-200 dark:border-gray-700 p-0.5">${[['ia', 'Agente', 'sparkles'], ['eu', 'Você', 'user']].map(o => `<button onclick="quemResponde('${v.id}','${o[0]}')" class="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs ${(v.dono === 'ia') === (o[0] === 'ia') ? (o[0] === 'ia' ? 'bg-violet-500 text-white' : 'bg-gray-800 text-white dark:bg-gray-100 dark:text-gray-900') : 'text-gray-500'}">${ic(o[2], 'w-3.5 h-3.5')}${o[1]}</button>`).join('')}</span></span>`;
+  const etapa = el.querySelector(`[onclick="menuEtapa(event,'${c.id}')"]`); if (etapa) etapa.remove();
+  if (h !== undefined && h <= 6) el.firstElementChild.insertAdjacentHTML('afterend', `<div class="px-4 py-2 text-xs bg-amber-50 text-amber-900 border-b border-amber-200 dark:bg-[#2b2a1e] dark:text-amber-100 dark:border-transparent flex items-center gap-2">${ic('timer', 'w-4 h-4')}<span><b>A janela de 24 horas fecha em ${h} horas.</b> Depois disso, só mensagens de modelo até o contato responder.</span></div>`);
+  // painel do contato ao lado
+  const corpo = document.createElement('div'); corpo.className = 'flex grow min-h-0';
+  const msgs = $('wa-m'), comp = msgs.nextElementSibling, col = document.createElement('div'); col.className = 'flex flex-col grow min-w-0';
+  msgs.parentElement.insertBefore(corpo, msgs); col.appendChild(msgs); col.appendChild(comp); corpo.appendChild(col);
+  const tarefas = S.tarefas.filter(t => t.contato === c.id);
+  corpo.insertAdjacentHTML('beforeend', `<aside class="w-72 shrink-0 border-l border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-y-auto p-4 space-y-4 text-[13px]">
+    <div class="text-center"><div class="flex justify-center">${av(c.nome, 'w-14 h-14 text-base')}</div><div class="font-semibold text-gray-800 dark:text-gray-100 mt-2">${esc(nomeDe(c))}</div><div class="text-xs">${fone(c.fone)}</div>${c.email ? `<div class="text-xs">${esc(c.email)}</div>` : ''}</div>
+    <div><label class="text-xs font-medium text-gray-800 dark:text-gray-100" for="wc-etapa">Etapa no Funil de Vendas</label><select class="form-input mt-1 py-1.5" id="wc-etapa" onchange="moverEtapa('${c.id}',this.value)"><option value="">Fora do funil</option>${S.etapas.map((e, i) => `<option value="${i}" ${k && k.etapa === i ? 'selected' : ''}>${esc(e)}</option>`).join('')}</select></div>
+    ${k ? `<div class="grid grid-cols-2 gap-2"><div><label class="text-xs font-medium text-gray-800 dark:text-gray-100" for="wc-resp">Responsável</label><select class="form-input mt-1 py-1.5 px-2" id="wc-resp" onchange="cardDe('${c.id}').resp=this.value;flashSalvoWa()"><option value="">-</option>${S.usuarios.filter(u => u.nome !== '-').map(u => `<option ${k.resp === u.nome ? 'selected' : ''}>${u.nome}</option>`).join('')}</select></div><div><label class="text-xs font-medium text-gray-800 dark:text-gray-100" for="wc-valor">Valor (R$)</label><input class="form-input mt-1 py-1.5 px-2" id="wc-valor" value="${k.valor || ''}" onchange="valorWa('${c.id}',this.value)"></div></div>` : ''}
+    <div><div class="flex items-center mb-1"><span class="text-xs font-medium text-gray-800 dark:text-gray-100 grow">Tarefas</span><button class="text-xs text-blue-500" onclick="tarefaDaConversa('${c.id}')">+ Tarefa</button></div>${tarefas.length ? tarefas.map(t => `<button class="flex items-start gap-2 w-full text-left py-1.5" onclick="abrirRegistro('tarefa','${t.id}')">${ic(t.status === 'Pendente' ? 'circle' : 'circle-check', 'w-4 h-4 mt-0.5 ' + (t.status === 'Pendente' ? 'text-gray-400' : 'text-green-500'))}<span><span class="block text-gray-800 dark:text-gray-100">${esc(t.titulo)}</span><span class="block text-xs">${t.quando}</span></span></button>`).join('') : '<div class="text-xs text-gray-400">Nenhuma tarefa.</div>'}</div>
+    <div class="flex items-center gap-2 text-xs text-green-600 dark:text-green-400 opacity-0 transition" id="wc-salvo">${ic('check', 'w-3.5 h-3.5')}Salvo</div>
+    <button class="btn btn-sec btn-sm w-full" onclick="openPainel('${c.id}')">Abrir ficha completa</button></aside>`);
+  icons(); msgs.scrollTop = msgs.scrollHeight;
+};
+function quemResponde(id, quem){ const v = S.conversas.find(x => x.id === id); if (v.dono === quem || (quem === 'eu' && v.dono !== 'ia')) return; togAgenteConversa(id); }
+function valorWa(cid, v){ cardDe(cid).valor = Number(String(v).replace(/\./g, '').replace(',', '.')) || 0; flashSalvoWa(); }
+function flashSalvoWa(){ const e = $('wc-salvo'); if (!e) return; e.classList.remove('opacity-0'); setTimeout(() => e.classList.add('opacity-0'), 1500); }
+function tarefaDaConversa(cid){ const t = {id:nid('t'), contato:cid, titulo:'Retornar contato', desc:'', resp:'Carla Mendes', quando:'18 de novembro, 10:00', status:'Pendente'}; S.tarefas.unshift(t); drawWaConv(); abrirRegistro('tarefa', t.id); }
+
+// Salvar sozinho: agente e fichas
+const _sujo = sujo;
+sujo = function(){ if (!S.ux) return _sujo(); flashSalvo(); };
+const _drawRegistro = drawRegistro;
+drawRegistro = function(){
+  _drawRegistro(); if (!S.ux) return;
+  const m = $('modal'), bt = m.querySelector('[onclick="atualizarRegistro()"]');
+  if (bt) bt.outerHTML = `<span class="text-xs text-gray-400 flex items-center gap-1">${ic('cloud', 'w-3.5 h-3.5')}As mudanças são salvas sozinhas</span>`;
+  const sv = m.querySelector('.text-gray-400.mr-1'); if (sv) sv.insertAdjacentHTML('afterend', `<span id="rg-salvo" class="text-xs text-green-600 dark:text-green-400 mr-2 opacity-0 transition">Salvo</span>`);
+  let tm = null; m.querySelectorAll('input,select,textarea').forEach(x => { if (x.id === 'rg-com') return; x.addEventListener(x.tagName === 'SELECT' ? 'change' : 'input', () => { clearTimeout(tm); tm = setTimeout(() => atualizarRegistro(true), 500); }); });
+  icons();
+};
+function marcarSalvoReg(){ const e = $('rg-salvo'); if (!e) return; e.classList.remove('opacity-0'); setTimeout(() => e.classList.add('opacity-0'), 1500); }
+
+// Agente: teste fixo ao lado, sem botão de salvar
+const _pAgente = PAGES.agente;
+PAGES.agente = function(){
+  _pAgente(); if (!S.ux) return;
+  const pg = $('page'), cont = pg.querySelector('.space-y-6'), bt = pg.querySelector('[onclick="abrirTeste()"]'); if (bt) bt.remove();
+  const grid = document.createElement('div'); grid.className = 'grid grid-cols-[minmax(0,1fr)_360px] gap-6 items-start';
+  cont.parentElement.insertBefore(grid, cont); grid.appendChild(cont);
+  grid.insertAdjacentHTML('beforeend', `<div class="sticky top-0 caixa overflow-hidden flex flex-col h-[calc(100vh-150px)]"><div class="flex items-center gap-2 px-4 py-3 border-b border-gray-200 dark:border-gray-700"><span class="font-semibold text-gray-800 dark:text-gray-100 grow">Testar o agente</span><button class="text-xs text-blue-500" onclick="S.agente.teste=S.agente.teste.slice(0,1);drawTeste()">Recomeçar</button></div><div class="wa-fundo grow overflow-y-auto p-3 flex flex-col gap-2" id="ag-msgs"></div><div class="flex gap-2 p-3 border-t border-gray-200 dark:border-gray-700"><input class="form-input" id="ag-perg" placeholder="Pergunte como um cliente" onkeydown="teclaTeste(event)"><button class="btn btn-primary" onclick="perguntar()">${ic('send-horizontal', 'w-4 h-4')}</button></div><p class="text-[11px] px-3 pb-3">Responde com o que está nesta tela, inclusive o que você acabou de mudar.</p></div>`);
+  const hs = $('ag-horas'); if (hs) hs.className = 'grid grid-cols-4 gap-2';
+  drawTeste(); icons();
+};
+
+// Criar só depois de confirmar
+const _pAutomacao = PAGES.automacao;
+PAGES.automacao = function(){
+  if (!S.ux) return _pAutomacao();
+  $('page').innerHTML = S.automacoes.length ? titulo('Automação', `<button class="btn btn-sec" onclick="novaAutomacao()">${ic('plus', 'w-4 h-4')}Automação</button>`) + `<div class="tabela"><table><thead><tr><th>Nome</th><th>Quando</th><th>O que faz</th><th>Status</th></tr></thead><tbody>${S.automacoes.map(a => `<tr><td class="text-gray-800 dark:text-gray-100">${esc(a.nome)}</td><td>${esc(a.gatilho)}</td><td>${esc(a.acao)}</td><td>${pCinza('Rascunho')}</td></tr>`).join('')}</tbody></table></div>`
+    : vazio('package', 'Você ainda não tem automações', 'Para começar a usar esta ferramenta, crie uma nova automação.', `<button class="btn btn-sec" onclick="novaAutomacao()">${ic('plus', 'w-4 h-4')}Automação</button>`);
+};
+function novaAutomacao(){
+  openModal('Nova automação', `<div class="mb-4"><label class="lbl" for="au-nome"><span class="text-red-500">*</span> Nome</label><input class="form-input" id="au-nome" placeholder="Ex.: Boas-vindas a lead novo"></div><div class="grid grid-cols-2 gap-4"><div><label class="lbl" for="au-gat">Quando</label><select class="form-input" id="au-gat"><option>Card entrar em uma etapa do funil</option><option>Contato ser criado</option><option>Tarefa vencer</option></select></div><div><label class="lbl" for="au-acao">O que fazer</label><select class="form-input" id="au-acao"><option>Enviar mensagem no WhatsApp</option><option>Criar tarefa</option><option>Mudar o responsável</option></select></div></div><p class="text-xs mt-3">A automação nasce como rascunho e só começa a rodar quando você ativar.</p>`,
+    `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button><button class="btn btn-primary" onclick="criarAutomacao()">Criar rascunho</button>`); }
+function criarAutomacao(){ const n = $('au-nome').value.trim(); if (!n) { $('au-nome').focus(); showToast('Dê um nome à automação'); return; } S.automacoes.push({nome:n, gatilho:$('au-gat').value, acao:$('au-acao').value}); closeModal(); renderAll(); showToast('Rascunho criado'); }
+function escolherConexao(){
+  const op = (i, t, d, fn) => `<button class="text-left rounded-lg border border-gray-200 dark:border-gray-700 p-4 hover:border-gray-400" onclick="${fn}"><span class="w-9 h-9 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-2">${ic(i, 'w-4 h-4')}</span><span class="block font-semibold text-gray-800 dark:text-gray-100">${t}</span><span class="block text-xs mt-1">${d}</span></button>`;
+  openModal('Novo número', `<p class="mb-4">Como você quer conectar o número? A conexão só é criada depois desta escolha.</p><div class="grid grid-cols-2 gap-3">${op('qr-code', 'Pelo celular (QR Code)', 'Use o WhatsApp do aparelho. Leva um minuto.', "closeModal();switchPage('wanovo')")}${op('badge-check', 'API oficial do WhatsApp Business', 'Para volume maior e mensagens de modelo.', 'closeModal();embreve()')}</div>`, `<button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>`); }
+
+// Notificações: marcar todas como lidas
+const _abrirNotificacoes = abrirNotificacoes;
+abrirNotificacoes = function(e){
+  _abrirNotificacoes(e); if (!S.ux || !S.notifs.length) return;
+  $('ctx').firstElementChild.insertAdjacentHTML('afterbegin', `<div class="flex items-center px-3 py-2 border-b border-gray-200 dark:border-gray-600"><b class="grow text-[13px] text-gray-800 dark:text-gray-100">Notificações</b><button class="text-xs text-blue-500" onclick="event.stopPropagation();S.notifs=[];fecharMenu();drawSide();icons();showToast('Notificações marcadas como lidas')">Marcar todas como lidas</button></div>`);
+};
 
 renderAll();
 </script>
